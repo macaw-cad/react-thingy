@@ -13,12 +13,15 @@
     "@types/react-router-redux": "^5.0.16",
     "aphrodite": "^2.2.3",
     "awesome-typescript-loader": "^5.2.1",
+    "chokidar-cli": "^1.2.1",
     "cross-env": "^5.2.0",
     "hypernova": "^2.4.0",
     "hypernova-amp": "^3.2.0",
     "hypernova-react": "^2.1.0",
     "isomorphic-fetch": "^2.2.1",
     "node-noop": "^1.0.0",
+    "nodemon": "^1.18.6",
+    "npm-run-all": "^4.1.5",
     "raw-loader": "^0.5.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -35,10 +38,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-with-server": "run-p start:dotnet-core start watch:build:server-bundle start:hypernovacomponentserver",
+    "start:dotnet-core": "pushd .. && dotnet run",
+    "start:hypernovacomponentserver": "pushd ..\\..\\HypernovaComponentServer && nodemon --watch server-bundle.js componentserver.js",
+    "watch:build:server-bundle": "npm run build:server-bundle:development && chokidar src/** -c \"npm run build:server-bundle:development\"",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "build:server:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
-    "build:server": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js"
+    "build:dotnet-core": "pushd ..\\.. && dotnet restore && dotnet build && popd",
+    "build:server-bundle:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
+    "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
