@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hiphop-rap.azurewebsites.net/sitemap.xml

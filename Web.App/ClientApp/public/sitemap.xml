@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://hiphop-rap.azurewebsites.net/rapper.php?big_l</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://hiphop-rap.azurewebsites.net/rapper.php?biggie_smalls</loc>
+        <changefreq>daily</changefreq>
+    </url>
+        <url>
+        <loc>https://hiphop-rap.azurewebsites.net/rapper.php?ice_cube</loc>
+        <changefreq>daily</changefreq>
+    </url>
+        <url>
+        <loc>https://hiphop-rap.azurewebsites.net/rapper.php?snoop_dogg</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    </url>
+        <loc>https://hiphop-rap.azurewebsites.net/rapper.php?tupac</loc>
+        <changefreq>daily</changefreq>
+    </url>
+</urlset>

@@ -1,0 +1,19 @@
+{
+  "name": "componentserver",
+  "version": "1.0.0",
+  "description": "Hypernova based component server",
+  "main": "componentserver.js",
+  "scripts": {
+    "start": "node componentserver.js"
+  },
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.4",
+    "fs": "0.0.1-security",
+    "fs-extra": "^6.0.1",
+    "has": "^1.0.3",
+    "hypernova": "^2.2.6",
+    "numeral": "^2.0.6",
+    "response-time": "^2.3.2"
+  }
+}

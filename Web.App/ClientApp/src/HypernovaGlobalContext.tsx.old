@@ -1,0 +1,36 @@
+import * as React from 'react';
+
+export interface HypernovaGlobalContextBase {
+    componentDidRenderServerSideFuncs: ((globalContextProps: HypernovaGlobalContextBase) => void)[];
+}
+
+export type ComponentDidRenderServerSideFunc = (globalContextProps: HypernovaGlobalContextProps) => void;
+
+export interface HypernovaGlobalContextConsumerProps {
+    addComponentDidRenderServerSideFunc: (func: ComponentDidRenderServerSideFunc) => void;
+}
+
+export interface RenderAmp {
+    isAmp: boolean;
+}
+
+export type HypernovaGlobalContextProps = HypernovaGlobalContextBase  & RenderAmp;
+
+// HypernovaGlobalContext provides a Provider and Consumer
+export const HypernovaGlobalContext = React.createContext<HypernovaGlobalContextProps>();
+
+// Function to wrap a component with the Hypernova global context.
+export function withHypernovaGlobalContext<T extends HypernovaGlobalContextConsumerProps>(Component: React.ComponentClass<T> | React.StatelessComponent<T>): React.ComponentClass<T> {
+    // type WrappedComponentType = T & GlobalContextSystem;
+    return class ComponentWrappedWithGlobalContext extends React.Component<T & HypernovaGlobalContextBase> {
+        public render() {
+            return (
+                <HypernovaGlobalContext.Consumer>
+                    {(globalContext: HypernovaGlobalContextProps) => (
+                        <Component {...this.props} addComponentDidRenderServerSideFunc={(func: ComponentDidRenderServerSideFunc) => globalContext.componentDidRenderServerSideFuncs.push(func)}/>
+                    )}
+                </HypernovaGlobalContext.Consumer>
+            );        
+        }
+    };
+}

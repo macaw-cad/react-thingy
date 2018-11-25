@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Web.App.HypernovaClient;
 
 namespace Web.App
 {
@@ -21,6 +22,12 @@ namespace Web.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.Configure<HypernovaSettings>(options => Configuration.GetSection("Hypernova").Bind(options));
+
+            services.AddDistributedMemoryCache();
+
+            services.AddHttpClient();
+            services.AddLogging();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
