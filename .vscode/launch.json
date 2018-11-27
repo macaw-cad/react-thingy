@@ -1,6 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "node",
       "request": "launch",
@@ -52,7 +53,7 @@
       "env": {
         "ComponentServerBundles": "{\"pwa\":\"./server-bundle.js\"}"
       },
-      "runtimeExecutable": "nodemon",
+      "runtimeExecutable": "${workspaceRoot}/Web.App/ClientApp/node_modules/.bin/nodemon",
       "restart": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",

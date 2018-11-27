@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Web.App.HypernovaClient
+namespace Web.App.Hypernova
 {
     public class MetaData
     {

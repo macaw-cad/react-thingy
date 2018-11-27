@@ -54,7 +54,7 @@ module.exports = x => {
     return {
         devtool: 'source-map',
         entry: {
-            "server-bundle": path.join(__dirname, 'src/HypernovaServerComponents.ts')
+            "server-bundle": path.join(__dirname, 'src/HypernovaAllComponents.ts')
         },
         target: 'node',
         //    externals: [nodeExternals()],

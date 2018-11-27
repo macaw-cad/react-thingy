@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Web.App.HypernovaClient
+namespace Web.App.Hypernova
 {
     public class Renderer
     {
@@ -20,7 +20,7 @@ namespace Web.App.HypernovaClient
             _settings = options.Value;
         }
 
-        public RenderResult RenderAppClientSide(HypernovaController hypernovaController, string appHtmlPath, string relativeAppUrl, RenderData renderData, string baseAppUrl = null)
+        public RenderResult RenderAppClientSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, RenderData renderData, string baseAppUrl = null)
         {
             string appHtml;
 
@@ -49,7 +49,7 @@ namespace Web.App.HypernovaClient
         /// <param name="relativeAppUrl">The relative url within the app, used to make calls to Hypernova, will be prefixed with /app when rewriting the client url</param>
         /// <param name="canonicalUrl">The canonical url to use for this page, the "server-side" entry opint url</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public RenderResult RenderAppServerSide(HypernovaController hypernovaController, string appHtmlPath, string relativeAppUrl, RenderData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
+        public RenderResult RenderAppServerSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, RenderData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
         {
             string appHtml;
 
@@ -93,7 +93,7 @@ namespace Web.App.HypernovaClient
             string hypernovaResult = null;
             try
             {
-                hypernovaResult = hypernovaController.ReactAsyncRedux("pwa:HypernovaPwaApp", relativeAppUrl).ToString();
+                hypernovaResult = hypernovaClient.ReactAsyncRedux("pwa:HypernovaPwaApp", relativeAppUrl).ToString();
                 appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl, hypernovaResult.ToString());
                 if (cache != null)
                 {

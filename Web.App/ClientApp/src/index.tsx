@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Environment } from './Environment';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
+import './HypernovaComponents';
 
 import './index.css';
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Web.App.HypernovaClient
+namespace Web.App.Hypernova
 {
     public class HypernovaFileCache
     {

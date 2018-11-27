@@ -5,48 +5,33 @@ using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Web.App.HypernovaClient
+namespace Web.App.Hypernova
 {
     /// <summary>
     /// Hypernova client.
     /// </summary>
-    public class HypernovaController : Controller
+    public class HypernovaClient
     {
-        public readonly ILogger<HypernovaController> Logger;
+        public readonly string BaseUrl;
+        public readonly ILogger Logger;
         public readonly IHostingEnvironment Env;
         public readonly IHttpClientFactory HttpClientFactory;
         public readonly IOptions<HypernovaSettings> Options;
         public readonly HypernovaSettings Settings;
 
-        public HypernovaController(ILogger<HypernovaController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
+        public HypernovaClient(string baseUrl, ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
         {
+            BaseUrl = baseUrl;
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Env = env ?? throw new ArgumentNullException(nameof(env));
             HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             Options = options;
             Settings = options.Value;
-
-            //_client = new HttpClient(); // https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
-            //_client.Timeout = TimeSpan.FromMilliseconds(TimeoutInMilliseconds);
-
-            //_hypernovaComponentServerUrl = ConfigurationManager.AppSettings[AppSettingHypernovaComponentServerUrl];
-            //if (string.IsNullOrWhiteSpace(_hypernovaComponentServerUrl))
-            //{
-            //    throw new ConfigurationErrorsException(message: $"Web.config app setting {AppSettingHypernovaComponentServerUrl} not defined or empty.");
-            //}
-        }
-
-        public string PagesCacheName {
-            get
-            {
-                return Settings.PagesCacheName;
-            }
         }
 
         public IHtmlContent React(
@@ -88,7 +73,7 @@ namespace Web.App.HypernovaClient
                 }
                 else
                 {
-                    baseUrl = String.Format("{0}://{1}", HttpContext.Request.Scheme, HttpContext.Request.Host);
+                    baseUrl = BaseUrl;
                 }
             }
 
@@ -104,8 +89,7 @@ namespace Web.App.HypernovaClient
 
             if (!Uri.TryCreate(Settings.ComponentServerUrl, UriKind.Absolute, out Uri _))
             {
-                var baseUrl = String.Format("{0}://{1}", HttpContext.Request.Scheme, HttpContext.Request.Host);
-                hypernovaServerUrl = new Uri(new Uri(baseUrl), relativeUri: Settings.ComponentServerUrl).ToString();
+                hypernovaServerUrl = new Uri(new Uri(BaseUrl), relativeUri: Settings.ComponentServerUrl).ToString();
             }
             else
             {

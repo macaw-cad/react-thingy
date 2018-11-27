@@ -1,0 +1,20 @@
+﻿@page
+@model ReactModel
+@{
+    ViewData["Title"] = "Hi World page";
+}
+
+<h1>Hello page</h1>
+<p>
+    <strong>Text:</strong> <code>@Model.Text</code>
+</p>
+
+@Model.hypernovaClient.React("HypernovaSheep", "{ \"name\": \"Abracadabra\" }")
+<hr />
+@Model.hypernovaClient.ReactAsyncRedux("HypernovaCounter", "/", "{ \"counter\": { \"value\": 42 } }")
+<hr />
+@Model.hypernovaClient.ReactAsyncRedux("HypernovaCounter", "/", "{ \"counter\": { \"value\": 14 } }")
+<script src="/static/js/bundle.js"></script>
+<script src="/static/js/0.chunk.js"></script>
+<script src="/static/js/main.chunk.js"></script>
+

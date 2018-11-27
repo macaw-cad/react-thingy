@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Web.App.HypernovaClient;
+using Web.App.Hypernova;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Web.App
 {
     public class StoryController : HypernovaController
     {
-        public StoryController(ILogger<HypernovaController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
+        public StoryController(ILogger<StoryController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
             : base(logger, env, httpClientFactory, options)
         {
         }
@@ -28,13 +28,15 @@ namespace Web.App
                 return NotFound();
             }
 
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            var hypernovaClient = new HypernovaClient(baseUrl, Logger, Env, HttpClientFactory, Options);
             var hypernovaFileCache = new HypernovaFileCache(Logger, Env, Options);
             var cacheItemName = $"ArtistStory_{artistId}.html";
             IHtmlContent hypernovaResult;
             ActionResult result = hypernovaFileCache.GetCachedActionResult(this, Settings.AmpPagesCacheName, cacheItemName);
             if (result == null)
             {
-                hypernovaResult = React("pwa:HypernovaArtistStory", artist);
+                hypernovaResult = hypernovaClient.React("pwa:HypernovaArtistStory", artist);
 
                 result = hypernovaFileCache.StoreAndGetActionResult(this, Settings.AmpPagesCacheName, cacheItemName, hypernovaResult.ToString());
             }

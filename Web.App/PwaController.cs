@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Web.App.HypernovaClient;
+using Web.App.Hypernova;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,13 +40,13 @@ namespace Web.App
                 Title = "Campingthema&#39;s - ANWB camping",
                 MetaData = new MetaData[]
                 {
-                                new MetaData { Name = "description", Content = "Vind je volgende camping gemakkelijk en snel via een van onze campingthema&#39;s. Zoek o.a. op charmecamping, kleine camping en kindercamping." }
+                    new MetaData { Name = "description", Content = "Vind je volgende camping gemakkelijk en snel via een van onze campingthema&#39;s. Zoek o.a. op charmecamping, kleine camping en kindercamping." }
                 },
                 CanonicalUrl = $"{baseUrl}{relativeUrl}"
             };
 
-
-            var renderResult = _renderer.RenderAppServerSide(this, _indexHtmlFile, relativeUrl, renderData, "/", null);
+            var hypernovaClient = new HypernovaClient(baseUrl, Logger, Env, HttpClientFactory, Options);
+            var renderResult = _renderer.RenderAppServerSide(hypernovaClient, _indexHtmlFile, relativeUrl, renderData, "/", null);
             if (renderResult.IsServerSideRendered)
             {
                 result = _hypernovaFileCache.StoreAndGetActionResult(this, PagesCacheName, cacheItemName, renderResult.Html);

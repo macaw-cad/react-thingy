@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/HypernovaServerComponents.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/HypernovaAllComponents.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -64021,11 +64021,57 @@ class Environment {
 
 /***/ }),
 
-/***/ "./src/HypernovaServerComponents.ts":
-/*!******************************************!*\
-  !*** ./src/HypernovaServerComponents.ts ***!
-  \******************************************/
+/***/ "./src/HypernovaAllComponents.ts":
+/*!***************************************!*\
+  !*** ./src/HypernovaAllComponents.ts ***!
+  \***************************************/
 /*! exports provided: HypernovaApp, HypernovaSheep, HypernovaCounter, HypernovaArtistStory */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HypernovaComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HypernovaComponents */ "./src/HypernovaComponents.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaApp", function() { return _HypernovaComponents__WEBPACK_IMPORTED_MODULE_0__["HypernovaApp"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaSheep", function() { return _HypernovaComponents__WEBPACK_IMPORTED_MODULE_0__["HypernovaSheep"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaCounter", function() { return _HypernovaComponents__WEBPACK_IMPORTED_MODULE_0__["HypernovaCounter"]; });
+
+/* harmony import */ var _HypernovaAmpComponents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HypernovaAmpComponents */ "./src/HypernovaAmpComponents.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaArtistStory", function() { return _HypernovaAmpComponents__WEBPACK_IMPORTED_MODULE_1__["HypernovaArtistStory"]; });
+
+// Entry point for server-bundle.js generation.
+// Exports all Hypernova components to be rendered server-side.
+
+
+
+
+/***/ }),
+
+/***/ "./src/HypernovaAmpComponents.ts":
+/*!***************************************!*\
+  !*** ./src/HypernovaAmpComponents.ts ***!
+  \***************************************/
+/*! exports provided: HypernovaArtistStory */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Hypernova/HypernovaArtistStory */ "./src/components/Hypernova/HypernovaArtistStory.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaArtistStory", function() { return _components_Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+// Exports all AMP specific components that are rendered only server-side
+
+
+
+
+/***/ }),
+
+/***/ "./src/HypernovaComponents.ts":
+/*!************************************!*\
+  !*** ./src/HypernovaComponents.ts ***!
+  \************************************/
+/*! exports provided: HypernovaApp, HypernovaSheep, HypernovaCounter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64039,10 +64085,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Hypernova_HypernovaCounter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Hypernova/HypernovaCounter */ "./src/components/Hypernova/HypernovaCounter.tsx");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaCounter", function() { return _components_Hypernova_HypernovaCounter__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _components_Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Hypernova/HypernovaArtistStory */ "./src/components/Hypernova/HypernovaArtistStory.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaArtistStory", function() { return _components_Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_3__["default"]; });
-
-
+// Export all Hypernova specific components that can be rendered
+// server-side and will be hydrated client-side.
+// This file must be imported in index.tsx to make sure that 
+// client-side hydration kicks in.
 
 
 

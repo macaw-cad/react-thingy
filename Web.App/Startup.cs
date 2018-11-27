@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Web.App.HypernovaClient;
+using Microsoft.Extensions.Logging;
+using Web.App.Hypernova;
 
 namespace Web.App
 {
@@ -21,8 +22,24 @@ namespace Web.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.Configure<HypernovaSettings>(options => Configuration.GetSection("Hypernova").Bind(options));
+            var mvc = services.AddMvc();
+            mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            mvc.AddRazorPagesOptions(options => {
+                options.RootDirectory = "/Pages";
+            });
+
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+            services.AddTransient<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
+            //           services.AddTransient<Microsoft.AspNetCore.Hosting.IHostingEnvironment, Microsoft.AspNetCore.Hosting.HostingEnvironment>();
+            //            services.AddTransient<System.Net.Http.IHttpClientFactory, System.Net.Http.HttpClientFactory>();
+            //            services.AddTransient<Microsoft.Extensions.Options.IOptions<Web.App.Hypernova.HypernovaSettings> options
+
+            //            services.Configure<HypernovaSettings>(options => Configuration.GetSection("Hypernova").Bind(options));
+
+            // app specific
+            services.AddHypernovaSettings(this.Configuration);
 
             services.AddDistributedMemoryCache();
 
@@ -66,7 +83,9 @@ namespace Web.App
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    // Start the ClientPortal through the CreateReactApp server for speedy development
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                    // spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
         }

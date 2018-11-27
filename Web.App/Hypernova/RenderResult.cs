@@ -1,4 +1,4 @@
-﻿namespace Web.App.HypernovaClient
+﻿namespace Web.App.Hypernova
 {
     public class RenderResult
     {

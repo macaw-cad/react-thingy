@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Web.App.HypernovaClient
+namespace Web.App.Hypernova
 {
     public class HypernovaException : Exception
     {
