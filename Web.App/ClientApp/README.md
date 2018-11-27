@@ -1,4 +1,46 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# CORE-CRA2-TS-HYPERNOVA example
+
+This project combines the following technologies:
+
+- A DotNet Core 2.1 web application rendering a SPA, Razor Pages and AMP pages
+- The frontend project is bootstrapped with Create React App 2 (CRA2)
+- All frontend code is written in TypeScript
+- Single components, the complete SPA or AMP pages can be server-side rendered using Hypernova
+- Server-side rendered components can be async, so they make async calls to retrieve data or have promises to be resolved before rendering
+
+# Working with the code
+
+When editing the DotNet Core application open the solution ```core-cra2-ts-hypernova.sln```. When the solution is started (development mode) it expects a SPA application running on http://localhost:3000.
+
+Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.App\ClientApp``` folder - otherwise debugging will not work.
+
+The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing commands
+for running the application.
+
+There is a "do it all" cpmmand available for frontewnd developers that don't open the DotNet Core solution:
+
+```
+npm run start-with-server
+```
+
+This command does the following:
+
+- For the DotNet Core solution restore the package, build the solution and run the solution
+- ```npm start``` - compiles the client side application using the Create React App 2 build system
+- ```npm run watch:build:server-bundle``` - compiles the server bundle on each change in the ```src``` directory, this server bundle is used by the Hypernova Component Server
+- ```npm run start:hypernovacomponentserver``` - starts the Hypernova Component Server with the created ```server-bundle.js``` file
+
+When the DotNet Core solution is comp[iled and debugged in Visual Studio start the above
+commands in seperate terminal windows.
+
+It is also possible to start the Hypenova Component Server in the Visual Studio Code debugger using the debug configuration ```HypernovaServer```. Breakpoints can be set in the TypeScript source code.
+
+# Working examples:
+
+```http://localhost:3000``` - the SPA built by CRA2, running only client-side
+```http://localhost:5001``` - the SPA running from the DotNet Core application
+```http://localhost:5001/React``` - Razor Page using Hypernova to render components
+```http://localhost:5001/Story/ArtistStory?artistId=big_l``` - AMP Story
 
 ## Available Scripts
 
