@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
 
 namespace Web.App.Hypernova
 {
@@ -17,16 +17,14 @@ namespace Web.App.Hypernova
     /// </summary>
     public class HypernovaClient
     {
-        public readonly string BaseUrl;
         public readonly ILogger Logger;
         public readonly IHostingEnvironment Env;
         public readonly IHttpClientFactory HttpClientFactory;
         public readonly IOptions<HypernovaSettings> Options;
         public readonly HypernovaSettings Settings;
 
-        public HypernovaClient(string baseUrl, ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
+        public HypernovaClient(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
         {
-            BaseUrl = baseUrl;
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Env = env ?? throw new ArgumentNullException(nameof(env));
             HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
@@ -34,7 +32,13 @@ namespace Web.App.Hypernova
             Settings = options.Value;
         }
 
-        public IHtmlContent React(
+        /// <summary>
+        /// Render a React component server-side given the props serialized in <paramref name="jsonSerializedProps"/>.
+        /// </summary>
+        /// <param name="componentName">The name of the React component.</param>
+        /// <param name="jsonSerializedProps">Serialized component props.</param>
+        /// <returns></returns>
+        public async Task<IHtmlContent> React(
             string componentName,
             string jsonSerializedProps
         )
@@ -43,12 +47,24 @@ namespace Web.App.Hypernova
             {
                 jsonSerializedProps = "{}";
             }
+
             var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedProps} }} }}";
 
-            return RenderHypernovaComponentsSync(componentName, postBody);
+            var result = await RenderHypernovaComponents(componentName, postBody);
+            return result;
         }
 
-        public IHtmlContent ReactAsyncRedux(
+        /// <summary>
+        /// Render a React component server-side with an initial Redux state and support for async calls using the Hypernova Component Server.
+        /// This function is especially useful to server-side render a complete SPA React application.
+        /// </summary>
+        /// <param name="componentName">The name of the React component.</param>
+        /// <param name="relativeUrl">The relative url, useful in case of rendering a SPA React application with routing.</param>
+        /// <param name="jsonSerializedReduxState">The initial Redux state to start with.</param>
+        /// <param name="baseUrl">The base url of the website for prefixing relative ajax calls. If not
+        /// explicitly specified it can be configured with the <c>ComponentServerBaseUrlOverride</c> appsetting.</param>
+        /// <returns>The resulting server-side rendered HTML.</returns>
+        public async Task<IHtmlContent> ReactAsyncRedux(
             string componentName,
             string relativeUrl = "",
             string jsonSerializedReduxState = null,
@@ -60,6 +76,16 @@ namespace Web.App.Hypernova
                 jsonSerializedReduxState = "{}";
             }
 
+            baseUrl = ResolveBaseUrl(baseUrl);
+
+            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"isAmp\": false }} }} }} }}";
+
+            var result = await RenderHypernovaComponents(componentName, postBody);
+            return result;
+        }
+
+        private string ResolveBaseUrl(string baseUrl)
+        {
             if (String.IsNullOrWhiteSpace(baseUrl))
             {
                 var hypernovaComponentServerBaseUrlOverride = Settings.ComponentServerBaseUrlOverride;
@@ -71,45 +97,35 @@ namespace Web.App.Hypernova
                         baseUrl = baseUrl.Replace("[local-ip]", GetLocalIpAddress());
                     }
                 }
-                else
-                {
-                    baseUrl = BaseUrl;
-                }
             }
 
-            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"isAmp\": false }} }} }} }}";
-
-            var result = RenderHypernovaComponentsSync(componentName, postBody);
-            return result;
+            return baseUrl;
         }
 
-        private IHtmlContent RenderHypernovaComponentsSync(string componentName, string postBody)
+        private async Task<IHtmlContent> RenderHypernovaComponents(string componentName, string postBody)
         {
-            string hypernovaServerUrl;
+            string hypernovaServerUrl = Settings.ComponentServerUrl;
 
             if (!Uri.TryCreate(Settings.ComponentServerUrl, UriKind.Absolute, out Uri _))
             {
-                hypernovaServerUrl = new Uri(new Uri(BaseUrl), relativeUri: Settings.ComponentServerUrl).ToString();
+                throw new HypernovaException($"Hypernova Component Server url '{hypernovaServerUrl}' as specified in appsetting 'Hypernova.' is not an absolute url");
             }
-            else
-            {
-                hypernovaServerUrl = Settings.ComponentServerUrl;
-            }
+
             var client = HttpClientFactory.CreateClient();
-            var response = client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json")).Result;
-            var responseString = response.Content.ReadAsStringAsync().Result;
+            var response = await client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"));
+            var responseString = await response.Content.ReadAsStringAsync();
             var hypernovaResult = JsonConvert.DeserializeObject<HypernovaResult>(responseString);
 
             if (hypernovaResult.Succes == false && hypernovaResult.Error != null)
             {
-                throw new HypernovaException($"Call to Hypernova component render service at '{hypernovaServerUrl}' failed. Error: {hypernovaResult.Error.Message}");
+                throw new HypernovaException($"Call to Hypernova Component Server at '{hypernovaServerUrl}' failed. Error: {hypernovaResult.Error.Message}");
             }
 
             var componentResult = hypernovaResult.Results[componentName];
 
             if (componentResult.StatusCode != 200)
             {
-                throw new HypernovaException($"Failed to render component '{componentName}' using the Hypernova component render service at '{hypernovaServerUrl}'. Error: {componentResult.Error.Message}, Stacktrace: {string.Join("\r\n", componentResult.Error.Stack)}");
+                throw new HypernovaException($"Failed to render component '{componentName}' using the Hypernova Component Server at '{hypernovaServerUrl}'. Error: {componentResult.Error.Message}, Stacktrace: {string.Join("\r\n", componentResult.Error.Stack)}");
             }
 
             return new HtmlString(hypernovaResult.Results[componentName].Html);
@@ -162,32 +178,6 @@ namespace Web.App.Hypernova
             return mostSuitableIp != null
                 ? mostSuitableIp.Address.ToString()
                 : "";
-        }
-    }
-
-    public class HypernovaResult
-    {
-        public bool Succes;
-        public HypernovaError Error;
-        public Dictionary<string, HypernovaComponent> Results;
-
-
-        public class HypernovaError
-        {
-            public string Name;
-            public string Message;
-            public string[] Stack;
-        }
-
-        public class HypernovaComponent
-        {
-            public string Name;
-            public string Html;
-            // ?? meta
-            public double? Duration; // in ms
-            public int StatusCode;
-            public bool Success;
-            public HypernovaError Error;
         }
     }
 }

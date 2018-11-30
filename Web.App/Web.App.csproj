@@ -32,14 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\ReactPage.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="Pages\React.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\Test.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

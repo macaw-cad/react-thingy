@@ -1,6 +1,6 @@
 ﻿namespace Web.App.Hypernova
 {
-    public class RenderResult
+    public class SpaSsrResult
     {
         public string Html { get; set; }
         public bool IsServerSideRendered { get; set; }

@@ -16,10 +16,11 @@ namespace Web.App.Pages
             Microsoft.Extensions.Options.IOptions<Web.App.Hypernova.HypernovaSettings> options
         )
         { 
-            var baseUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
-            hypernovaClient = new Web.App.Hypernova.HypernovaClient(baseUrl, logger, env, httpClientFactory, options);
+            BaseUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
+            hypernovaClient = new Web.App.Hypernova.HypernovaClient(logger, env, httpClientFactory, options);
         }
 
+        public string BaseUrl { get; set; }
         public string Text { get; set; }
 
         public void OnGet()

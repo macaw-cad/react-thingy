@@ -7,20 +7,20 @@ using Microsoft.Extensions.Options;
 
 namespace Web.App.Hypernova
 {
-    public class Renderer
+    public class SpaSsr
     {
         private const string AppBaseUrl = "/";
 
-        private readonly ILogger<Renderer> _logger;
+        private readonly ILogger _logger;
         private readonly HypernovaSettings _settings;
 
-        public Renderer(ILogger<Renderer> logger, IOptions<HypernovaSettings> options)
+        public SpaSsr(ILogger logger, IOptions<HypernovaSettings> options)
         {
             _logger = logger;
             _settings = options.Value;
         }
 
-        public RenderResult RenderAppClientSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, RenderData renderData, string baseAppUrl = null)
+        public SpaSsrResult RenderAppClientSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null)
         {
             string appHtml;
 
@@ -39,7 +39,7 @@ namespace Web.App.Hypernova
             }
 
             appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl);
-            return new RenderResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
+            return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Web.App.Hypernova
         /// <param name="relativeAppUrl">The relative url within the app, used to make calls to Hypernova, will be prefixed with /app when rewriting the client url</param>
         /// <param name="canonicalUrl">The canonical url to use for this page, the "server-side" entry opint url</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public RenderResult RenderAppServerSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, RenderData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
+        public SpaSsrResult RenderAppServerSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
         {
             string appHtml;
 
@@ -60,7 +60,7 @@ namespace Web.App.Hypernova
                 if (appHtml != null)
                 {
                     appHtml = (new System.Text.RegularExpressions.Regex("- ssr -")).Replace(appHtml, "- ssr:cached -", 1);
-                    return new RenderResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = true, Exception = null };
+                    return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = true, Exception = null };
                 }
 
                 // Have cacheDuration as optional parameter with default value 1 day
@@ -87,7 +87,7 @@ namespace Web.App.Hypernova
             if (_settings.FallbackToClientSideRenderingOnly)
             {
                 appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl);
-                return new RenderResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
+                return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
             }
 
             string hypernovaResult = null;
@@ -100,7 +100,7 @@ namespace Web.App.Hypernova
                     DateTime absoluteExpiration = DateTime.Now.Add((TimeSpan)cacheDuration);
                     cache.SetString(relativeAppUrl, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
                 }
-                return new RenderResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, Exception = null };
+                return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, Exception = null };
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace Web.App.Hypernova
                 // fall back to client-side rendering
                 appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl);
 
-                return new RenderResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false, Exception = new HypernovaException(ex.Message) };
+                return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false, Exception = new HypernovaException(ex.Message) };
             }
         }
 
@@ -123,7 +123,7 @@ namespace Web.App.Hypernova
         /// <param name="baseAppUrl"></param>
         /// <param name="hypernovaResult">If null server-side rendering is off</param>
         /// <returns></returns>
-        private static string BuildPage(string appHtml, string relativeAppUrl, RenderData renderData, string baseAppUrl = null, string hypernovaResult = null)
+        private static string BuildPage(string appHtml, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, string hypernovaResult = null)
         {
             StringBuilder metaTags = new StringBuilder();
             StringBuilder endOfBodyScripts = new StringBuilder();
