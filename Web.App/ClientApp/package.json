@@ -38,6 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-no-server": "run-p start watch:build:server-bundle start:hypernovacomponentserver",
     "start-with-server": "run-p start:dotnet-core start watch:build:server-bundle start:hypernovacomponentserver",
     "start:dotnet-core": "pushd .. && dotnet run",
     "start:hypernovacomponentserver": "pushd ..\\..\\HypernovaComponentServer && nodemon --watch server-bundle.js componentserver.js",

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -49,7 +50,7 @@ namespace Web.App.Hypernova
         /// <param name="relativeAppUrl">The relative url within the app, used to make calls to Hypernova, will be prefixed with /app when rewriting the client url</param>
         /// <param name="canonicalUrl">The canonical url to use for this page, the "server-side" entry opint url</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public SpaSsrResult RenderAppServerSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
+        public async Task<SpaSsrResult> RenderAppServerSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
         {
             string appHtml;
 
@@ -90,10 +91,9 @@ namespace Web.App.Hypernova
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
             }
 
-            string hypernovaResult = null;
             try
             {
-                hypernovaResult = hypernovaClient.ReactAsyncRedux("pwa:HypernovaPwaApp", relativeAppUrl).ToString();
+                var hypernovaResult = await hypernovaClient.ReactAsyncRedux("pwa:HypernovaPwaApp", relativeAppUrl);
                 appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl, hypernovaResult.ToString());
                 if (cache != null)
                 {
