@@ -77,6 +77,15 @@ namespace Web.App
                     template: "{controller}/{action=Index}/{id?}");
             });
 
+        //    app.UseWhen(
+        //        context => context.Request.Path.StartsWithSegments(new PathString("/foo")), //SSR aan
+        //a => a.Use(async (context, next) =>
+        //{
+        //    Console.WriteLine("B (before)");
+        //    await next();
+        //    Console.WriteLine("B (after)");
+        //}));
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
