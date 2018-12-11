@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,12 +15,18 @@ namespace Web.App.Hypernova
         private const string AppBaseUrl = "/";
 
         private readonly ILogger _logger;
+        private readonly IHostingEnvironment _env;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly HypernovaSettings _settings;
+        private readonly IDistributedCache _cache;
 
-        public SpaSsr(ILogger logger, IOptions<HypernovaSettings> options)
+        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
             _logger = logger;
+            _env = env;
+            _httpClientFactory = httpClientFactory;
             _settings = options.Value;
+            _cache = cache;
         }
 
         public SpaSsrResult RenderAppClientSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null)
@@ -46,44 +54,32 @@ namespace Web.App.Hypernova
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="appHtmlPath">The path to the HTML file containing the base app code</param>
         /// <param name="relativeAppUrl">The relative url within the app, used to make calls to Hypernova, will be prefixed with /app when rewriting the client url</param>
         /// <param name="canonicalUrl">The canonical url to use for this page, the "server-side" entry opint url</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public async Task<SpaSsrResult> RenderAppServerSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, IDistributedCache cache = null, TimeSpan? cacheDuration = null)
+        public async Task<SpaSsrResult> RenderAppServerSide(HypernovaClient hypernovaClient, string relativeAppUrl, SpaSsrData renderData, TimeSpan cacheDuration, string baseAppUrl = null)
         {
-            string appHtml;
+            string appHtml = null;
 
-            // If we have a cache and the rendered version is available in the cache return it, "mark" the ssr as "from cache"
-            if (cache != null)
+            if (_settings.NoCaching == false)
             {
-                appHtml = cache.GetString(relativeAppUrl);
+                appHtml = await _cache.GetStringAsync(relativeAppUrl);
+                // If we have a cache and the rendered version is available in the cache return it, "mark" the ssr as "from cache"
                 if (appHtml != null)
                 {
                     appHtml = (new System.Text.RegularExpressions.Regex("- ssr -")).Replace(appHtml, "- ssr:cached -", 1);
                     return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = true, Exception = null };
                 }
-
-                // Have cacheDuration as optional parameter with default value 1 day
-                if (cacheDuration == null)
-                {
-                    cacheDuration = TimeSpan.FromDays(1.0);
-                }
-            }
-
-            if (!File.Exists(appHtmlPath)) {
-                throw new HypernovaException($"Path '{appHtmlPath}' to the app html file does not exist.");
             }
 
             try
             {
-                appHtml = System.IO.File.ReadAllText(appHtmlPath);
+                appHtml = await GetAppHtml();
             }
             catch (Exception ex)
             {
-                throw new HypernovaException($"Failed to read app html from path '{appHtmlPath}'", ex);
+                throw new HypernovaException($"Failed to retrieve app html", ex);
             }
-
 
             if (_settings.FallbackToClientSideRenderingOnly)
             {
@@ -93,12 +89,12 @@ namespace Web.App.Hypernova
 
             try
             {
-                var hypernovaResult = await hypernovaClient.ReactAsyncRedux("pwa:HypernovaPwaApp", relativeAppUrl);
+                var hypernovaResult = await hypernovaClient.ReactAsyncRedux("pwa:HypernovaApp", relativeAppUrl);
                 appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl, hypernovaResult.ToString());
-                if (cache != null)
+                if (_settings.NoCaching == false)
                 {
                     DateTime absoluteExpiration = DateTime.Now.Add((TimeSpan)cacheDuration);
-                    cache.SetString(relativeAppUrl, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
+                    await _cache.SetStringAsync(relativeAppUrl, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
                 }
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, Exception = null };
             }
@@ -117,10 +113,10 @@ namespace Web.App.Hypernova
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="appHtml"></param>
-        /// <param name="relativeAppUrl"></param>
-        /// <param name="renderData"></param>
-        /// <param name="baseAppUrl"></param>
+        /// <param name="appHtml">The prestine app index.html page</param>
+        /// <param name="relativeAppUrl">The relative url of the app page we are rendering</param>
+        /// <param name="renderData">The initial data to render the page with</param>
+        /// <param name="baseAppUrl">The base url of the app</param>
         /// <param name="hypernovaResult">If null server-side rendering is off</param>
         /// <returns></returns>
         private static string BuildPage(string appHtml, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, string hypernovaResult = null)
@@ -198,6 +194,23 @@ namespace Web.App.Hypernova
         {
             appHtml = appHtml.Replace("<div id=\"root\"></div>", "<div id=\"root\">" + hypernovaResult + "</div>");
             return appHtml;
+        }
+
+        private async Task<string> GetAppHtml()
+        {
+            if (_env.IsDevelopment())
+            {
+                var client = _httpClientFactory.CreateClient();
+                var indexHtmlResponse = await client.GetAsync("http://localhost:3000?prestine");
+                var indexHtml = await indexHtmlResponse.Content.ReadAsStringAsync();
+                return indexHtml;
+            }
+            else
+            {
+                var indexHtmlFileInfo = _env.ContentRootFileProvider.GetFileInfo("ClientApp/build/index.html");
+                var indexHtml = await File.ReadAllTextAsync(indexHtmlFileInfo.PhysicalPath);
+                return indexHtml;
+            }
         }
     }
 }

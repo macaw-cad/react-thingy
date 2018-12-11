@@ -12,7 +12,7 @@ This project combines the following technologies:
 
 When editing the DotNet Core application open the solution ```core-cra2-ts-hypernova.sln```. When the solution is started (development mode) it expects a SPA application running on http://localhost:3000.
 
-Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.App\ClientApp``` folder - otherwise debugging will not work.
+Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.App\ClientApp``` folder - otherwise thr configured debugging settings will not work.
 
 The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing commands
 for running the application.

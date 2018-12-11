@@ -5,7 +5,7 @@ import { RootState } from '../store/RootState';
 import { ApplicationContextConsumerProps, AsyncTaskContext, withApplicationContext } from '../ApplicationContext';
 import { Environment } from '../Environment';
 import { UserData, getUsers } from '../store/api';
-import { setUsers } from '../store/user/UserActions';
+import { createSetUsersAction } from '../store/user/UserActions';
 
 interface UsersStoreProps {
   users: UserData[] | null;
@@ -26,14 +26,22 @@ class Users extends React.Component<UsersAllProps> {
     }
   }
 
-  async loadUsers() {
-    try {
-      let users: UserData[] = await getUsers(this.asyncTaskContext);
-      this.props.setUsers(users);
-    } catch (error) {
-      this.props.setUsers([]); // failed to load
-      console.log('Faled to load users. Offline?');
-    }
+  async loadUsers(): Promise<void> {
+    let getUsersPromise: Promise<void> = new Promise(async (resolve, reject) => {
+      try {
+        let users: UserData[] = await getUsers(this.asyncTaskContext);
+        this.props.setUsers(users);
+        resolve();
+      } catch (error) {
+        this.props.setUsers([]);
+        console.log('Failed to load users. Offline?');
+        reject();
+      }
+    });
+
+    this.asyncTaskContext.addTask(getUsersPromise);
+    return getUsersPromise;
+    
   }
 
   componentDidMount() {
@@ -72,7 +80,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
   return {
-      setUsers: (users: UserData[]) => dispatch(setUsers(users))
+      setUsers: (users: UserData[]) => dispatch(createSetUsersAction(users))
   };
 };
 

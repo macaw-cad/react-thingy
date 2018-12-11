@@ -10,10 +10,8 @@ namespace Web.App.Hypernova
         public string ComponentServerUrl { get; set; }
         public int TimeoutInMilliseconds { get; set; }
         public bool FallbackToClientSideRenderingOnly { get; set; }
-        public bool DisableFileCache { get; set; }
+        public bool NoCaching { get; set; }
         public string ComponentServerBaseUrlOverride { get; set; }
-        public string PagesCacheName { get; set; }
-        public string AmpPagesCacheName { get; set; }
     }
 
     public static class HypernovaExtensions

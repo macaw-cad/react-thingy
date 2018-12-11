@@ -38,6 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-watch-build": "run-p start watch:build:server-bundle",
     "start-no-server": "run-p start watch:build:server-bundle start:hypernovacomponentserver",
     "start-with-server": "run-p start:dotnet-core start watch:build:server-bundle start:hypernovacomponentserver",
     "start:dotnet-core": "pushd .. && dotnet run",
@@ -59,6 +60,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
     "webpack-cli": "^3.1.2"
   }
 }

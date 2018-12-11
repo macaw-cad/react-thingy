@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -12,44 +13,60 @@ using Web.App.Hypernova;
 
 namespace Web.App
 {
-    public class StoryController: Controller
+    public class StoryController : Controller
     {
+        private readonly TimeSpan _cacheDuration = TimeSpan.FromDays(1.0);
+        private readonly IDistributedCache _cache;
         private readonly HypernovaClient _hypernovaClient;
-        private readonly HypernovaFileCache _hypernovaFileCache;
+        private readonly HypernovaSettings _settings;
         private readonly string _contentRoot;
-        private readonly string _ampPagesCacheName;
 
-        public StoryController(ILogger<StoryController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
+        public StoryController(ILogger<StoryController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
+            _settings = options.Value;
+            _cache = cache;
+
             _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options);
-            _hypernovaFileCache = new HypernovaFileCache(logger, env, options);
             _contentRoot = env.ContentRootPath;
             var settings = options.Value;
-            _ampPagesCacheName = settings.AmpPagesCacheName;
         }
 
         public async Task<IActionResult> ArtistStory(string artistId)
         {
-            var artistJson = FindArtist(artistId);
-            if (artistJson == null)
-            {
-                return NotFound();
-            }
-
-            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            artistJson.Add(new JProperty("baseUrl", baseUrl));
-            
             var cacheItemName = $"ArtistStory_{artistId}.html";
-            IHtmlContent hypernovaResult;
-            ActionResult result = _hypernovaFileCache.GetCachedActionResult(this, _ampPagesCacheName, cacheItemName);
-            if (result == null)
+            string appHtml = null;
+           if (_settings.NoCaching == false)
             {
-                hypernovaResult = await _hypernovaClient.React("pwa:HypernovaArtistStory", artistJson.ToString());
-
-                result = _hypernovaFileCache.StoreAndGetActionResult(this, _ampPagesCacheName, cacheItemName, hypernovaResult.ToString());
+                appHtml = await _cache.GetStringAsync(cacheItemName);
             }
 
-            return result;
+            if (appHtml == null)
+            {
+                var artistJson = FindArtist(artistId);
+                if (artistJson == null)
+                {
+                    return NotFound();
+                }
+
+                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                artistJson.Add(new JProperty("baseUrl", baseUrl));
+
+                var hypernovaResult = await _hypernovaClient.React("pwa:HypernovaArtistStory", artistJson.ToString());
+                appHtml = hypernovaResult.ToString();
+
+                if (_settings.NoCaching == false)
+                {
+                    DateTime absoluteExpiration = DateTime.Now.Add(_cacheDuration);
+                    await _cache.SetStringAsync(cacheItemName, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
+                }
+            }
+
+            var content = new ContentResult
+            {
+                Content = appHtml,
+                ContentType = "text/html"
+            };
+            return content;
         }
 
         public ActionResult ArtistStoryBookend(string artistId)
@@ -98,7 +115,8 @@ namespace Web.App
             return Json(ampStoryBookend);
         }
 
-        private JObject FindArtist(string artistId) {
+        private JObject FindArtist(string artistId)
+        {
             var artistDataFile = Path.Combine(_contentRoot, $@"ClientApp\public\artists\{artistId}\data.json");
             if (!System.IO.File.Exists(artistDataFile))
             {

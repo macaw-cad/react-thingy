@@ -25669,14 +25669,14 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
-/***/ "./node_modules/raw-loader/index.js!./src/AMP/stories/ArtistStory.css":
-/*!*******************************************************************!*\
-  !*** ./node_modules/raw-loader!./src/AMP/stories/ArtistStory.css ***!
-  \*******************************************************************/
+/***/ "./node_modules/raw-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/AMP/stories/ArtistStory.scss":
+/*!*************************************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./node_modules/sass-loader/lib/loader.js!./src/AMP/stories/ArtistStory.scss ***!
+  \*************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "amp-story {\r\n    font-family: 'Oswald',sans-serif;\r\n    color: #fff;\r\n  }\r\n  amp-story-page {\r\n    background-color: #000;\r\n  }\r\n  h1 {\r\n    font-weight: bold;\r\n    font-size: 2.875em;\r\n    font-weight: normal;\r\n    line-height: 1.174;\r\n    text-shadow: 3px 3px 3px black;\r\n  }\r\n  h2 {\r\n    font-weight: bold;\r\n    font-size: 1,8em;\r\n    font-weight: normal;\r\n    line-height: 0.4;\r\n    text-shadow: 2px 2px 2px black;\r\n  }\r\n  p {\r\n    font-weight: normal;\r\n    font-size: 1.3em;\r\n    line-height: 1.5em;\r\n    color: #fff;\r\n    text-shadow: 1px 1px 1px black;\r\n  }\r\n  li {\r\n    font-weight: normal;\r\n    font-size: 1.3em;\r\n    line-height: 1.5em;\r\n    color: #fff;\r\n    text-shadow: 1px 1px 1px black;\r\n  }\r\n  q {\r\n    font-weight: 300;\r\n    font-size: 1.1em;\r\n  }\r\n  amp-story-grid-layer.bottom {\r\n    align-content:end;\r\n  }\r\n  amp-story-grid-layer.noedge {\r\n    padding: 0px;\r\n  }\r\n  amp-story-grid-layer.center-text {\r\n    align-content: center;\r\n  }\r\n  .wrapper {\r\n    display: grid;\r\n    grid-template-columns: 50% 50%;\r\n    grid-template-rows: 50% 50%;\r\n  }\r\n  .banner-text {\r\n    text-align: center;\r\n    background-color: #000;\r\n    line-height: 2em;\r\n  }\r\n  .source {\r\n    font-size: 0.8em;\r\n  }"
+module.exports = "amp-story {\n  font-family: \"Oswald\", sans-serif;\n  color: #fff; }\n\namp-story-page {\n  background-color: #000; }\n\nh1 {\n  font-weight: bold;\n  font-size: 2.875em;\n  font-weight: normal;\n  line-height: 1.174;\n  text-shadow: 3px 3px 3px black; }\n\nh2 {\n  font-weight: bold;\n  font-size: 1,8em;\n  font-weight: normal;\n  line-height: 0.4;\n  text-shadow: 2px 2px 2px black; }\n\np {\n  font-weight: normal;\n  font-size: 1.3em;\n  line-height: 1.5em;\n  color: #fff;\n  text-shadow: 1px 1px 1px black; }\n\nli {\n  font-weight: normal;\n  font-size: 1.3em;\n  line-height: 1.5em;\n  color: #fff;\n  text-shadow: 1px 1px 1px black; }\n\nq {\n  font-weight: 300;\n  font-size: 1.1em; }\n\namp-story-grid-layer.bottom {\n  align-content: end; }\n\namp-story-grid-layer.noedge {\n  padding: 0px; }\n\namp-story-grid-layer.center-text {\n  align-content: center; }\n\n.wrapper {\n  display: grid;\n  grid-template-columns: 50% 50%;\n  grid-template-rows: 50% 50%; }\n\n.banner-text {\n  text-align: center;\n  background-color: #000;\n  line-height: 2em; }\n\n.source {\n  font-size: 0.8em; }\n"
 
 /***/ }),
 
@@ -63891,44 +63891,6 @@ class ArtistStorySEO {
 
 /***/ }),
 
-/***/ "./src/App.tsx":
-/*!*********************!*\
-  !*** ./src/App.tsx ***!
-  \*********************/
-/*! exports provided: getGlobalStore, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGlobalStore", function() { return getGlobalStore; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/store */ "./src/store/store.ts");
-/* harmony import */ var _PwaApp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./PwaApp */ "./src/PwaApp.tsx");
-
-
-
-
-
-// import './App.css';
-const store = Object(_store_store__WEBPACK_IMPORTED_MODULE_3__["configureStore"])();
-function getGlobalStore() {
-    return store;
-}
-class App extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    render() {
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["ApplicationContext"].Provider, { value: _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["applicationContextClient"] },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], { store: store },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_PwaApp__WEBPACK_IMPORTED_MODULE_4__["PwaApp"], null))));
-    }
-}
-
-
-/***/ }),
-
 /***/ "./src/ApplicationContext.tsx":
 /*!************************************!*\
   !*** ./src/ApplicationContext.tsx ***!
@@ -63974,7 +63936,7 @@ function withApplicationContext(Component) {
     return class ComponentWrappedWithApplicationContext extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         render() {
             return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ApplicationContext.Consumer, null, (applicationContextProvider) => {
-                // console.log('applicationContext', applicationContext);
+                console.log('applicationContextProvider', applicationContextProvider);
                 if (!_Environment__WEBPACK_IMPORTED_MODULE_1__["Environment"].isServer) {
                     window.applicationContext = applicationContextProvider.applicationContext;
                 }
@@ -64286,13 +64248,23 @@ const mapStateToProps = (state) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var hypernova_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hypernova-react */ "./node_modules/hypernova-react/lib/index.js");
-/* harmony import */ var hypernova_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hypernova_react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../App */ "./src/App.tsx");
+/* harmony import */ var _hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hypernova-react-async-redux */ "./src/components/Hypernova/hypernova-react-async-redux.tsx");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/store */ "./src/store/store.ts");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Environment */ "./src/Environment.ts");
+/* harmony import */ var _PwaApp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../PwaApp */ "./src/PwaApp.tsx");
 
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(hypernova_react__WEBPACK_IMPORTED_MODULE_0__["renderReact"])('HypernovaApp', // this file's name (or really any unique name)
-_App__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+/* harmony default export */ __webpack_exports__["default"] = ((initialReduxStoreState, applicationContextServer) => {
+    const reduxStore = Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(initialReduxStoreState);
+    return Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxServer"])('HypernovaApp', // Unique component name
+    _PwaApp__WEBPACK_IMPORTED_MODULE_3__["PwaApp"], reduxStore, applicationContextServer);
+});
+if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
+    Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxClient"])('HypernovaApp', // Unique component name
+    _PwaApp__WEBPACK_IMPORTED_MODULE_3__["PwaApp"], (data) => Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(data));
+}
 
 
 /***/ }),
@@ -64313,7 +64285,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let prependCSS = __webpack_require__(/*! raw-loader!../../AMP/stories/ArtistStory.css */ "./node_modules/raw-loader/index.js!./src/AMP/stories/ArtistStory.css");
+let prependCSS = __webpack_require__(/*! raw-loader!sass-loader!../../AMP/stories/ArtistStory.scss */ "./node_modules/raw-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/AMP/stories/ArtistStory.scss");
 /* harmony default export */ __webpack_exports__["default"] = ((artist) => {
     console.log(`Rendering artist ${artist.cover_artistname}`);
     return Object(hypernova_amp__WEBPACK_IMPORTED_MODULE_0__["renderReactAmpWithAphrodite"])('HypernovaArtistStory', // this file's name (or really any unique name)
@@ -64566,14 +64538,20 @@ class Users extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         }
     }
     async loadUsers() {
-        try {
-            let users = await Object(_store_api__WEBPACK_IMPORTED_MODULE_4__["getUsers"])(this.asyncTaskContext);
-            this.props.setUsers(users);
-        }
-        catch (error) {
-            this.props.setUsers([]); // failed to load
-            console.log('Faled to load users. Offline?');
-        }
+        let getUsersPromise = new Promise(async (resolve, reject) => {
+            try {
+                let users = await Object(_store_api__WEBPACK_IMPORTED_MODULE_4__["getUsers"])(this.asyncTaskContext);
+                this.props.setUsers(users);
+                resolve();
+            }
+            catch (error) {
+                this.props.setUsers([]);
+                console.log('Failed to load users. Offline?');
+                reject();
+            }
+        });
+        this.asyncTaskContext.addTask(getUsersPromise);
+        return getUsersPromise;
     }
     componentDidMount() {
         this.loadUsers();
@@ -64599,7 +64577,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        setUsers: (users) => dispatch(Object(_store_user_UserActions__WEBPACK_IMPORTED_MODULE_5__["setUsers"])(users))
+        setUsers: (users) => dispatch(Object(_store_user_UserActions__WEBPACK_IMPORTED_MODULE_5__["createSetUsersAction"])(users))
     };
 };
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["withApplicationContext"])(Users)));
@@ -65034,25 +65012,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const urljoin = __webpack_require__(/*! url-join */ "./node_modules/url-join/lib/url-join.js");
 
-/**
- * See https://stackoverflow.com/questions/10687099/how-to-test-if-a-url-string-is-absolute-or-relative (Philipp)
- */
-function isUrlAbsolute(url) {
-    return url.indexOf('//') === 0 ? true : url.indexOf('://') === -1 ? false : url.indexOf('.') === -1 ? false : url.indexOf('/') === -1 ? false : url.indexOf(':') > url.indexOf('/') ? false : url.indexOf('://') < url.indexOf('.') ? true : false;
-}
-/**
- * Get the base url for calling api methods. When doing client-side api calls and no baseUrl is specifed the base url is the
- * root url of the website the component lives in. When doing server-side rendering we use Hypernova running on a seperate server.
- * In that case the base url comes from the metadata.baseUrl of the Hypernova call, and is specified in asyncTaskContext.baseUrl.
- */
-function apiBaseUrl(asyncTaskContext) {
-    if (!asyncTaskContext.baseUrl && !_Environment__WEBPACK_IMPORTED_MODULE_0__["Environment"].isServer && window.location) {
-        return `${window.location.protocol}//${window.location.host}`;
-    }
-    else {
-        return asyncTaskContext.baseUrl;
-    }
-}
 const getUsersOld = (asyncTaskContext) => {
     if (true) {
         var getUsersTimerName = `getUsers(random:${Math.random()})`;
@@ -65079,6 +65038,20 @@ const getUsersOld = (asyncTaskContext) => {
     asyncTaskContext.addTask(promise);
     return promise;
 };
+// export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]> {
+//   let getUsersPromise: Promise<UserData[]> = new Promise((resolve, reject) => {
+//     fetch('https://reqres.in/api/users?per_page=10')
+//       .then(res => res.json())
+//       .then(res => {
+//         resolve(res.data);
+//       })
+//       .catch(error => {
+//         reject(error);
+//       });
+//   });
+//   asyncTaskContext.addTask(getUsersPromise);
+//   return getUsersPromise;
+// }
 function getUsers(asyncTaskContext) {
     let getUsersPromise = new Promise((resolve, reject) => {
         fetch('https://reqres.in/api/users?per_page=10')
@@ -65090,7 +65063,6 @@ function getUsers(asyncTaskContext) {
             reject(error);
         });
     });
-    asyncTaskContext.addTask(getUsersPromise);
     return getUsersPromise;
 }
 function getFile(path, asyncTaskContext) {
@@ -65110,6 +65082,25 @@ function getFile(path, asyncTaskContext) {
     });
     asyncTaskContext.addTask(getFilePromise);
     return getFilePromise;
+}
+/**
+ * See https://stackoverflow.com/questions/10687099/how-to-test-if-a-url-string-is-absolute-or-relative (Philipp)
+ */
+function isUrlAbsolute(url) {
+    return url.indexOf('//') === 0 ? true : url.indexOf('://') === -1 ? false : url.indexOf('.') === -1 ? false : url.indexOf('/') === -1 ? false : url.indexOf(':') > url.indexOf('/') ? false : url.indexOf('://') < url.indexOf('.') ? true : false;
+}
+/**
+ * Get the base url for calling api methods. When doing client-side api calls and no baseUrl is specifed the base url is the
+ * root url of the website the component lives in. When doing server-side rendering we use Hypernova running on a seperate server.
+ * In that case the base url comes from the metadata.baseUrl of the Hypernova call, and is specified in asyncTaskContext.baseUrl.
+ */
+function apiBaseUrl(asyncTaskContext) {
+    if (!asyncTaskContext.baseUrl && !_Environment__WEBPACK_IMPORTED_MODULE_0__["Environment"].isServer && window.location) {
+        return `${window.location.protocol}//${window.location.host}`;
+    }
+    else {
+        return asyncTaskContext.baseUrl;
+    }
 }
 
 
@@ -65162,18 +65153,18 @@ function configureStore(initialReduxStoreState = undefined) {
 /*!***************************************!*\
   !*** ./src/store/user/UserActions.ts ***!
   \***************************************/
-/*! exports provided: TypeKeys, setUsers */
+/*! exports provided: TypeKeys, createSetUsersAction */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeys", function() { return TypeKeys; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUsers", function() { return setUsers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSetUsersAction", function() { return createSetUsersAction; });
 var TypeKeys;
 (function (TypeKeys) {
     TypeKeys["SET_USERS"] = "SET_USERS";
 })(TypeKeys || (TypeKeys = {}));
-const setUsers = (payload) => ({ type: TypeKeys.SET_USERS, payload });
+const createSetUsersAction = (payload) => ({ type: TypeKeys.SET_USERS, payload });
 
 
 /***/ }),

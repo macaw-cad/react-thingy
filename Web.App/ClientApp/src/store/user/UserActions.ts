@@ -12,4 +12,4 @@ export interface SetUsersAction {
 export type ActionTypes = 
   | SetUsersAction;
 
-export const setUsers = (payload: UserData[]) => ({type: TypeKeys.SET_USERS, payload});
+export const createSetUsersAction = (payload: UserData[]) => ({type: TypeKeys.SET_USERS, payload});

@@ -32,15 +32,11 @@ namespace Web.App
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
             services.AddTransient<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
-            //           services.AddTransient<Microsoft.AspNetCore.Hosting.IHostingEnvironment, Microsoft.AspNetCore.Hosting.HostingEnvironment>();
-            //            services.AddTransient<System.Net.Http.IHttpClientFactory, System.Net.Http.HttpClientFactory>();
-            //            services.AddTransient<Microsoft.Extensions.Options.IOptions<Web.App.Hypernova.HypernovaSettings> options
-
-            //            services.Configure<HypernovaSettings>(options => Configuration.GetSection("Hypernova").Bind(options));
 
             // app specific
             services.AddHypernovaSettings(this.Configuration);
 
+            // When not in development, replace by a real distributed cache implementation
             services.AddDistributedMemoryCache();
 
             services.AddHttpClient();
@@ -70,32 +66,30 @@ namespace Web.App
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
+            app.MapWhen(x => !x.Request.Path.Value.StartsWith("/sockjs-node/"), whenRoutes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
-
-        //    app.UseWhen(
-        //        context => context.Request.Path.StartsWithSegments(new PathString("/foo")), //SSR aan
-        //a => a.Use(async (context, next) =>
-        //{
-        //    Console.WriteLine("B (before)");
-        //    await next();
-        //    Console.WriteLine("B (after)");
-        //}));
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
+                app.UseMvc(mvcRoutes =>
                 {
-                    // Start the ClientPortal through the CreateReactApp server for speedy development
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-                    // spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                    mvcRoutes.MapRoute(
+                        name: "default",
+                        template: "{controller}/{action=Index}/{id?}");
+
+                    mvcRoutes.MapSpaFallbackRoute(
+                        name: "spa-fallback",
+                        defaults: new { controller = "Pwa", action = "Index" });
+                });
+
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "ClientApp";
+
+                    if (env.IsDevelopment())
+                    {
+                        // Start the ClientPortal through the CreateReactApp server for speedy development
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                        // spa.UseReactDevelopmentServer(npmScript: "start");
+                    }
+                });
             });
         }
     }

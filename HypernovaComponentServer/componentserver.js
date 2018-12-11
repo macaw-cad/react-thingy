@@ -66,7 +66,7 @@ if (process.env.NODE_ENV === undefined) {
 const hypernovaSingleWorker = process.env.NODE_ENV === 'production' ? false : true; // set to true to let system like PM2 or IISNode do the scaling to multiple cores, not Hypernova itself
 const debugUseLocalServerBundle = process.env.NODE_ENV === 'production' ? false : true; // set to true to "require" the local server-bundle.js so we can debug through the server bundle
 const debugLog = process.env.NODE_ENV === 'production' ? false : true; // set to true to see additional logging like name of requested component
-
+const noTimeout = process.env.NODE_ENV === 'production' ? false : true; // set to true for easier debugging, component rendering does not timeout
 // Sensible override if not specified: use the local server-bundle.js
 if (process.env.ComponentServerBundles === undefined) {
     process.env.ComponentServerBundles = JSON.stringify({
@@ -199,7 +199,7 @@ function getComponentAsyncRedux(component, context) {
     const waitForAllTasksPromise = Promise.all(applicationContextServer.applicationContext.tasks);
     const timeoutInMilliseconds = getTimeOutMilliseconds(context.metadata);
     let taskCompletionPromiseWithTimeout = waitForAllTasksPromise;
-    if (timeoutInMilliseconds > 0) {
+    if (!noTimeout && timeoutInMilliseconds > 0) {
         taskCompletionPromiseWithTimeout = wrapWithTimeout(waitForAllTasksPromise, timeoutInMilliseconds, `Component rendering time exceeded timeout value of ${timeoutInMilliseconds} milliseconds.`);
     }
 

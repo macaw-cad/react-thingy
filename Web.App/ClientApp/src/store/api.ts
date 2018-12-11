@@ -4,25 +4,10 @@ const urljoin = require('url-join');
 
 import 'isomorphic-fetch';
 
-/** 
- * See https://stackoverflow.com/questions/10687099/how-to-test-if-a-url-string-is-absolute-or-relative (Philipp) 
- */
-function isUrlAbsolute(url: string): boolean {
-  return url.indexOf('//') === 0 ? true : url.indexOf('://') === -1 ? false : url.indexOf('.') === -1 ? false : url.indexOf('/') === -1 ? false : url.indexOf(':') > url.indexOf('/') ? false : url.indexOf('://') < url.indexOf('.') ? true : false;
-}
-
-/**
- * Get the base url for calling api methods. When doing client-side api calls and no baseUrl is specifed the base url is the 
- * root url of the website the component lives in. When doing server-side rendering we use Hypernova running on a seperate server. 
- * In that case the base url comes from the metadata.baseUrl of the Hypernova call, and is specified in asyncTaskContext.baseUrl.
- */
-function apiBaseUrl(asyncTaskContext: AsyncTaskContext): string {
-  if (!asyncTaskContext.baseUrl && !Environment.isServer && window.location) { 
-    return `${window.location.protocol}//${window.location.host}`;
-  } else {
-    return asyncTaskContext.baseUrl;
-  }
-}
+export type AsyncData<T> = {
+  readonly loading: boolean;
+  readonly data?: T | null;
+};
 
 export interface UserData {
   id: number;
@@ -57,6 +42,22 @@ export const getUsersOld = (asyncTaskContext: AsyncTaskContext) => {
   return promise;
 };
 
+// export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]> {
+//   let getUsersPromise: Promise<UserData[]> = new Promise((resolve, reject) => {
+//     fetch('https://reqres.in/api/users?per_page=10')
+//       .then(res => res.json())
+//       .then(res => {
+//         resolve(res.data);
+//       })
+//       .catch(error => {
+//         reject(error);
+//       });
+//   });
+
+//   asyncTaskContext.addTask(getUsersPromise);
+//   return getUsersPromise;
+// }
+
 export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]> {
   let getUsersPromise: Promise<UserData[]> = new Promise((resolve, reject) => {
     fetch('https://reqres.in/api/users?per_page=10')
@@ -69,7 +70,6 @@ export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]
       });
   });
 
-  asyncTaskContext.addTask(getUsersPromise);
   return getUsersPromise;
 }
 
@@ -92,4 +92,24 @@ export function getFile<T>(path: string, asyncTaskContext: AsyncTaskContext): Pr
 
   asyncTaskContext.addTask(getFilePromise);
   return getFilePromise;
+}
+
+/** 
+ * See https://stackoverflow.com/questions/10687099/how-to-test-if-a-url-string-is-absolute-or-relative (Philipp) 
+ */
+function isUrlAbsolute(url: string): boolean {
+  return url.indexOf('//') === 0 ? true : url.indexOf('://') === -1 ? false : url.indexOf('.') === -1 ? false : url.indexOf('/') === -1 ? false : url.indexOf(':') > url.indexOf('/') ? false : url.indexOf('://') < url.indexOf('.') ? true : false;
+}
+
+/**
+ * Get the base url for calling api methods. When doing client-side api calls and no baseUrl is specifed the base url is the 
+ * root url of the website the component lives in. When doing server-side rendering we use Hypernova running on a seperate server. 
+ * In that case the base url comes from the metadata.baseUrl of the Hypernova call, and is specified in asyncTaskContext.baseUrl.
+ */
+function apiBaseUrl(asyncTaskContext: AsyncTaskContext): string {
+  if (!asyncTaskContext.baseUrl && !Environment.isServer && window.location) { 
+    return `${window.location.protocol}//${window.location.host}`;
+  } else {
+    return asyncTaskContext.baseUrl;
+  }
 }
