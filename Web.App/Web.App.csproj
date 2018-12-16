@@ -7,12 +7,15 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <UserSecretsId>5dcbcca9-2566-4dfc-bb3d-a614ea47bd7f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="HypernovaComponentServer\componentserver.js" />
+    <None Remove="HypernovaComponentServer\creationinfo.txt" />
+    <None Remove="HypernovaComponentServer\server-bundle.js" />
     <None Remove="WebPage.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="HypernovaComponentServer\componentserver.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HypernovaComponentServer\creationinfo.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HypernovaComponentServer\server-bundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

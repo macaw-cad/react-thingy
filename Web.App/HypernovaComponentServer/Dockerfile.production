@@ -1,0 +1,28 @@
+FROM node:carbon
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied where available (npm@5+)
+COPY package*.json ./
+
+RUN npm install --only=production
+
+# Bundle app source
+COPY . .
+
+# with ssh
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends dialog \
+        && apt-get update \
+	&& apt-get install -y --no-install-recommends openssh-server \
+	&& echo "$SSH_PASSWD" | chpasswd 
+
+COPY sshd_config /etc/ssh/
+COPY init.sh /usr/local/bin/
+	
+RUN chmod u+x /usr/local/bin/init.sh
+EXPOSE 8080 2222
+ENTRYPOINT ["/usr/local/bin/init.sh"]

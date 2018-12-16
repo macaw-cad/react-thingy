@@ -1,0 +1,8 @@
+node_modules
+profiling
+npm-debug.log
+index.org.js
+BuildAndDeployDockerImageToAnwbComponentServerDevWeb.bat
+ShowLogAnwbComponentServerDevWeb.bat
+RunDockerImageLocal.bat
+dos2unix.exe

@@ -122,17 +122,17 @@ function getTimeOutMilliseconds(metadata) {
     if (!!metadata && !!metadata.timeout) {
         return metadata.timeout;
     }
-    if (!!process.env.HypernovaAsyncComponentTimeoutMilliseconds) {
+    if (process.env.HypernovaAsyncComponentTimeoutMilliseconds) {
         return parseInt(process.env.HypernovaAsyncComponentTimeoutMilliseconds);
     }
     return defaultTimeoutMilliseconds;
 }
 
 function getBaseUrl(metadata) {
-    if (!!metadata && !!metadata.baseUrl) {
+    if (metadata && metadata.baseUrl) {
         return metadata.baseUrl;
     }
-    if (!!process.env.HypernovaFetchBaseUrl) {
+    if (process.env.HypernovaFetchBaseUrl) {
         return process.env.HypernovaFetchBaseUrl;
     }
     return `http://localhost:${getHypernovaPort()}`;
@@ -166,14 +166,14 @@ function wrapWithTimeout(promise, timeoutMilliseconds, timeoutRejectionValue) {
 // available in context.props).
 function getComponentAsyncRedux(component, context) {
     // Create a component with Redux store that is initialized with the initial Redux store data and the global server context.
-    let initialReduxState = !!context.props ? context.props : {};
+    let initialReduxState = context.props ? context.props : {};
     let applicationContextServer = new ApplicationContextInstance();
     applicationContextServer.applicationContext.baseUrl = getBaseUrl(context.metadata);
     applicationContextServer.applicationContext.relativeUrl = context.metadata.applicationContextServer.relativeUrl;
     applicationContextServer.applicationContext.isAmp = context.metadata.applicationContextServer.isAmp;
 
     const initializedComponent = component(context.props, applicationContextServer);
-    if (!!initializedComponent) {
+    if (initializedComponent) {
         if (typeof initializedComponent !== "function") {
             throw new Error("getComponentAsyncRedux(): Hypernova component with strategy 'asyncRedux' should return an initializedComponent as a function.")
         }
@@ -224,12 +224,12 @@ function createCustomGetComponent(bundlesConfiguration, vmOptions, bundleLoaderP
     let resolvedBundles = {};
 
     const vm = createVM({
-        cacheSize: !!bundlesConfiguration? Object.keys(bundlesConfiguration).length : 1,
-        ...vmOptions,
+        cacheSize: bundlesConfiguration? Object.keys(bundlesConfiguration).length : 1,
+        ...vmOptions
     });
 
     // bundlesConfiguration is undefined if we use the debug bundle
-    if (!!bundlesConfiguration) {
+    if (bundlesConfiguration) {
         for (let bundleName in bundlesConfiguration) {
             let bundlePath = bundlesConfiguration[bundleName];
             if (bundlePath.startsWith("http")) {
@@ -358,7 +358,7 @@ console.log(`NODE_ENV=${process.env['NODE_ENV']}`);
 let bundleLoaderPromises = []; // all promises that must be resolved so we know all required server bundles are loaded
 let bundlesConfiguration;
 
-if (typeof bundle_to_debug == 'undefined') {
+if (typeof bundle_to_debug === 'undefined') {
     if (!process.env.ComponentServerBundles) {
         console.error("Environment variable process.env.ComponentServerBundles is missing. Should contain definition of bundles, i.e.: { pwa: './server-bundle.js', stories: 'http://myserver.com/story-bundle.js' }");
         process.exit(1);
