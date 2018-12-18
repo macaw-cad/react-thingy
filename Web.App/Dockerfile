@@ -18,6 +18,16 @@ RUN apt-get install -yq \
 		net-tools \
 		supervisor
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -yq nodejs
+
+# Enable with ssh
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends dialog \
+        && apt-get update \
+	&& apt-get install -y --no-install-recommends openssh-server \
+	&& echo "$SSH_PASSWD" | chpasswd 
+COPY Web.App/sshd_config /etc/ssh/
+
 RUN mkdir -p /var/log/supervisor
 COPY Web.App/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY Web.App/init.sh /usr/local/bin/init.sh
@@ -45,11 +55,10 @@ COPY *.sln .
 COPY Web.App/Web.App.csproj ./Web.App/
 RUN dotnet restore
 COPY Web.App/. ./Web.App/
-# Wipe node_modules in ClientApp, can contain Windows versions of modules, and install
-#WORKDIR /src/Web.App/ClientApp
-#RUN ls -R node_modules
-# RUN npx rimraf node_modules
-# RUN npm install
+
+WORKDIR /src/Web.App/ClientApp
+RUN npm install
+RUN npm run build:server-bundle:production
 
 WORKDIR /src/Web.App
 RUN dotnet publish -c Release -o out
@@ -64,19 +73,7 @@ WORKDIR /app/HypernovaComponentServer
 RUN npx rimraf node_modules
 RUN npm install
 
-# Copy the required HypernovaComponentServer files to /hypernovacomponentserver
-#WORKDIR "/hypernovacomponentserver"
-
-# A wildcard is used to ensure both package.json AND package-lock.json are copied where available (npm@5+)
-# COPY --from=build /src/Web.App/HypernovaComponentServer/package*.json ./
-# RUN npm install --only=production
-#
-#COPY --from=build /src/Web.App/HypernovaComponentServer/componentserver.js ./
-#COPY --from=build /src/Web.App/HypernovaComponentServer/server-bundle.* ./
-#COPY --from=build /src/Web.App/HypernovaComponentServer/creationinfo.txt ./
-#COPY --from=build /src/Web.App/HypernovaComponentServer/node_modules ./
-
 WORKDIR /app
-ENTRYPOINT ["/usr/local/bin/init.sh"]
 
-# ENTRYPOINT ["dotnet", "/app/Web.App.dll"]
+EXPOSE 2222
+ENTRYPOINT ["/usr/local/bin/init.sh"]

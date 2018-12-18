@@ -59,10 +59,10 @@ namespace Web.App
             else
             {
                 app.UseExceptionHandler("/Error");
-                // app.UseHsts();
+                app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -83,7 +83,7 @@ namespace Web.App
                 {
                     spa.Options.SourcePath = "ClientApp";
 
-                    if (false /*env.IsDevelopment()*/)
+                    if (env.IsDevelopment())
                     {
                         // Start the ClientPortal through the CreateReactApp server for speedy development
                         spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
