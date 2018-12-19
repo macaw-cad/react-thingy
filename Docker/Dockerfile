@@ -3,7 +3,7 @@
 # https://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
 # https://satjinder.com/2018/11/02/how-to-create-a-dotnet-based-spa-and-deploy-it-in-docker/
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
 
 # Runtime needs node & supervisor (manages running multiple applications)
 RUN apt-get update -yq && apt-get upgrade -yq
@@ -26,14 +26,14 @@ RUN apt-get update \
         && apt-get update \
 	&& apt-get install -y --no-install-recommends openssh-server \
 	&& echo "$SSH_PASSWD" | chpasswd 
-COPY Web.App/sshd_config /etc/ssh/
+COPY Docker/sshd_config /etc/ssh/
 
 RUN mkdir -p /var/log/supervisor
-COPY Web.App/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY Web.App/init.sh /usr/local/bin/init.sh
+COPY Docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY Docker/init.sh /usr/local/bin/init.sh
 RUN chmod u+x /usr/local/bin/init.sh
 
-FROM microsoft/dotnet:2.1-sdk AS sdk
+FROM microsoft/dotnet:2.2-sdk AS sdk
 
 # Build needs node
 RUN apt-get update -yq && apt-get upgrade -yq
@@ -73,7 +73,11 @@ WORKDIR /app/HypernovaComponentServer
 RUN npx rimraf node_modules
 RUN npm install
 
+WORKDIR /app/JsonServer
+RUN npx rimraf node_modules
+RUN npm install
+
 WORKDIR /app
 
-EXPOSE 2222
+EXPOSE 80 2222
 ENTRYPOINT ["/usr/local/bin/init.sh"]

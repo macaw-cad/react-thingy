@@ -3,7 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.App", "Web.App\Web.App.csproj", "{C1F6C11E-7504-4F00-9FE6-DE77FB9A2111}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.App", "Web.App\Web.App.csproj", "{C1F6C11E-7504-4F00-9FE6-DE77FB9A2111}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{3517FD73-C288-42DD-9F32-5A7AC8FD9DCC}"
+	ProjectSection(SolutionItems) = preProject
+		Docker\DockerBuildWebApp.bat = Docker\DockerBuildWebApp.bat
+		Docker\DockerDeployWebApp.bat = Docker\DockerDeployWebApp.bat
+		Docker\Dockerfile = Docker\Dockerfile
+		Docker\DockerRunWebApp.bat = Docker\DockerRunWebApp.bat
+		Docker\DockerShowLog.bat = Docker\DockerShowLog.bat
+		Docker\dos2unix.exe = Docker\dos2unix.exe
+		Docker\init.sh = Docker\init.sh
+		Docker\sshd_config = Docker\sshd_config
+		Docker\supervisord.conf = Docker\supervisord.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{02B16386-929B-4CED-B7C5-75DAE12B41DB}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\HypernovaComponentServer.md = documentation\HypernovaComponentServer.md
+		documentation\postman-artiststory.png = documentation\postman-artiststory.png
+		documentation\README.development.md = documentation\README.development.md
+		documentation\README.md = documentation\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

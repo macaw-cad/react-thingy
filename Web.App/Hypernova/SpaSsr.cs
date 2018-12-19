@@ -198,7 +198,7 @@ namespace Web.App.Hypernova
 
         private async Task<string> GetAppHtml()
         {
-            if (false /*_env.IsDevelopment()*/)
+            if (_env.IsDevelopment())
             {
                 var client = _httpClientFactory.CreateClient();
                 var indexHtmlResponse = await client.GetAsync("http://localhost:3000?prestine");

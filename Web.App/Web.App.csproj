@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -13,9 +13,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,9 +25,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="DockerBuildWebApp.bat" />
+    <None Remove="DockerDeployWebApp.bat" />
+    <None Remove="Dockerfile" />
+    <None Remove="Dockerfile.org" />
+    <None Remove="DockerRunWebApp.bat" />
+    <None Remove="DockerShowLog.bat" />
+    <None Remove="dos2unix.exe" />
     <None Remove="HypernovaComponentServer\componentserver.js" />
     <None Remove="HypernovaComponentServer\creationinfo.txt" />
     <None Remove="HypernovaComponentServer\server-bundle.js" />
+    <None Remove="init.sh" />
+    <None Remove="JsonServer\jsonserver.js" />
+    <None Remove="sshd_config" />
+    <None Remove="supervisord.conf" />
+    <None Remove="supervisord.log" />
     <None Remove="WebPage.html" />
   </ItemGroup>
 
@@ -41,6 +53,9 @@
     <Content Include="HypernovaComponentServer\server-bundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="JsonServer\jsonserver.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +65,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="JsonServer\db.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonServer\package-lock.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonServer\package.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Pages\React.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
