@@ -1,14 +1,14 @@
 import { renderReactAsyncReduxServer, renderReactAsyncReduxClient } from './hypernova-react-async-redux';
-import { configureStore } from '../../store/store';
-import { Environment } from '../../Environment';
-import { PwaApp } from '../../PwaApp';
+import { configureStore } from '../store/store';
+import { Environment } from '../Environment';
+import Counter from '../counter/Counter';
 
 export default (initialReduxStoreState: any, applicationContextServer: any) => {
   const reduxStore = configureStore(initialReduxStoreState);
   
   return renderReactAsyncReduxServer(
-    'HypernovaApp', // Unique component name
-    PwaApp,
+    'HypernovaCounter', // Unique component name
+    Counter,
     reduxStore,
     applicationContextServer
   );
@@ -16,8 +16,8 @@ export default (initialReduxStoreState: any, applicationContextServer: any) => {
 
 if (!Environment.isServer) {
   renderReactAsyncReduxClient(
-    'HypernovaApp', // Unique component name
-    PwaApp as React.ComponentClass<any>,
+    'HypernovaCounter', // Unique component name
+    Counter as React.ComponentClass<any>,
     (data: any) => configureStore(data)
   );
 }

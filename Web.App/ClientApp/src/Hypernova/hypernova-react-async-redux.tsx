@@ -4,7 +4,7 @@ import * as ReactDOMServer from 'react-dom/server';
 import { Provider } from 'react-redux';
 import hypernova, { serialize, load } from 'hypernova';
 import { Store } from 'redux';
-import { ApplicationContext, ApplicationContextProviderProps, applicationContextClient } from '../../ApplicationContext';
+import { ApplicationContext, ApplicationContextProviderProps, applicationContextClient } from '../ApplicationContext';
 
 export const renderReactAsyncReduxServer = (name: string, C: React.ComponentClass<any>, store: Store<any>, applicationContextServer: ApplicationContextProviderProps) => hypernova({
   server() {

@@ -1,7 +1,7 @@
 import { renderReactAmpWithAphrodite } from 'hypernova-amp';
-import { ArtistStory } from '../../AMP/stories/ArtistStory';
-import { ArtistData } from '../../AMP/stories/ArtistData';
-import ArtistStorySEO from '../../AMP/stories/ArtistStorySEO';
+import { ArtistStory } from '../AMP/stories/ArtistStory';
+import { ArtistData } from '../AMP/stories/ArtistData';
+import ArtistStorySEO from '../AMP/stories/ArtistStorySEO';
 
 declare var require: any;
 let prependCSS = require('raw-loader!sass-loader!../../AMP/stories/ArtistStory.scss');
