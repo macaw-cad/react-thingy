@@ -1,0 +1,1 @@
+set SOLUTIONNAME=core-cra2-ts-hypernova
