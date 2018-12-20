@@ -165,12 +165,17 @@ function wrapWithTimeout(promise, timeoutMilliseconds, timeoutRejectionValue) {
 // specified in metadata.applicationContextServer) and a Redux store that is initialized with the specified data (as
 // available in context.props).
 function getComponentAsyncRedux(component, context) {
+    const metadataApplicationContextServer = context.metadata.applicationContextServer;
+    if (metadataApplicationContextServer.relativeUrl.startsWith('/sockjs-node/')) {
+        return null;
+    }
+
     // Create a component with Redux store that is initialized with the initial Redux store data and the global server context.
     let initialReduxState = context.props ? context.props : {};
     let applicationContextServer = new ApplicationContextInstance();
     applicationContextServer.applicationContext.baseUrl = getBaseUrl(context.metadata);
-    applicationContextServer.applicationContext.relativeUrl = context.metadata.applicationContextServer.relativeUrl;
-    applicationContextServer.applicationContext.isAmp = context.metadata.applicationContextServer.isAmp;
+    applicationContextServer.applicationContext.relativeUrl = metadataApplicationContextServer.relativeUrl;
+    applicationContextServer.applicationContext.isAmp = metadataApplicationContextServer.isAmp;
 
     const initializedComponent = component(context.props, applicationContextServer);
     if (initializedComponent) {
