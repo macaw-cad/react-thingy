@@ -22,7 +22,7 @@ interface CounterProps {
 type CounterAllProps = CounterProps & CounterStoreProps & CounterStoreActions & ApplicationContextConsumerProps;
 
 class Counter extends React.Component<CounterAllProps> {
-  private static defaultProps = {
+  public static defaultProps = {
     applicationContext: defaultApplicationContext
   };
 
