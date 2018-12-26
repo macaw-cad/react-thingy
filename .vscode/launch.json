@@ -1,20 +1,44 @@
 {
   "version": "0.2.0",
   "configurations": [
-  
     {
-      "name": ".NET Core Launch (console)",
-      "type": "coreclr",
+      "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${workspaceFolder}/Web.App/bin/Debug/netcoreapp2.1/WebApp.dll",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "stopAtEntry": false,
-      "console": "internalConsole"
+      "name": "Chrome on http://localhost:3000",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/Web.App/ClientApp"
     },
     {
-      "name": ".NET Core Launch (web)",
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome on https://localhost:5001",
+      "url": "https://localhost:5001",
+      "webRoot": "${workspaceFolder}/Web.App/ClientApp"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "HypernovaComponentServer",
+      "cwd": "${workspaceFolder}/Web.App/HypernovaComponentServer",
+      "program": "${workspaceFolder}/Web.App/HypernovaComponentServer/componentserver.js",
+      "runtimeArgs": [
+        // "-r", "source-map-support/register"
+      ],
+      "env": {
+        "ComponentServerBundles": "{\"pwa\":\"./server-bundle.js\"}"
+      },
+      "runtimeExecutable": "${workspaceRoot}/Web.App/ClientApp/node_modules/.bin/nodemon",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "sourceMapPathOverrides": {
+        "webpack:///./~/*": "${workspaceRoot}/Web.App/ClientApp/node_modules/*",
+        "webpack:///./*": "${workspaceRoot}/Web.App/ClientApp/*",
+        "webpack:///*": "*"
+      }
+    },
+    {
+      "name": "Web.App",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
@@ -43,66 +67,5 @@
         "/Views": "${workspaceFolder}/Views"
       }
     },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "autobuild-server",
-      "program": "${workspaceFolder}/Web.App/ClientApp/autobuild-development-server-bundle-to-HypernovaServer.js",
-      "runtimeExecutable": "nodemon",
-      "restart": true,
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach by Process ID",
-      "processId": "${command:PickProcess}"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/Web.App/ClientApp"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome on https://localhost:5001",
-      "url": "https://localhost:5001",
-      "webRoot": "${workspaceFolder}/Web.App/ClientApp"
-    },
-    // {
-    //   "name": "Chrome",
-    //   "type": "chrome",
-    //   "request": "launch",
-    //   "url": "http://localhost:3000",
-    //   "webRoot": "${workspaceRoot}/src",
-    //   "sourceMapPathOverrides": {
-    //     "webpack:///src/*": "${webRoot}/*"
-    // },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "HypernovaServer",
-      "cwd": "${workspaceFolder}/Web.App/HypernovaComponentServer",
-      "program": "${workspaceFolder}/Web.App/HypernovaComponentServer/componentserver.js",
-      "runtimeArgs": [
-        // "-r", "source-map-support/register"
-      ],
-      "env": {
-        "ComponentServerBundles": "{\"pwa\":\"./server-bundle.js\"}"
-      },
-      "runtimeExecutable": "${workspaceRoot}/Web.App/ClientApp/node_modules/.bin/nodemon",
-      "restart": true,
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMapPathOverrides": {
-        "webpack:///./~/*": "${workspaceRoot}/Web.App/ClientApp/node_modules/*",
-        "webpack:///./*": "${workspaceRoot}/Web.App/ClientApp/*",
-        "webpack:///*": "*"
-      }
-    }
   ]
 }

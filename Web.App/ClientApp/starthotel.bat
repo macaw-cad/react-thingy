@@ -22,7 +22,7 @@ start chrome http://localhost:2000
 
 GOTO DONE
 
-: NOTADMINISTRATOR
+:NOTADMINISTRATOR
 @ECHO Run this script in a shell with administrator previleges
 
 :DONE
