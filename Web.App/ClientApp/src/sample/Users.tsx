@@ -14,7 +14,7 @@ interface UsersStoreProps {
 
 type UsersAllProps = UsersStoreProps & ApplicationContextConsumerProps;
 class Users extends React.Component<UsersAllProps> {
-  asyncTaskContext: AsyncTaskContext;
+  private asyncTaskContext: AsyncTaskContext;
 
   constructor(props: UsersAllProps) {
     super(props);
@@ -26,7 +26,7 @@ class Users extends React.Component<UsersAllProps> {
     }
   }
 
-  async loadUsers(): Promise<void> {
+  private async loadUsers(): Promise<void> {
     let getUsersPromise: Promise<void> = new Promise(async (resolve, reject) => {
       try {
         let users: UserData[] = await getUsers(this.asyncTaskContext);
@@ -44,11 +44,11 @@ class Users extends React.Component<UsersAllProps> {
     
   }
 
-  componentDidMount() {
+  public componentDidMount(): void {
     this.loadUsers();
   }
 
-  render() {
+  public render(): React.ReactNode {
     const { users } = this.props;
     return (
       <div>

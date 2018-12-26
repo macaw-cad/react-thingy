@@ -6,18 +6,20 @@ IF ERRORLEVEL 1 (
 )
 
 cd %~dp0
-:: Kill process listening on ports 3000, 3001, 8080 and 5000
+:: Kill process listening on ports 3000, 3001, 8080 and 5000, 9001
 FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :3000') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
 FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :3001') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
 FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :8080') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
 FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :5000') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
+FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :9001') DO IF NOT %%P==0 (TaskKill.exe /PID %%P /F)
 
 call hotel start
 call hotel add "npm run start" --name react-client --port 3000
 call hotel add "npm run start:jsonserver" --name jsonserver --port 3001
-call hotel add "npm run watch:build:server-bundle" --name react-serverbundle
+call hotel add "npm run start:server-bundle" --name react-serverbundle --port 8080
 call hotel add "npm run start:hypernovacomponentserver" --name HypernovaComponentServer --port 8080
 call hotel add "npm run start:dotnet-core" --name dotnet-core --port 5000
+call hotel add "npm run start:storybook" --name Storybook --port 9001
 start chrome http://localhost:2000
 
 GOTO DONE

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RootState } from '../store/RootState';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ErrorBoundary } from './ErrorBoundary';
+import { ErrorBoundary } from '../ui/ErrorBoundary';
 
 interface HeaderProps {
 }
@@ -22,15 +22,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         };
     }
 
-    toggleMenu = () => {
+    private toggleMenu = () => {
         this.setState({ isMenuOpen: !this.state.isMenuOpen });
     }
 
-    get homeUrl() {
+    private get homeUrl(): string {
         return '/';
     }
 
-    render() {
+    public render(): React.ReactNode {
         return (
             <ErrorBoundary>
                 <header>

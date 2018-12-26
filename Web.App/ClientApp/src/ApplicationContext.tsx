@@ -68,7 +68,7 @@ export const ApplicationContext = React.createContext<ApplicationContextProvider
 // Function to wrap a component with the application context.
 export function withApplicationContext<T extends ApplicationContextConsumerProps>(Component: React.ComponentClass<T> | React.StatelessComponent<T>): React.ComponentClass<T> {
     return class ComponentWrappedWithApplicationContext extends React.Component<T & ApplicationContextConsumerProps> {
-        public render() {
+        public render(): React.ReactNode {
             return (
                 <ApplicationContext.Consumer>
                     {(applicationContextProvider: ApplicationContextProviderProps) => {

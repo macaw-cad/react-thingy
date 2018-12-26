@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../sample/Header';
+import Footer from '../sample/Footer';
 import Counter from '../counter/Counter';
 import { defaultApplicationContext } from '../ApplicationContext';
 
 export default class CounterPage extends React.Component {
-    public render() {
+    public render(): React.ReactNode {
         return (
             <Fragment>
                 <Header />

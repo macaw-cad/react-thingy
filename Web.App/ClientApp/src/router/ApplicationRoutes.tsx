@@ -6,7 +6,7 @@ import { history } from '../store/store';
 import { Environment } from '../Environment';
 import { ApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
 import Routes from './Routes';
-import { ErrorBoundary } from '../components/ErrorBoundary';
+import { ErrorBoundary } from '../ui/ErrorBoundary';
 
 type ApplicationRoutesAllProps = {};
 

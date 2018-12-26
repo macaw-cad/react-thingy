@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@storybook/addon-actions": "^4.1.4",
+    "@storybook/addon-knobs": "^4.1.4",
+    "@storybook/addon-options": "^4.1.4",
+    "@storybook/react": "^4.1.4",
     "@types/jest": "23.3.9",
     "@types/node": "10.12.7",
     "@types/react": "16.7.6",
@@ -28,7 +32,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",
-    "react-scripts": "2.1.1",
+    "react-scripts": "2.1.2",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
     "typescript": "3.1.6",
@@ -42,10 +46,12 @@
     "start:dotnet-core": "npm run build:dotnet-core && pushd .. && dotnet run",
     "start:hypernovacomponentserver": "pushd ..\\HypernovaComponentServer && nodemon --watch server-bundle.js componentserver.js",
     "start:server-bundle": "npm run build:server-bundle:development && chokidar src/** -c \"npm run build:server-bundle:development\"",
+    "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
     "build": "react-scripts build",
     "build:dotnet-core": "pushd ..\\.. && dotnet restore && dotnet build && popd",
     "build:server-bundle:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
+    "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
     "test": "react-scripts test"
   },
   "eslintConfig": {
@@ -58,8 +64,20 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@rescripts/cli": "0.0.7",
+    "@rescripts/rescript-env": "0.0.3",
+    "@types/storybook__addon-actions": "^3.4.1",
+    "@types/storybook__addon-knobs": "^4.0.0",
+    "@types/storybook__addon-options": "^4.0.0",
+    "@types/storybook__react": "^4.0.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
-    "webpack-cli": "^3.1.2"
-  }
+    "webpack-cli": "^3.1.2",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-react": "^3.6.0"
+  },
+  "rescripts": [
+    "env"
+  ]
 }

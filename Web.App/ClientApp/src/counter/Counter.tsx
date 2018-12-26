@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store/RootState';
-import { later } from '../components/later';
+import { later } from '../sample/later';
 import { ApplicationContextConsumerProps, ApplicationContextConsumerType, AsyncTaskContext, withApplicationContext, defaultApplicationContext } from '../ApplicationContext';
 import { Environment } from '../Environment';
 import { increment, decrement } from './CounterActions';
@@ -22,11 +22,11 @@ interface CounterProps {
 type CounterAllProps = CounterProps & CounterStoreProps & CounterStoreActions & ApplicationContextConsumerProps;
 
 class Counter extends React.Component<CounterAllProps> {
-  static defaultProps = {
+  private static defaultProps = {
     applicationContext: defaultApplicationContext
   };
 
-  asyncTaskContext: AsyncTaskContext;
+  private asyncTaskContext: AsyncTaskContext;
 
   constructor(props: CounterAllProps) {
     super(props);
@@ -45,18 +45,18 @@ class Counter extends React.Component<CounterAllProps> {
   // toplevel Hypernova component is finished and the whole component tree is ready.
   // If this function does async calls, register them using addTask from applicationContext so the final rendering of
   // the toplevel Hypernova component does execute after the async calls initiated from this function are completed.
-  public componentDidRenderServerSide(applicationContext: ApplicationContextConsumerType) {
+  public componentDidRenderServerSide(applicationContext: ApplicationContextConsumerType): void {
     this.doIncrement(applicationContext as AsyncTaskContext);
   }
 
-  doIncrement(asyncTaskContext: AsyncTaskContext) {
+  private doIncrement(asyncTaskContext: AsyncTaskContext): void {
     if (!!this.props.onIncrement) {
       const laterContext = later(1000, this.props.onIncrement);
       asyncTaskContext.addTask(laterContext.promise);
     }
   }
 
-  render() {
+  public render(): React.ReactNode {
     const { value, onIncrement, onDecrement } = this.props;
     return (
       <div>
@@ -89,4 +89,5 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
   };
 };
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(withApplicationContext<CounterAllProps>(Counter));

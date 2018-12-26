@@ -4,9 +4,9 @@ import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '../store/RootState';
 import { ApplicationContextConsumerProps, AsyncTaskContext, withApplicationContext, ApplicationContextConsumerType } from '../ApplicationContext';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Users from '../components/Users';
+import Header from '../sample/Header';
+import Footer from '../sample/Footer';
+import Users from '../sample/Users';
 
 interface UsersStoreStateProps {
     counterValue: number;
@@ -18,7 +18,7 @@ interface UsersStoreActionProps {
 type UsersAllProps = UsersStoreStateProps & UsersStoreActionProps & ApplicationContextConsumerProps;
 
 class UsersPage extends React.Component<UsersAllProps> {
-    asyncTaskContext: AsyncTaskContext;
+    private asyncTaskContext: AsyncTaskContext;
 
     constructor(props: UsersAllProps) {
         super(props);
@@ -26,7 +26,7 @@ class UsersPage extends React.Component<UsersAllProps> {
         this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
     }
 
-    public render() {
+    public render(): React.ReactNode {
         return (
             <Fragment>
                 <Header />

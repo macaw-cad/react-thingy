@@ -3,10 +3,10 @@ import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '../store/RootState';
 import { ApplicationContextConsumerProps, AsyncTaskContext, withApplicationContext } from '../ApplicationContext';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { Sheep } from '../components/Sheep';
-import { LaterText } from '../components/LaterText';
+import Header from '../sample/Header';
+import Footer from '../sample/Footer';
+import { Sheep } from '../sample/Sheep';
+import { LaterText } from '../sample/LaterText';
 
 interface HomeStoreStateProps {
 }
@@ -17,7 +17,7 @@ interface HomeStoreActionProps {
 type HomeAllProps = HomeStoreStateProps & HomeStoreActionProps & ApplicationContextConsumerProps;
 
 class HomePage extends React.Component<HomeAllProps> {
-    asyncTaskContext: AsyncTaskContext;
+    private asyncTaskContext: AsyncTaskContext;
 
     constructor(props: HomeAllProps) {
         super(props);
@@ -25,7 +25,7 @@ class HomePage extends React.Component<HomeAllProps> {
         this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
     }
 
-    public render() {
+    public render(): React.ReactNode {
         return (
             <>
                 <Header />

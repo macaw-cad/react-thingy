@@ -14,7 +14,7 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
       this.state = { error: undefined, errorInfo: undefined };
     }
     
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
       // Catch errors in any components below and re-render with error message
       this.setState({
         error: error,
@@ -23,7 +23,7 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
       // You can also log error messages to an error reporting service here
     }
     
-    render() {
+    public render(): React.ReactNode | undefined {
       if (this.state.errorInfo) {
         // Error path
         return (
