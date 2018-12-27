@@ -89,5 +89,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
   };
 };
 
-// @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(withApplicationContext<CounterAllProps>(Counter));

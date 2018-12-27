@@ -64392,7 +64392,6 @@ const mapDispatchToProps = (dispatch) => {
         onDecrement: () => dispatch(Object(_CounterActions__WEBPACK_IMPORTED_MODULE_5__["decrement"])(1))
     };
 };
-// @ts-ignore
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_ApplicationContext__WEBPACK_IMPORTED_MODULE_3__["withApplicationContext"])(Counter)));
 
 

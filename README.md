@@ -1,14 +1,15 @@
-# CORE-CRA2-TS-HYPERNOVA starter
+# Web.App
 
-This starter is a complete configured front-end development project containing sample code to show how it works with a real example.
+This Web.App is a complete configured front-end development project containing sample code to show how it works with a real example.
 
 The project combines the following technologies:
 
-- A .NET Core 2.2 web application rendering a SPA, Razor Pages and AMP pages
+- A .NET Core 2.2 web application rendering a Single Page Application (SPA), Razor Pages and AMP pages
 - The frontend project is bootstrapped with Create React App 2 (CRA2)
-- All frontend code is written in TypeScript
-- Single components, the complete SPA or AMP pages can be server-side rendered using Hypernova
-- Server-side rendered components can be async, so they can make async calls to retrieve data or have promises to be resolved before rendering
+- All frontend code is written in TypeScript and checked with TSLint
+- Hypernova based server-side rendering for single components, the complete SPA or AMP pages
+- Server-side rendered SPA can be async, so components in the SPAcan make async calls to retrieve data or have promises to be resolved before rendering
+- Storybook to manage the design system
 
 ## Configure the solution
 
@@ -29,12 +30,12 @@ To edit the .NET Core application web open the solution ```Web.App.sln```. When 
 Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.App\ClientApp``` folder - otherwise the configured debugging settings will not work.
 
 The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing scripts
-for developing and building the application. See [README development](./README.development.md) for more information on development.
+for developing and building the application. See [README development](./documentation/README.development.md) for more information on how to do development with the solution.
 
 ## Deploying the solution
 
 The ```Web.App``` is deployed in a Docker container that can be run locally or deployed to a hosting platform like Azure.
-See [README Docker](./README.development.md) for more information on the available scripts to build and deploy Docker images.
+See [documentation on using Docker](./documentation/Docker.md) for more information on the available scripts to build and deploy the Docker image.
 
 ## Working examples
 
@@ -44,6 +45,10 @@ The code provides some examples that can be found at the folowing URL's when the
 - ```http://localhost:5001``` - the SPA running from the DotNet Core application
 - ```http://localhost:5001/React``` - Razor Page using Hypernova to render components
 - ```http://localhost:5001/Story/ArtistStory?artistId=big_l``` - AMP Story
+
+## TODO
+
+See the [TODO](./TODO.md) file for things still to be implemented in Web.App.
 
 ## Learn More
 
