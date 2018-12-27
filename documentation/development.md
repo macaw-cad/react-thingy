@@ -35,6 +35,8 @@ Although it is possible to combine two or more of the above scripts into one scr
 To make it easy to select visually which scripts to run the visual tool [Hotel](https://www.npmjs.com/package/hotel) is used to
 manage the scripts to run.
 
+In order to be able to use hotel it must be globally installed: ```npm install -g hotel```.
+
 Run the script ```Web.App\ClientApp\starthotel.bat``` to start The Hotel tool - a web based interface to control all subsystems. With a flip of a switch the different scripts can be started or stopped.
 
 ![Hotel](./Hotel.png)
