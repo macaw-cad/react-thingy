@@ -17,10 +17,10 @@ if (!Environment.isServer) {
   // Only render the React <App/> if not already rendered server side.
   const rootElement: HTMLElement | null = document.getElementById('root');
   if (!!rootElement && !rootElement.hasChildNodes()) {
-    if (window.location.search == '?prestine') {
+    if (window.location.search === '?prestine') {
       // Return the content for index.html similar as loading index.html from filesystem.
       // Can be used in development mode for server-side rendering.
-      ReactDOM.render(<div id='root'/>, rootElement);
+      ReactDOM.render(<div id="root"/>, rootElement);
     } else {
       ReactDOM.render(<App />, rootElement);
     }

@@ -101,6 +101,8 @@ class ApplicationContextInstance /*implements ApplicationContextProviderProps*/ 
             componentDidRenderServerSideFuncs: new Array/*<ComponentDidRenderServerSideFunc>*/(),
             tasks: new Array/*<Promise<any>>*/(),
             firstRun: true,
+            cssUrls: [],
+            jsUrls: [],
             baseUrl: '',      // will be set by Hypernova based component server when SSR
             relativeUrl: '',  // will be set by Hypernova based component server when SSR
             isAmp: false,     // will be set by Hypernova based component server when SSR
@@ -173,9 +175,12 @@ function getComponentAsyncRedux(component, context) {
     // Create a component with Redux store that is initialized with the initial Redux store data and the global server context.
     let initialReduxState = context.props ? context.props : {};
     let applicationContextServer = new ApplicationContextInstance();
+    applicationContextServer.applicationContext.cssUrls = metadataApplicationContextServer.cssUrls;
+    applicationContextServer.applicationContext.jsUrls = metadataApplicationContextServer.jsUrls;
     applicationContextServer.applicationContext.baseUrl = getBaseUrl(context.metadata);
     applicationContextServer.applicationContext.relativeUrl = metadataApplicationContextServer.relativeUrl;
     applicationContextServer.applicationContext.isAmp = metadataApplicationContextServer.isAmp;
+
 
     const initializedComponent = component(context.props, applicationContextServer);
     if (initializedComponent) {

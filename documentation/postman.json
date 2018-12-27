@@ -1,0 +1,17 @@
+{
+  "pwa:HypernovaPwaApp": {
+    "name": "pwa:HypernovaPwaApp",
+    "data": {},
+    "metadata": {
+      "strategy": "asyncRedux",
+      "baseUrl": "{{BaseUrl}}",
+      "timeout": 30000,
+      "applicationContextServer": {
+        "cssUrls": ["http://localhost:3000/test.css"],
+        "jsUrls": ["http://localhost:3000/test.js"],
+        "relativeUrl": "/users",
+        "isAmp": false
+      }
+    }
+  }
+}

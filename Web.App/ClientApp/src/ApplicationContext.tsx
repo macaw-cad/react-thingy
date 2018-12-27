@@ -14,6 +14,8 @@ interface ApplicationContextConsumerFuncsInternal {
     addTask: (promise: Promise<any>) => void;
 }
 export interface ApplicationContextConsumerDataInternal {
+    cssUrls: string[]; // css files to include
+    jsUrls: string[]; // js files to include
     baseUrl: string; // all fetch operations without full specified url should use the baseUrl
     relativeUrl?: string; // app specific relative url
     isAmp?: boolean; // are we in an AMP context
@@ -48,6 +50,8 @@ export const applicationContextClient: ApplicationContextProviderProps = {
         addComponentDidRenderServerSideFunc: (func: ComponentDidRenderServerSideFunc) => {/* ignore on client side */},
         addTask: (promise: Promise<any>) => {/* ignore on client side */},
         firstRun: false,
+        cssUrls: [],
+        jsUrls: [],
         baseUrl: '',
         relativeUrl: Environment.isServer ? '' : window.location.pathname + window.location.search + window.location.hash,
         isAmp: false
@@ -57,6 +61,8 @@ export const applicationContextClient: ApplicationContextProviderProps = {
 export const defaultApplicationContext: ApplicationContextConsumerType = {
     addComponentDidRenderServerSideFunc: (func: ComponentDidRenderServerSideFunc) => {/* ignore on client side */},
     addTask: (promise: Promise<any>) => {/* ignore on client side */},
+    cssUrls: [],
+    jsUrls: [],
     baseUrl: '',
     relativeUrl: Environment.isServer ? '' : window.location.pathname + window.location.search + window.location.hash,
     isAmp: false
