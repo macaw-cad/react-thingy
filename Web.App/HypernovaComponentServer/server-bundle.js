@@ -63983,6 +63983,208 @@ class Environment {
 
 /***/ }),
 
+/***/ "./src/Hypernova/HypernovaApp.tsx":
+/*!****************************************!*\
+  !*** ./src/Hypernova/HypernovaApp.tsx ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hypernova-react-async-redux */ "./src/Hypernova/hypernova-react-async-redux.tsx");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/store */ "./src/store/store.ts");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _PwaApp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../PwaApp */ "./src/PwaApp.tsx");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ((initialReduxStoreState, applicationContextServer) => {
+    const reduxStore = Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(initialReduxStoreState);
+    return Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxServer"])('HypernovaApp', // Unique component name
+    _PwaApp__WEBPACK_IMPORTED_MODULE_3__["PwaApp"], reduxStore, applicationContextServer);
+});
+if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
+    Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxClient"])('HypernovaApp', // Unique component name
+    _PwaApp__WEBPACK_IMPORTED_MODULE_3__["PwaApp"], (data) => Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(data));
+}
+
+
+/***/ }),
+
+/***/ "./src/Hypernova/HypernovaArtistStory.tsx":
+/*!************************************************!*\
+  !*** ./src/Hypernova/HypernovaArtistStory.tsx ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var hypernova_amp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hypernova-amp */ "./node_modules/hypernova-amp/lib/index.js");
+/* harmony import */ var hypernova_amp__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hypernova_amp__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _AMP_stories_ArtistStory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../AMP/stories/ArtistStory */ "./src/AMP/stories/ArtistStory.tsx");
+/* harmony import */ var _AMP_stories_ArtistStorySEO__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AMP/stories/ArtistStorySEO */ "./src/AMP/stories/ArtistStorySEO.ts");
+
+
+
+let prependCSS = __webpack_require__(/*! raw-loader!sass-loader!../AMP/stories/ArtistStory.scss */ "./node_modules/raw-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/AMP/stories/ArtistStory.scss");
+/* harmony default export */ __webpack_exports__["default"] = ((artist) => {
+    console.log(`Rendering artist ${artist.cover_artistname}`);
+    return Object(hypernova_amp__WEBPACK_IMPORTED_MODULE_0__["renderReactAmpWithAphrodite"])('HypernovaArtistStory', // this file's name (or really any unique name)
+    _AMP_stories_ArtistStory__WEBPACK_IMPORTED_MODULE_1__["ArtistStory"], {
+        title: artist.cover_artistname,
+        canonicalUrl: `/Story/ArtistStory?artistId=${artist.id}`,
+        jsonSchema: _AMP_stories_ArtistStorySEO__WEBPACK_IMPORTED_MODULE_2__["default"].GetArtistLDJSon(artist),
+        enableAmpBind: true,
+        enableRemoveIs: true,
+        scripts: [
+            {
+                'customElement': 'amp-video',
+                'src': 'https://cdn.ampproject.org/v0/amp-video-0.1.js'
+            },
+            {
+                'customElement': 'amp-font',
+                'src': 'https://cdn.ampproject.org/v0/amp-font-0.1.js'
+            },
+            {
+                'customElement': 'amp-story',
+                'src': 'https://cdn.ampproject.org/v0/amp-story-1.0.js'
+            },
+        ],
+        prependCSS: prependCSS
+    })(artist);
+});
+
+
+/***/ }),
+
+/***/ "./src/Hypernova/HypernovaCounter.tsx":
+/*!********************************************!*\
+  !*** ./src/Hypernova/HypernovaCounter.tsx ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hypernova-react-async-redux */ "./src/Hypernova/hypernova-react-async-redux.tsx");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/store */ "./src/store/store.ts");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _counter_Counter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../counter/Counter */ "./src/counter/Counter.tsx");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ((initialReduxStoreState, applicationContextServer) => {
+    const reduxStore = Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(initialReduxStoreState);
+    return Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxServer"])('HypernovaCounter', // Unique component name
+    _counter_Counter__WEBPACK_IMPORTED_MODULE_3__["default"], reduxStore, applicationContextServer);
+});
+if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
+    Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxClient"])('HypernovaCounter', // Unique component name
+    _counter_Counter__WEBPACK_IMPORTED_MODULE_3__["default"], (data) => Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(data));
+}
+
+
+/***/ }),
+
+/***/ "./src/Hypernova/HypernovaSheep.tsx":
+/*!******************************************!*\
+  !*** ./src/Hypernova/HypernovaSheep.tsx ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var hypernova_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hypernova-react */ "./node_modules/hypernova-react/lib/index.js");
+/* harmony import */ var hypernova_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hypernova_react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _sample_Sheep__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../sample/Sheep */ "./src/sample/Sheep.tsx");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(hypernova_react__WEBPACK_IMPORTED_MODULE_0__["renderReact"])('HypernovaSheep', // this file's name (or really any unique name)
+_sample_Sheep__WEBPACK_IMPORTED_MODULE_1__["Sheep"]));
+
+
+/***/ }),
+
+/***/ "./src/Hypernova/hypernova-react-async-redux.tsx":
+/*!*******************************************************!*\
+  !*** ./src/Hypernova/hypernova-react-async-redux.tsx ***!
+  \*******************************************************/
+/*! exports provided: renderReactAsyncReduxServer, renderReactAsyncReduxClient */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderReactAsyncReduxServer", function() { return renderReactAsyncReduxServer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderReactAsyncReduxClient", function() { return renderReactAsyncReduxClient; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/server */ "./node_modules/react-dom/server.js");
+/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom_server__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var hypernova__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! hypernova */ "./node_modules/hypernova/lib/index.js");
+/* harmony import */ var hypernova__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(hypernova__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+
+
+
+
+
+
+const renderReactAsyncReduxServer = (name, C, store, applicationContextServer) => hypernova__WEBPACK_IMPORTED_MODULE_4___default()({
+    server() {
+        return (props) => {
+            // console.log('applicationContextServer', JSON.stringify(applicationContextServer, null, 2));
+            const wrappedComponent = react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"].Provider, { value: applicationContextServer },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], { store: store },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](C, null)));
+            const contents = react_dom_server__WEBPACK_IMPORTED_MODULE_2__["renderToString"](wrappedComponent);
+            // console.log('component render contents', contents);
+            if (applicationContextServer.applicationContext.firstRun) {
+                return ''; // first run contents will be ignored
+            }
+            else {
+                return Object(hypernova__WEBPACK_IMPORTED_MODULE_4__["serialize"])(name, contents, store.getState());
+            }
+        };
+    },
+    client() {
+        /* tslint:disable:no-empty */
+    }
+});
+const renderReactAsyncReduxClient = (name, C, reduxStoreCreator) => hypernova__WEBPACK_IMPORTED_MODULE_4___default()({
+    server() {
+        /* tslint:disable:no-empty */
+    },
+    client() {
+        const payloads = Object(hypernova__WEBPACK_IMPORTED_MODULE_4__["load"])(name);
+        if (!!payloads && payloads.length > 0) {
+            if (true) {
+                console.log(`renderReactAsyncReduxClient::client() with component '${name}'`);
+            }
+            payloads.forEach((payload) => {
+                const { node, data } = payload;
+                // console.log('applicationContextClient', applicationContextClient);
+                // console.log('Redux Store', data);
+                const store = reduxStoreCreator(data);
+                const wrappedComponent = react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"].Provider, { value: _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["applicationContextClient"] },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], { store: store },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](C, null)));
+                react_dom__WEBPACK_IMPORTED_MODULE_1__["hydrate"](wrappedComponent, node);
+            });
+        }
+    }
+});
+
+
+/***/ }),
+
 /***/ "./src/HypernovaAllComponents.ts":
 /*!***************************************!*\
   !*** ./src/HypernovaAllComponents.ts ***!
@@ -64019,8 +64221,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Hypernova/HypernovaArtistStory */ "./src/components/Hypernova/HypernovaArtistStory.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaArtistStory", function() { return _components_Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Hypernova/HypernovaArtistStory */ "./src/Hypernova/HypernovaArtistStory.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaArtistStory", function() { return _Hypernova_HypernovaArtistStory__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
 // Exports all AMP specific components that are rendered only server-side
 
@@ -64038,14 +64240,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Hypernova_HypernovaApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Hypernova/HypernovaApp */ "./src/components/Hypernova/HypernovaApp.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaApp", function() { return _components_Hypernova_HypernovaApp__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _Hypernova_HypernovaApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Hypernova/HypernovaApp */ "./src/Hypernova/HypernovaApp.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaApp", function() { return _Hypernova_HypernovaApp__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony import */ var _components_Hypernova_HypernovaSheep__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Hypernova/HypernovaSheep */ "./src/components/Hypernova/HypernovaSheep.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaSheep", function() { return _components_Hypernova_HypernovaSheep__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony import */ var _Hypernova_HypernovaSheep__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Hypernova/HypernovaSheep */ "./src/Hypernova/HypernovaSheep.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaSheep", function() { return _Hypernova_HypernovaSheep__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
-/* harmony import */ var _components_Hypernova_HypernovaCounter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Hypernova/HypernovaCounter */ "./src/components/Hypernova/HypernovaCounter.tsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaCounter", function() { return _components_Hypernova_HypernovaCounter__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony import */ var _Hypernova_HypernovaCounter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Hypernova/HypernovaCounter */ "./src/Hypernova/HypernovaCounter.tsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HypernovaCounter", function() { return _Hypernova_HypernovaCounter__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
 // Export all Hypernova specific components that can be rendered
 // server-side and will be hydrated client-side.
@@ -64116,511 +64318,6 @@ class PwaApp extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 /***/ }),
 
-/***/ "./src/components/ErrorBoundary.tsx":
-/*!******************************************!*\
-  !*** ./src/components/ErrorBoundary.tsx ***!
-  \******************************************/
-/*! exports provided: ErrorBoundary */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorBoundary", function() { return ErrorBoundary; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-class ErrorBoundary extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-        super(props);
-        this.state = { error: undefined, errorInfo: undefined };
-    }
-    componentDidCatch(error, errorInfo) {
-        // Catch errors in any components below and re-render with error message
-        this.setState({
-            error: error,
-            errorInfo: errorInfo
-        });
-        // You can also log error messages to an error reporting service here
-    }
-    render() {
-        if (this.state.errorInfo) {
-            // Error path
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Something went wrong."),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("details", { style: { whiteSpace: 'pre-wrap' } },
-                    this.state.error && this.state.error.toString(),
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-                    this.state.errorInfo.componentStack)));
-        }
-        // Normally, just render children
-        return this.props.children;
-    }
-}
-
-
-/***/ }),
-
-/***/ "./src/components/Footer.tsx":
-/*!***********************************!*\
-  !*** ./src/components/Footer.tsx ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-// tslint:disable:max-line-length
-
-const Footer = ({}) => {
-    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("footer", null,
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("hr", null),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "I'm a footer")));
-};
-/* harmony default export */ __webpack_exports__["default"] = (Footer);
-
-
-/***/ }),
-
-/***/ "./src/components/Header.tsx":
-/*!***********************************!*\
-  !*** ./src/components/Header.tsx ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _ErrorBoundary__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ErrorBoundary */ "./src/components/ErrorBoundary.tsx");
-// tslint:disable:max-line-length
-
-
-
-
-class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-        super(props);
-        this.toggleMenu = () => {
-            this.setState({ isMenuOpen: !this.state.isMenuOpen });
-        };
-        this.state = {
-            isMenuOpen: false
-        };
-    }
-    get homeUrl() {
-        return '/';
-    }
-    render() {
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ErrorBoundary__WEBPACK_IMPORTED_MODULE_3__["ErrorBoundary"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("header", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: "/" },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Home")),
-                    "\u00A0",
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: "/counter" },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Counter page")),
-                    "\u00A0",
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: "/users" },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Users page"))),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "I'm a header"),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("hr", null))));
-    }
-}
-const mapStateToProps = (state) => {
-    return {};
-};
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps)(Header));
-
-
-/***/ }),
-
-/***/ "./src/components/Hypernova/HypernovaApp.tsx":
-/*!***************************************************!*\
-  !*** ./src/components/Hypernova/HypernovaApp.tsx ***!
-  \***************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hypernova-react-async-redux */ "./src/components/Hypernova/hypernova-react-async-redux.tsx");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/store */ "./src/store/store.ts");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Environment */ "./src/Environment.ts");
-/* harmony import */ var _PwaApp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../PwaApp */ "./src/PwaApp.tsx");
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ((initialReduxStoreState, applicationContextServer) => {
-    const reduxStore = Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(initialReduxStoreState);
-    return Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxServer"])('HypernovaApp', // Unique component name
-    _PwaApp__WEBPACK_IMPORTED_MODULE_3__["PwaApp"], reduxStore, applicationContextServer);
-});
-if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
-    Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxClient"])('HypernovaApp', // Unique component name
-    _PwaApp__WEBPACK_IMPORTED_MODULE_3__["PwaApp"], (data) => Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(data));
-}
-
-
-/***/ }),
-
-/***/ "./src/components/Hypernova/HypernovaArtistStory.tsx":
-/*!***********************************************************!*\
-  !*** ./src/components/Hypernova/HypernovaArtistStory.tsx ***!
-  \***********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var hypernova_amp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hypernova-amp */ "./node_modules/hypernova-amp/lib/index.js");
-/* harmony import */ var hypernova_amp__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hypernova_amp__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _AMP_stories_ArtistStory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../AMP/stories/ArtistStory */ "./src/AMP/stories/ArtistStory.tsx");
-/* harmony import */ var _AMP_stories_ArtistStorySEO__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../AMP/stories/ArtistStorySEO */ "./src/AMP/stories/ArtistStorySEO.ts");
-
-
-
-let prependCSS = __webpack_require__(/*! raw-loader!sass-loader!../../AMP/stories/ArtistStory.scss */ "./node_modules/raw-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/AMP/stories/ArtistStory.scss");
-/* harmony default export */ __webpack_exports__["default"] = ((artist) => {
-    console.log(`Rendering artist ${artist.cover_artistname}`);
-    return Object(hypernova_amp__WEBPACK_IMPORTED_MODULE_0__["renderReactAmpWithAphrodite"])('HypernovaArtistStory', // this file's name (or really any unique name)
-    _AMP_stories_ArtistStory__WEBPACK_IMPORTED_MODULE_1__["ArtistStory"], {
-        title: artist.cover_artistname,
-        canonicalUrl: `/Story/ArtistStory?artistId=${artist.id}`,
-        jsonSchema: _AMP_stories_ArtistStorySEO__WEBPACK_IMPORTED_MODULE_2__["default"].GetArtistLDJSon(artist),
-        enableAmpBind: true,
-        enableRemoveIs: true,
-        scripts: [
-            {
-                'customElement': 'amp-video',
-                'src': 'https://cdn.ampproject.org/v0/amp-video-0.1.js'
-            },
-            {
-                'customElement': 'amp-font',
-                'src': 'https://cdn.ampproject.org/v0/amp-font-0.1.js'
-            },
-            {
-                'customElement': 'amp-story',
-                'src': 'https://cdn.ampproject.org/v0/amp-story-1.0.js'
-            },
-        ],
-        prependCSS: prependCSS
-    })(artist);
-});
-
-
-/***/ }),
-
-/***/ "./src/components/Hypernova/HypernovaCounter.tsx":
-/*!*******************************************************!*\
-  !*** ./src/components/Hypernova/HypernovaCounter.tsx ***!
-  \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hypernova-react-async-redux */ "./src/components/Hypernova/hypernova-react-async-redux.tsx");
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/store */ "./src/store/store.ts");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Environment */ "./src/Environment.ts");
-/* harmony import */ var _counter_Counter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../counter/Counter */ "./src/counter/Counter.tsx");
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ((initialReduxStoreState, applicationContextServer) => {
-    const reduxStore = Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(initialReduxStoreState);
-    return Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxServer"])('HypernovaCounter', // Unique component name
-    _counter_Counter__WEBPACK_IMPORTED_MODULE_3__["default"], reduxStore, applicationContextServer);
-});
-if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
-    Object(_hypernova_react_async_redux__WEBPACK_IMPORTED_MODULE_0__["renderReactAsyncReduxClient"])('HypernovaCounter', // Unique component name
-    _counter_Counter__WEBPACK_IMPORTED_MODULE_3__["default"], (data) => Object(_store_store__WEBPACK_IMPORTED_MODULE_1__["configureStore"])(data));
-}
-
-
-/***/ }),
-
-/***/ "./src/components/Hypernova/HypernovaSheep.tsx":
-/*!*****************************************************!*\
-  !*** ./src/components/Hypernova/HypernovaSheep.tsx ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var hypernova_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hypernova-react */ "./node_modules/hypernova-react/lib/index.js");
-/* harmony import */ var hypernova_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hypernova_react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Sheep__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Sheep */ "./src/components/Sheep.tsx");
-
-
-/* harmony default export */ __webpack_exports__["default"] = (Object(hypernova_react__WEBPACK_IMPORTED_MODULE_0__["renderReact"])('HypernovaSheep', // this file's name (or really any unique name)
-_Sheep__WEBPACK_IMPORTED_MODULE_1__["Sheep"]));
-
-
-/***/ }),
-
-/***/ "./src/components/Hypernova/hypernova-react-async-redux.tsx":
-/*!******************************************************************!*\
-  !*** ./src/components/Hypernova/hypernova-react-async-redux.tsx ***!
-  \******************************************************************/
-/*! exports provided: renderReactAsyncReduxServer, renderReactAsyncReduxClient */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderReactAsyncReduxServer", function() { return renderReactAsyncReduxServer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderReactAsyncReduxClient", function() { return renderReactAsyncReduxClient; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/server */ "./node_modules/react-dom/server.js");
-/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom_server__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var hypernova__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! hypernova */ "./node_modules/hypernova/lib/index.js");
-/* harmony import */ var hypernova__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(hypernova__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../ApplicationContext */ "./src/ApplicationContext.tsx");
-
-
-
-
-
-
-const renderReactAsyncReduxServer = (name, C, store, applicationContextServer) => hypernova__WEBPACK_IMPORTED_MODULE_4___default()({
-    server() {
-        return (props) => {
-            // console.log('applicationContextServer', JSON.stringify(applicationContextServer, null, 2));
-            const wrappedComponent = react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"].Provider, { value: applicationContextServer },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], { store: store },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](C, null)));
-            const contents = react_dom_server__WEBPACK_IMPORTED_MODULE_2__["renderToString"](wrappedComponent);
-            // console.log('component render contents', contents);
-            if (applicationContextServer.applicationContext.firstRun) {
-                return ''; // first run contents will be ignored
-            }
-            else {
-                return Object(hypernova__WEBPACK_IMPORTED_MODULE_4__["serialize"])(name, contents, store.getState());
-            }
-        };
-    },
-    client() {
-        /* tslint:disable:no-empty */
-    }
-});
-const renderReactAsyncReduxClient = (name, C, reduxStoreCreator) => hypernova__WEBPACK_IMPORTED_MODULE_4___default()({
-    server() {
-        /* tslint:disable:no-empty */
-    },
-    client() {
-        const payloads = Object(hypernova__WEBPACK_IMPORTED_MODULE_4__["load"])(name);
-        if (!!payloads && payloads.length > 0) {
-            if (true) {
-                console.log(`renderReactAsyncReduxClient::client() with component '${name}'`);
-            }
-            payloads.forEach((payload) => {
-                const { node, data } = payload;
-                // console.log('applicationContextClient', applicationContextClient);
-                // console.log('Redux Store', data);
-                const store = reduxStoreCreator(data);
-                const wrappedComponent = react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"].Provider, { value: _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["applicationContextClient"] },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], { store: store },
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](C, null)));
-                react_dom__WEBPACK_IMPORTED_MODULE_1__["hydrate"](wrappedComponent, node);
-            });
-        }
-    }
-});
-
-
-/***/ }),
-
-/***/ "./src/components/LaterText.tsx":
-/*!**************************************!*\
-  !*** ./src/components/LaterText.tsx ***!
-  \**************************************/
-/*! exports provided: LaterText */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LaterText", function() { return LaterText; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _later__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./later */ "./src/components/later.ts");
-
-
-class LaterText extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-        super(props);
-        this.laterContext = undefined;
-        this.state = { text: props.message };
-    }
-    componentWillMount() {
-        this.laterContext = Object(_later__WEBPACK_IMPORTED_MODULE_1__["later"])(1000, () => {
-            this.setState({ text: 'This is the later text after 1 second' });
-            this.laterContext = undefined;
-        });
-    }
-    componentWillUnmount() {
-        if (this.laterContext) {
-            this.laterContext.cancel();
-        }
-    }
-    render() {
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            "LaterText: ",
-            this.state.text));
-    }
-}
-
-
-/***/ }),
-
-/***/ "./src/components/Sheep.tsx":
-/*!**********************************!*\
-  !*** ./src/components/Sheep.tsx ***!
-  \**********************************/
-/*! exports provided: Sheep */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sheep", function() { return Sheep; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-const Sheep = ({ name = 'Serge' }) => {
-    let text = '- and my name is ' + name;
-    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null,
-            "beep beep I'm a sheep ",
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { onClick: () => alert('Im clicked') }, text))));
-};
-
-
-/***/ }),
-
-/***/ "./src/components/Users.tsx":
-/*!**********************************!*\
-  !*** ./src/components/Users.tsx ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
-/* harmony import */ var _store_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/api */ "./src/store/api.ts");
-/* harmony import */ var _store_user_UserActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store/user/UserActions */ "./src/store/user/UserActions.ts");
-
-
-
-
-
-
-class Users extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-        super(props);
-        this.asyncTaskContext = this.props.applicationContext;
-        if (_Environment__WEBPACK_IMPORTED_MODULE_3__["Environment"].isServer) {
-            props.applicationContext.addComponentDidRenderServerSideFunc(this.loadUsers.bind(this));
-        }
-    }
-    async loadUsers() {
-        let getUsersPromise = new Promise(async (resolve, reject) => {
-            try {
-                let users = await Object(_store_api__WEBPACK_IMPORTED_MODULE_4__["getUsers"])(this.asyncTaskContext);
-                this.props.setUsers(users);
-                resolve();
-            }
-            catch (error) {
-                this.props.setUsers([]);
-                console.log('Failed to load users. Offline?');
-                reject();
-            }
-        });
-        this.asyncTaskContext.addTask(getUsersPromise);
-        return getUsersPromise;
-    }
-    componentDidMount() {
-        this.loadUsers();
-    }
-    render() {
-        const { users } = this.props;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, !!users ?
-            users.length === 0 ?
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Could not load users, are you offline?")
-                :
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null, users.map((user) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", { key: user.id },
-                        user.first_name,
-                        " ",
-                        user.last_name))))
-            :
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Loading users...")));
-    }
-}
-const mapStateToProps = (state) => {
-    return {
-        users: state.user.users
-    };
-};
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setUsers: (users) => dispatch(Object(_store_user_UserActions__WEBPACK_IMPORTED_MODULE_5__["createSetUsersAction"])(users))
-    };
-};
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["withApplicationContext"])(Users)));
-
-
-/***/ }),
-
-/***/ "./src/components/later.ts":
-/*!*********************************!*\
-  !*** ./src/components/later.ts ***!
-  \*********************************/
-/*! exports provided: later */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "later", function() { return later; });
-const later = (delay, doit) => {
-    let timer = undefined;
-    let reject = () => { };
-    const promise = new Promise((resolve, _reject) => {
-        reject = _reject;
-        timer = setTimeout(() => { doit(); resolve(); }, delay);
-    });
-    return {
-        get promise() { return promise; },
-        cancel() {
-            if (timer) {
-                clearTimeout(timer);
-                timer = undefined;
-                try {
-                    reject();
-                }
-                catch ( /* sometimes fails */_a) { /* sometimes fails */ }
-                reject = () => { };
-            }
-        }
-    };
-};
-
-
-/***/ }),
-
 /***/ "./src/counter/Counter.tsx":
 /*!*********************************!*\
   !*** ./src/counter/Counter.tsx ***!
@@ -64633,7 +64330,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _components_later__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/later */ "./src/components/later.ts");
+/* harmony import */ var _sample_later__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../sample/later */ "./src/sample/later.ts");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
 /* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
 /* harmony import */ var _CounterActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CounterActions */ "./src/counter/CounterActions.ts");
@@ -64664,7 +64361,7 @@ class Counter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
     doIncrement(asyncTaskContext) {
         if (!!this.props.onIncrement) {
-            const laterContext = Object(_components_later__WEBPACK_IMPORTED_MODULE_2__["later"])(1000, this.props.onIncrement);
+            const laterContext = Object(_sample_later__WEBPACK_IMPORTED_MODULE_2__["later"])(1000, this.props.onIncrement);
             asyncTaskContext.addTask(laterContext.promise);
         }
     }
@@ -64786,8 +64483,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CounterPage; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Header */ "./src/components/Header.tsx");
-/* harmony import */ var _components_Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Footer */ "./src/components/Footer.tsx");
+/* harmony import */ var _sample_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../sample/Header */ "./src/sample/Header.tsx");
+/* harmony import */ var _sample_Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../sample/Footer */ "./src/sample/Footer.tsx");
 /* harmony import */ var _counter_Counter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../counter/Counter */ "./src/counter/Counter.tsx");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
 
@@ -64799,12 +64496,12 @@ __webpack_require__.r(__webpack_exports__);
 class CounterPage extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     render() {
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Counter page"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null, "Everytime you visit the counter page the counter will auto-increment after 1000 milliseconds. You can also increment/decrement the counter using the increment and decrement buttons."),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_counter_Counter__WEBPACK_IMPORTED_MODULE_3__["default"], { applicationContext: _ApplicationContext__WEBPACK_IMPORTED_MODULE_4__["defaultApplicationContext"] })),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
     }
 }
 
@@ -64824,10 +64521,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Header */ "./src/components/Header.tsx");
-/* harmony import */ var _components_Footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Footer */ "./src/components/Footer.tsx");
-/* harmony import */ var _components_Sheep__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Sheep */ "./src/components/Sheep.tsx");
-/* harmony import */ var _components_LaterText__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/LaterText */ "./src/components/LaterText.tsx");
+/* harmony import */ var _sample_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../sample/Header */ "./src/sample/Header.tsx");
+/* harmony import */ var _sample_Footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../sample/Footer */ "./src/sample/Footer.tsx");
+/* harmony import */ var _sample_Sheep__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../sample/Sheep */ "./src/sample/Sheep.tsx");
+/* harmony import */ var _sample_LaterText__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../sample/LaterText */ "./src/sample/LaterText.tsx");
 
 
 
@@ -64842,13 +64539,13 @@ class HomePage extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
     render() {
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Home page"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Sheep__WEBPACK_IMPORTED_MODULE_5__["Sheep"], { name: "MeepMeep" })),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Sheep__WEBPACK_IMPORTED_MODULE_5__["Sheep"], { name: "MeepMeep" })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_LaterText__WEBPACK_IMPORTED_MODULE_6__["LaterText"], { message: "Initial text" })),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_LaterText__WEBPACK_IMPORTED_MODULE_6__["LaterText"], { message: "Initial text" })),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
     }
 }
 const mapStateToProps = (state) => {
@@ -64875,9 +64572,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Header */ "./src/components/Header.tsx");
-/* harmony import */ var _components_Footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Footer */ "./src/components/Footer.tsx");
-/* harmony import */ var _components_Users__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Users */ "./src/components/Users.tsx");
+/* harmony import */ var _sample_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../sample/Header */ "./src/sample/Header.tsx");
+/* harmony import */ var _sample_Footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../sample/Footer */ "./src/sample/Footer.tsx");
+/* harmony import */ var _sample_Users__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../sample/Users */ "./src/sample/Users.tsx");
 
 
 
@@ -64892,14 +64589,14 @@ class UsersPage extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
     render() {
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Users page"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Users__WEBPACK_IMPORTED_MODULE_5__["default"], { applicationContext: this.asyncTaskContext })),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Users__WEBPACK_IMPORTED_MODULE_5__["default"], { applicationContext: this.asyncTaskContext })),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
                 "By the way, the counter value is ",
                 this.props.counterValue),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
     }
 }
 const mapStateToProps = (state) => {
@@ -64990,6 +64687,265 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(Routes));
+
+
+/***/ }),
+
+/***/ "./src/sample/Footer.tsx":
+/*!*******************************!*\
+  !*** ./src/sample/Footer.tsx ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+// tslint:disable:max-line-length
+
+const Footer = ({}) => {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("footer", null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("hr", null),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "I'm a footer")));
+};
+/* harmony default export */ __webpack_exports__["default"] = (Footer);
+
+
+/***/ }),
+
+/***/ "./src/sample/Header.tsx":
+/*!*******************************!*\
+  !*** ./src/sample/Header.tsx ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _ui_ErrorBoundary__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ui/ErrorBoundary */ "./src/ui/ErrorBoundary.tsx");
+// tslint:disable:max-line-length
+
+
+
+
+class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+    constructor(props) {
+        super(props);
+        this.toggleMenu = () => {
+            this.setState({ isMenuOpen: !this.state.isMenuOpen });
+        };
+        this.state = {
+            isMenuOpen: false
+        };
+    }
+    get homeUrl() {
+        return '/';
+    }
+    render() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ui_ErrorBoundary__WEBPACK_IMPORTED_MODULE_3__["ErrorBoundary"], null,
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("header", null,
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: "/" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Home")),
+                    "\u00A0",
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: "/counter" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Counter page")),
+                    "\u00A0",
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], { to: "/users" },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Users page"))),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "I'm a header"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("hr", null))));
+    }
+}
+const mapStateToProps = (state) => {
+    return {};
+};
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps)(Header));
+
+
+/***/ }),
+
+/***/ "./src/sample/LaterText.tsx":
+/*!**********************************!*\
+  !*** ./src/sample/LaterText.tsx ***!
+  \**********************************/
+/*! exports provided: LaterText */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LaterText", function() { return LaterText; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _later__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./later */ "./src/sample/later.ts");
+
+
+class LaterText extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+    constructor(props) {
+        super(props);
+        this.laterContext = undefined;
+        this.state = { text: props.message };
+    }
+    componentWillMount() {
+        this.laterContext = Object(_later__WEBPACK_IMPORTED_MODULE_1__["later"])(1000, () => {
+            this.setState({ text: 'This is the later text after 1 second' });
+            this.laterContext = undefined;
+        });
+    }
+    componentWillUnmount() {
+        if (this.laterContext) {
+            this.laterContext.cancel();
+        }
+    }
+    render() {
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+            "LaterText: ",
+            this.state.text));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/sample/Sheep.tsx":
+/*!******************************!*\
+  !*** ./src/sample/Sheep.tsx ***!
+  \******************************/
+/*! exports provided: Sheep */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sheep", function() { return Sheep; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const Sheep = ({ name = 'Serge' }) => {
+    let text = '- and my name is ' + name;
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null,
+            "beep beep I'm a sheep ",
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { onClick: () => alert('Im clicked') }, text))));
+};
+
+
+/***/ }),
+
+/***/ "./src/sample/Users.tsx":
+/*!******************************!*\
+  !*** ./src/sample/Users.tsx ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _store_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/api */ "./src/store/api.ts");
+/* harmony import */ var _store_user_UserActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store/user/UserActions */ "./src/store/user/UserActions.ts");
+
+
+
+
+
+
+class Users extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+    constructor(props) {
+        super(props);
+        this.asyncTaskContext = this.props.applicationContext;
+        if (_Environment__WEBPACK_IMPORTED_MODULE_3__["Environment"].isServer) {
+            props.applicationContext.addComponentDidRenderServerSideFunc(this.loadUsers.bind(this));
+        }
+    }
+    async loadUsers() {
+        let getUsersPromise = new Promise(async (resolve, reject) => {
+            try {
+                let users = await Object(_store_api__WEBPACK_IMPORTED_MODULE_4__["getUsers"])(this.asyncTaskContext);
+                this.props.setUsers(users);
+                resolve();
+            }
+            catch (error) {
+                this.props.setUsers([]);
+                console.log('Failed to load users. Offline?');
+                reject();
+            }
+        });
+        this.asyncTaskContext.addTask(getUsersPromise);
+        return getUsersPromise;
+    }
+    componentDidMount() {
+        this.loadUsers();
+    }
+    render() {
+        const { users } = this.props;
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, !!users ?
+            users.length === 0 ?
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Could not load users, are you offline?")
+                :
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null, users.map((user) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", { key: user.id },
+                        user.first_name,
+                        " ",
+                        user.last_name))))
+            :
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Loading users...")));
+    }
+}
+const mapStateToProps = (state) => {
+    return {
+        users: state.user.users
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUsers: (users) => dispatch(Object(_store_user_UserActions__WEBPACK_IMPORTED_MODULE_5__["createSetUsersAction"])(users))
+    };
+};
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["withApplicationContext"])(Users)));
+
+
+/***/ }),
+
+/***/ "./src/sample/later.ts":
+/*!*****************************!*\
+  !*** ./src/sample/later.ts ***!
+  \*****************************/
+/*! exports provided: later */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "later", function() { return later; });
+const later = (delay, doit) => {
+    let timer = undefined;
+    let reject = () => { };
+    const promise = new Promise((resolve, _reject) => {
+        reject = _reject;
+        timer = setTimeout(() => { doit(); resolve(); }, delay);
+    });
+    return {
+        get promise() { return promise; },
+        cancel() {
+            if (timer) {
+                clearTimeout(timer);
+                timer = undefined;
+                try {
+                    reject();
+                }
+                catch ( /* sometimes fails */_a) { /* sometimes fails */ }
+                reject = () => { };
+            }
+        }
+    };
+};
 
 
 /***/ }),
@@ -65191,6 +65147,50 @@ const UserReducer = (state = initState, action) => {
             return state;
     }
 };
+
+
+/***/ }),
+
+/***/ "./src/ui/ErrorBoundary.tsx":
+/*!**********************************!*\
+  !*** ./src/ui/ErrorBoundary.tsx ***!
+  \**********************************/
+/*! exports provided: ErrorBoundary */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorBoundary", function() { return ErrorBoundary; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+class ErrorBoundary extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+    constructor(props) {
+        super(props);
+        this.state = { error: undefined, errorInfo: undefined };
+    }
+    componentDidCatch(error, errorInfo) {
+        // Catch errors in any components below and re-render with error message
+        this.setState({
+            error: error,
+            errorInfo: errorInfo
+        });
+        // You can also log error messages to an error reporting service here
+    }
+    render() {
+        if (this.state.errorInfo) {
+            // Error path
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Something went wrong."),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("details", { style: { whiteSpace: 'pre-wrap' } },
+                    this.state.error && this.state.error.toString(),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
+                    this.state.errorInfo.componentStack)));
+        }
+        // Normally, just render children
+        return this.props.children;
+    }
+}
 
 
 /***/ }),

@@ -1,6 +1,9 @@
-This sample Web.App soltion still needs further development. The following things still need to be done:
+This sample Web.App solution still needs further development. The following things still need to be done:
 
 - Improve documentation
+- Create the creationinfo.txt file in HypernovaComponentServer when building server-bundle and Docker image
+- Split creationinfo.txt into two files - building server-bundle and building Docker image
+- Make admin endpoints HypernovaComponentServer available through .NET Core web server 
 - Configure the .NET Core web server Web.App through environment variables instead of the settings.json files
 - Add possibility to render complete "index.html" by HypernovaComponentServer when rendering a 
   SPA (similar to how Hypernova renders AMP pages). This enables the possibility to set title, metadata, JSON-LD etc.

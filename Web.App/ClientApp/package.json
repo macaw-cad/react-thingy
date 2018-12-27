@@ -49,8 +49,8 @@
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
     "build": "react-scripts build",
     "build:dotnet-core": "pushd ..\\.. && dotnet restore && dotnet build && popd",
-    "build:server-bundle:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
-    "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
+    "build:server-bundle:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
+    "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
     "test": "react-scripts test"
   },
