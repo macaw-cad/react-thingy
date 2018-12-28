@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { StaticRouter } from 'react-router';
-import { ConnectedRouter } from 'react-router-redux';
-
+import { StaticRouter, Router } from 'react-router';
 import { history } from '../store/store';
 import { Environment } from '../Environment';
 import { ApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
@@ -28,9 +26,9 @@ export default class ApplicationRoutes extends React.Component<ApplicationRoutes
                                 </StaticRouter>
                             )
                             : (
-                                <ConnectedRouter history={history}>
+                                <Router history={history}>
                                     <Routes />
-                                </ConnectedRouter>
+                                </Router>
                             )
                     );
                 }}
