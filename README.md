@@ -30,7 +30,7 @@ To edit the .NET Core application web open the solution ```Web.App.sln```. When 
 Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.App\ClientApp``` folder - otherwise the configured debugging settings will not work.
 
 The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing scripts
-for developing and building the application. See [README development](./documentation/README.development.md) for more information on how to do development with the solution.
+for developing and building the application. See [README development](./documentation/development.md) for more information on how to do development with the solution.
 
 ## Deploying the solution
 
