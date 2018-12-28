@@ -12,8 +12,6 @@ StrictModes 		yes
 SyslogFacility 		DAEMON
 PrintMotd 		no
 IgnoreRhosts 		no
-#deprecated option 
-#RhostsAuthentication 	no
 RhostsRSAAuthentication yes
 PasswordAuthentication 	yes
 PermitEmptyPasswords 	no
