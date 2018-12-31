@@ -80,7 +80,7 @@ namespace Web.App
 
                     mvcRoutes.MapSpaFallbackRoute(
                         name: "spa-fallback",
-                        defaults: new { controller = "Pwa", action = "Index" });
+                        defaults: new { controller = "SpaSsr", action = "Index" });
                 });
 
                 app.UseSpa(spa =>

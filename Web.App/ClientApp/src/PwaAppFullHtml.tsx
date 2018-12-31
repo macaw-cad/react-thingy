@@ -39,10 +39,13 @@ export class PwaAppFullHtml extends React.Component<PwaAppFullHtmlAllProps> {
                                 <noscript>
                                     You need to enable JavaScript to run this app.
                                 </noscript>
-                                <div id="content">
-                                    {this.props.children}
+                                <div id="root">
+                                    <div data-hypernova-key="HypernovaApp" data-hypernova-id="hydrate-id">
+                                        {this.props.children}
+                                    </div>
+                                    <script type="application/json" data-hypernova-key="HypernovaApp" data-hypernova-id="hydrate-id"><div id="REDUX_DATA"/></script>
                                 </div>
-                                { applicationContextConsumer.applicationContext.cssUrls.map((jsUrl: string, i: number) => <script key={i} src={jsUrl} /> ) }
+                                { applicationContextConsumer.applicationContext.jsUrls.map((jsUrl: string, i: number) => <script key={i} src={jsUrl} /> ) }
                             </body>
                         </html>
                     );

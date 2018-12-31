@@ -7,12 +7,18 @@ import { Environment } from '../Environment';
 import { UserData, getUsers } from '../store/api';
 import { createSetUsersAction } from '../store/user/UserActions';
 
-interface UsersStoreProps {
-  users: UserData[] | null;
-  setUsers: (users: UserData[]) => void;
-}
+type UsersProps = {};
 
-type UsersAllProps = UsersStoreProps & ApplicationContextConsumerProps;
+type UsersStoreProps = {
+  users: UserData[] | null;
+};
+
+type UsersStoreActions = {
+  setUsers: (users: UserData[]) => void;
+};
+
+type UsersAllProps = UsersProps & UsersStoreProps & UsersStoreActions & ApplicationContextConsumerProps;
+
 class Users extends React.Component<UsersAllProps> {
   private asyncTaskContext: AsyncTaskContext;
 
@@ -72,13 +78,13 @@ class Users extends React.Component<UsersAllProps> {
   }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState): UsersStoreProps => {
   return {
-      users: state.user.users
+      users: state.users.users
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action>): UsersStoreActions => {
   return {
       setUsers: (users: UserData[]) => dispatch(createSetUsersAction(users))
   };

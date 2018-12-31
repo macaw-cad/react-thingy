@@ -40,6 +40,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         <Link to="/counter"><button>Counter page</button></Link>
                         &nbsp;
                         <Link to="/users"><button>Users page</button></Link>
+                        &nbsp;
+                        <Link to="/starwars"><button>StarWars page</button></Link>
                     </div>
                     <div>
                         I'm a header

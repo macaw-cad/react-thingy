@@ -120,7 +120,7 @@ namespace Web.App.Hypernova
                     jsUrls = _jsUrlsCache;
                 }
 
-                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, siteUrl, relativeUrl);
+                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, relativeUrl);
                 appHtml = BuildPage(indexHtml, relativeUrl,baseAppUrl, hypernovaResult.ToString());
                 if (_settings.NoCaching == false)
                 {
@@ -174,17 +174,13 @@ namespace Web.App.Hypernova
             }
             else
             {
+                appHtml = hypernovaResult;
                 endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - ssr - -->");
             }
 
             endHeadReplacement.Append("</head>");
 
             appHtml = appHtml.Replace("</head>", endHeadReplacement.ToString());
-
-            if (!String.IsNullOrWhiteSpace(hypernovaResult))
-            {
-                appHtml = appHtml.Replace("<div id=\"root\"></div>", "<div id=\"root\">" + hypernovaResult + "</div>"); // last for performance
-            }
 
             return appHtml;
         }
@@ -260,13 +256,13 @@ namespace Web.App.Hypernova
                 }
             }
 
-            foreach (Match cssMatch in Regex.Matches(indexHtml, @"<link\shref=""(\/static\/ css\/.+?)""\srel=""stylesheet""", RegexOptions.IgnoreCase))
+            foreach (Match cssMatch in Regex.Matches(indexHtml, @"<link\shref=""([^""]+?)""\srel=""stylesheet""", RegexOptions.IgnoreCase))
             {
                 cssUrlsList.Add(cssMatch.Value);
             }
-            foreach (Match jsMatch in Regex.Matches(indexHtml, @"<script\ssrc=""(\/static\/ js\/.+?)""><\/script>", RegexOptions.IgnoreCase))
+            foreach (Match jsMatch in Regex.Matches(indexHtml, @"<script\ssrc=""([^""]+?)""><\/script>", RegexOptions.IgnoreCase))
             {
-                cssUrlsList.Add(jsMatch.Value);
+                jsUrlsList.Add(jsMatch.Groups[1].Value);
             }
 
             return (cssUrlsList.ToArray(), jsUrlsList.ToArray());

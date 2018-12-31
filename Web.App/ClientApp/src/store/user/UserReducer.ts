@@ -1,13 +1,15 @@
-import { ActionTypes, TypeKeys } from './UserActions';
+import { UserActionTypes, TypeKeys } from './UserActions';
 import { UserData } from '../api';
+import { Action } from 'redux';
 
 export interface UserState {
   readonly users: UserData[] | null; // null = not loaded yet, [] = failed to load
 }
 
-export const initState: UserState = { users: null };
+const initialState: UserState = { users: null };
 
-export const UserReducer = (state = initState, action: ActionTypes): UserState => {
+export const UserReducer = (state = initialState, actionAny: Action): UserState => {
+  const action: UserActionTypes = actionAny as UserActionTypes;
   switch (action.type) {
     case TypeKeys.SET_USERS:
       return { ...state, users: action.payload };

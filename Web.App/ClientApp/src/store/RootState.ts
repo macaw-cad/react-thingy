@@ -4,7 +4,6 @@ import { StarWarsState } from '../starwars/StarWarsState';
 
 export interface RootState {
     counter: CounterState;
-    user: UserState;
-
+    users: UserState;
     starWars: StarWarsState;
 }

@@ -8,17 +8,17 @@ import { ServerApiProxy } from '../api/ServerApiProxy';
 import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
 import { createSetStarWarsPeopleAction } from './StarWarsActions';
 import { AsyncData } from '../store/api';
+import { StarWarsPeopleState } from './StarWarsPeopleState';
+import { FilledStarWarsState } from './StarWarsState';
 
-type StarWarsPeopleProps = {
-
-};
+type StarWarsPeopleProps = {};
 
 type StarWarsPeopleStoreProps = {
-    people: AsyncData<ApiStarWarsPerson[]> | null;
+    people: AsyncData<ApiStarWarsPerson[]>;
 };
 
 type StarWarsPeopleStoreActions = {
-    setStarWarsPeople: (starwars: ApiStarWarsPerson[]) => void;
+    setStarWarsPeople: (people: ApiStarWarsPerson[]) => void;
 };
 
 type StarWarsPeopleAllProps = StarWarsPeopleProps & StarWarsPeopleStoreProps & StarWarsPeopleStoreActions & ApplicationContextConsumerProps;
@@ -54,13 +54,15 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState): StarWarsPeopleStoreProps => {
+    const starWarsState = state.starWars as FilledStarWarsState;
+
     return {
-        people: state.starWars.people
+        people: starWarsState.people.people
     };
 };
       
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action>): StarWarsPeopleStoreActions => {
     return {
         setStarWarsPeople: (people: ApiStarWarsPerson[]) => dispatch(createSetStarWarsPeopleAction(people))
     };

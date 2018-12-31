@@ -9,7 +9,7 @@ export interface SetUsersAction {
   payload: UserData[];
 }
 
-export type ActionTypes = 
+export type UserActionTypes = 
   | SetUsersAction;
 
 export const createSetUsersAction = (payload: UserData[]) => ({type: TypeKeys.SET_USERS, payload});

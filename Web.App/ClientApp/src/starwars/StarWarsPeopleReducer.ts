@@ -1,14 +1,15 @@
 import { StarWarsPeopleState } from './StarWarsPeopleState';
-import { SetStarWarsPeopleAction, ActionTypes, TypeKeys } from './StarWarsActions';
+import { SetStarWarsPeopleAction, StarWarsActionTypes, TypeKeys } from './StarWarsActions';
 import { Action } from 'redux';
-export const starWarsPeopleInitialState: StarWarsPeopleState = {
+
+const initialState: StarWarsPeopleState = {
     people: {
         loading: false,
     }
 };
 
-export function reduceStarWarsPeople(state: StarWarsPeopleState = starWarsPeopleInitialState, actionAny: Action): StarWarsPeopleState {
-    const action: ActionTypes = actionAny as ActionTypes;
+export function reduceStarWarsPeople(state: StarWarsPeopleState = initialState, actionAny: Action): StarWarsPeopleState {
+    const action: StarWarsActionTypes = actionAny as StarWarsActionTypes;
 
     switch (action.type) {
         case TypeKeys.SET_STARWARSPEOPLE:

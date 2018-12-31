@@ -1,5 +1,7 @@
 import { StarWarsPeopleState } from './StarWarsPeopleState';
 
-export type StarWarsState = {
+export type FilledStarWarsState = {
   people: StarWarsPeopleState;
 };
+
+export type StarWarsState = FilledStarWarsState | undefined;
