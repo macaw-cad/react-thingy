@@ -16,48 +16,6 @@ export interface UserData {
   avatar: string;
 }
 
-export const getUsersOld = (asyncTaskContext: AsyncTaskContext) => {
-  if (process.env.NODE_ENV === 'development') { 
-    var getUsersTimerName = `getUsers(random:${Math.random()})`;
-    console.time(getUsersTimerName); 
-  }
-  
-  const promise = new Promise<UserData[]>(resolve => {
-    const getUsersPromise = fetch('https://reqres.in/api/users?per_page=10', {
-      method: 'GET',
-    }).then((res: any) => {
-      if (process.env.NODE_ENV === 'development') { console.timeEnd(getUsersTimerName); }
-      
-      if (res.status === 200) {
-        let json: any = res.json();
-        let users: UserData[] = json.data;
-        resolve(users);
-      } else {
-        resolve([]);
-      }
-    });
-    asyncTaskContext.addTask(getUsersPromise);
-  });
-  asyncTaskContext.addTask(promise);
-  return promise;
-};
-
-// export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]> {
-//   let getUsersPromise: Promise<UserData[]> = new Promise((resolve, reject) => {
-//     fetch('https://reqres.in/api/users?per_page=10')
-//       .then(res => res.json())
-//       .then(res => {
-//         resolve(res.data);
-//       })
-//       .catch(error => {
-//         reject(error);
-//       });
-//   });
-
-//   asyncTaskContext.addTask(getUsersPromise);
-//   return getUsersPromise;
-// }
-
 export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]> {
   let getUsersPromise: Promise<UserData[]> = new Promise((resolve, reject) => {
     fetch('https://reqres.in/api/users?per_page=10')

@@ -38,7 +38,8 @@
     "typescript": "3.1.6",
     "url-join": "^4.0.0",
     "webpack": "4.19.1",
-    "webpack-bundle-analyzer": "^3.0.3"
+    "webpack-bundle-analyzer": "^3.0.3",
+    "typed-rest-client-local": "file:./local_modules/typed-rest-client-local"
   },
   "scripts": {
     "start": "react-scripts start",
