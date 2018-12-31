@@ -36,3 +36,14 @@ The following scripts are available:
 
 - ```Docker\DockerPushWebApp.bat``` - Push the Web.App Docker image to the configured repository
 
+## Docker image registry
+
+There are multiple choices for a Docker image registry, for example the registry of the company behind Docker and the Azure container registry.
+
+
+## Azure Web App for Containers
+
+Azure provides a simple way to run your Docker image using [Web App for Containers](https://docs.microsoft.com/en-us/azure/app-service/containers/).
+
+Required setting to expose the correct port 80 of the .NET Core web server: ```WEBSITES_PORT: 80``` (Azure Web App for Containers uses automatic port detection and otherwise selects the wrong port). See [Azure App Service on Linux FAQ](https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-faq) for more information.
+

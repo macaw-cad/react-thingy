@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Web.App.Hypernova;
+using Web.App.HypernovaComponentServer;
+using Web.App.JsonServer;
 
 namespace Web.App
 {
@@ -23,7 +25,7 @@ namespace Web.App
         public void ConfigureServices(IServiceCollection services)
         {
             var mvc = services.AddMvc();
-            mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             mvc.AddRazorPagesOptions(options => {
                 options.RootDirectory = "/Pages";
             });
@@ -35,6 +37,8 @@ namespace Web.App
 
             // app specific
             services.AddHypernovaSettings(this.Configuration);
+            services.AddHypernovaComponentServerSettings(this.Configuration);
+            services.AddJsonServerSettings(this.Configuration);
 
             // When not in development, replace by a real distributed cache implementation
             services.AddDistributedMemoryCache();

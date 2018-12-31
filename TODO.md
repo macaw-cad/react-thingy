@@ -24,3 +24,9 @@ This sample Web.App solution still needs further development. The following thin
     "service-worker.js": "/service-worker.js"
   }
   ```
+  - Use NGINX within the Docker container so we can map multiple ports (jsonserver) as a subpath under the .NET Core web app.
+    We need a local running Docker containing with a mounted config file for development, so subpath keep working.
+    - https://medium.com/shiphp/building-a-custom-nginx-docker-image-with-environment-variables-in-the-config-4a0c36c4a617
+    - https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.2
+    - https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2
+

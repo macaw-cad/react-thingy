@@ -56,10 +56,9 @@ namespace Web.App.Hypernova
 
         /// <summary>
         /// Render a React component server-side with an initial Redux state and support for async calls using the Hypernova Component Server.
-        /// This function is especially useful to server-side render a complete SPA React application.
         /// </summary>
         /// <param name="componentName">The name of the React component.</param>
-        /// <param name="relativeUrl">The relative url, useful in case of rendering a SPA React application with routing.</param>
+        /// <param name="relativeUrl">The relative url, useful in case of rendering a React component with routing.</param>
         /// <param name="jsonSerializedReduxState">The initial Redux state to start with.</param>
         /// <param name="baseUrl">The base url of the website for prefixing relative ajax calls. If not
         /// explicitly specified it can be configured with the <c>ComponentServerBaseUrlOverride</c> appsetting.</param>
@@ -78,7 +77,41 @@ namespace Web.App.Hypernova
 
             baseUrl = ResolveBaseUrl(baseUrl);
 
-            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"isAmp\": false }} }} }} }}";
+            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"cssUrls\": [], \"jsUrls\": [], \"isAmp\": false }} }} }} }}";
+
+            var result = await RenderHypernovaComponents(componentName, postBody);
+            return result;
+        }
+
+        /// <summary>
+        /// Render a React SPA application server-side with an initial Redux state and support for async calls using the Hypernova Component Server.
+        /// This function can server-side render a complete SPA React application.
+        /// </summary>
+        /// <param name="componentName">The name of the React component.</param>
+        /// <param name="relativeUrl">The relative url, useful in case of rendering a SPA React application with routing.</param>
+        /// <param name="cssUrls">CSS urls to be included in the head.</param>
+        /// <param name="jsUrls">JavaScript urls to be included at the end of the body.</param>
+        /// <param name="jsonSerializedReduxState">The initial Redux state to start with.</param>
+        /// <param name="baseUrl">The base url of the website for prefixing relative ajax calls. If not
+        /// explicitly specified it can be configured with the <c>ComponentServerBaseUrlOverride</c> appsetting.</param>
+        /// <returns>The resulting server-side rendered HTML - this must be a complete HTML page.</returns>
+        public async Task<IHtmlContent> ReactAsyncReduxSpa(
+            string componentName,
+            string[] cssUrls,
+            string[] jsUrls,
+            string relativeUrl = "",
+            string jsonSerializedReduxState = null,
+            string baseUrl = null
+        )
+        {
+            if (String.IsNullOrWhiteSpace(jsonSerializedReduxState))
+            {
+                jsonSerializedReduxState = "{}";
+            }
+
+            baseUrl = ResolveBaseUrl(baseUrl);
+
+            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"cssUrls\": {JsonConvert.SerializeObject(cssUrls)}, \"jsUrls\": {JsonConvert.SerializeObject(jsUrls)}, \"isAmp\": false }} }} }} }}";
 
             var result = await RenderHypernovaComponents(componentName, postBody);
             return result;

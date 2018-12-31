@@ -1,24 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text.RegularExpressions;
 
 namespace Web.App.Hypernova
 {
     public class SpaSsr
     {
-        private const string AppBaseUrl = "/";
+        private const string DefaultBaseAppUrl = "/";
+
+        private readonly HypernovaClient _hypernovaClient;
 
         private readonly ILogger _logger;
         private readonly IHostingEnvironment _env;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly HypernovaSettings _settings;
         private readonly IDistributedCache _cache;
+
+        private static string _indexHtmlCache = null;
+        private static bool _cssAndJsUrlsCached = false;
+        private static string[] _cssUrlsCache;
+        private static string[] _jsUrlsCache;
 
         public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
@@ -27,43 +37,41 @@ namespace Web.App.Hypernova
             _httpClientFactory = httpClientFactory;
             _settings = options.Value;
             _cache = cache;
+
+            _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options);
+
         }
 
-        public SpaSsrResult RenderAppClientSide(HypernovaClient hypernovaClient, string appHtmlPath, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null)
+        /// <summary>
+        /// Render the SPA application client-side.
+        /// </summary>
+        /// <remarks>Resulting html wil contain the string: '- ssr:off -'.</remarks>
+        /// <param name="relativeUrl">The relative url of the route to show in the SPA, i.e. '/about' (or '/myapp/about' in case of baseAppUrl).</param>
+        /// <param name="baseAppUrl">The relative base app url if other than '/', i.e. '/myapp'.</param>
+        /// <returns></returns>
+        public async Task<SpaSsrResult> RenderSpaClientSide(string relativeUrl, string baseAppUrl = null)
         {
-            string appHtml;
-
-            if (!File.Exists(appHtmlPath))
-            {
-                throw new HypernovaException($"Path '{appHtmlPath}' to the app html file does not exist.");
-            }
-
-            try
-            {
-                appHtml = System.IO.File.ReadAllText(appHtmlPath);
-            }
-            catch (Exception ex)
-            {
-                throw new HypernovaException($"Failed to read app html from path '{appHtmlPath}'", ex);
-            }
-
-            appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl);
+            var indexHtml = await GetIndexHtml();
+            var appHtml = BuildPage(indexHtml, null, relativeUrl, baseAppUrl);
             return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
         }
 
         /// <summary>
-        /// 
+        /// Render the SPA application client-side.
         /// </summary>
-        /// <param name="relativeAppUrl">The relative url within the app, used to make calls to Hypernova, will be prefixed with /app when rewriting the client url</param>
-        /// <param name="canonicalUrl">The canonical url to use for this page, the "server-side" entry opint url</param>
+        /// <param name="siteUrl">Url of the website, i.e. 'https://www.mywebsite.com'.</param>
+        /// <param name="relativeUrl">The relative url of the route to show in the SPA, i.e. '/about' (or '/myapp/about' in case of baseAppUrl).</param>
+        /// <param name="cacheDuration">Cache duration.</param>
+        /// <param name="baseAppUrl">The relative base app url if other than '/' (default), i.e. '/myapp'.</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public async Task<SpaSsrResult> RenderAppServerSide(HypernovaClient hypernovaClient, string relativeAppUrl, SpaSsrData renderData, TimeSpan cacheDuration, string baseAppUrl = null)
+        public async Task<SpaSsrResult> RenderSpaServerSide(string siteUrl, string relativeUrl, TimeSpan cacheDuration, string baseAppUrl = "/")
         {
-            string appHtml = null;
+            string indexHtml;
+            string appHtml;
 
             if (_settings.NoCaching == false)
             {
-                appHtml = await _cache.GetStringAsync(relativeAppUrl);
+                appHtml = await _cache.GetStringAsync(relativeUrl);
                 // If we have a cache and the rendered version is available in the cache return it, "mark" the ssr as "from cache"
                 if (appHtml != null)
                 {
@@ -72,29 +80,52 @@ namespace Web.App.Hypernova
                 }
             }
 
-            try
+            if (_indexHtmlCache == null)
             {
-                appHtml = await GetAppHtml();
+                indexHtml = await GetIndexHtml();
+                if (_env.IsProduction())
+                {
+                    _indexHtmlCache = indexHtml;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw new HypernovaException($"Failed to retrieve app html", ex);
+                indexHtml = _indexHtmlCache;
             }
 
             if (_settings.FallbackToClientSideRenderingOnly)
             {
-                appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl);
+                appHtml = BuildPage(indexHtml, siteUrl, relativeUrl, baseAppUrl);
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
             }
 
             try
             {
-                var hypernovaResult = await hypernovaClient.ReactAsyncRedux("pwa:HypernovaApp", relativeAppUrl);
-                appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl, hypernovaResult.ToString());
+                string[] cssUrls;
+                string[] jsUrls;
+                if (!_cssAndJsUrlsCached)
+                {
+                    string assetManifestJson = _env.IsProduction() ? await GetAssetManifestJson() : null;
+                    (cssUrls, jsUrls) = ParseCra2HtmlForCssAndJs(indexHtml, assetManifestJson);
+                    if (_env.IsProduction())
+                    {
+                        _cssAndJsUrlsCached = true;
+                        _cssUrlsCache = cssUrls;
+                        _jsUrlsCache = jsUrls;
+                    }
+                }
+                else
+                {
+                    cssUrls = _cssUrlsCache;
+                    jsUrls = _jsUrlsCache;
+                }
+
+                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, siteUrl, relativeUrl);
+                appHtml = BuildPage(indexHtml, relativeUrl,baseAppUrl, hypernovaResult.ToString());
                 if (_settings.NoCaching == false)
                 {
                     DateTime absoluteExpiration = DateTime.Now.Add((TimeSpan)cacheDuration);
-                    await _cache.SetStringAsync(relativeAppUrl, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
+                    await _cache.SetStringAsync(relativeUrl, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
                 }
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, Exception = null };
             }
@@ -104,7 +135,7 @@ namespace Web.App.Hypernova
                 _logger.LogCritical((new Exception($"Hypernova component rendering failed: {ex.Message}", ex)).ToString());
 
                 // fall back to client-side rendering
-                appHtml = BuildPage(appHtml, relativeAppUrl, renderData, baseAppUrl);
+                appHtml = BuildPage(indexHtml, relativeUrl, baseAppUrl);
 
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false, Exception = new HypernovaException(ex.Message) };
             }
@@ -114,56 +145,24 @@ namespace Web.App.Hypernova
         /// 
         /// </summary>
         /// <param name="appHtml">The prestine app index.html page</param>
-        /// <param name="relativeAppUrl">The relative url of the app page we are rendering</param>
-        /// <param name="renderData">The initial data to render the page with</param>
+        /// <param name="relativeUrl">The relative url of the app page we are rendering</param>
         /// <param name="baseAppUrl">The base url of the app</param>
         /// <param name="hypernovaResult">If null server-side rendering is off</param>
         /// <returns></returns>
-        private static string BuildPage(string appHtml, string relativeAppUrl, SpaSsrData renderData, string baseAppUrl = null, string hypernovaResult = null)
+        private static string BuildPage(string appHtml, string relativeUrl, string baseAppUrl = null, string hypernovaResult = null)
         {
-            StringBuilder metaTags = new StringBuilder();
-            StringBuilder endOfBodyScripts = new StringBuilder();
-
-            if (renderData.MetaData != null)
-            {
-                foreach (var meta in renderData.MetaData)
-                {
-                    metaTags.Append($"<meta name='{meta.Name}' content='{meta.Content}'/>");
-                }
-            }
-
-            if (renderData.EndOfBodyScripts != null)
-            {
-                foreach (var script in renderData.EndOfBodyScripts)
-                {
-                    endOfBodyScripts.Append($"<script src='{script}'></script>");
-                }
-            }
-
             StringBuilder endHeadReplacement = new StringBuilder();
 
-            if (!String.IsNullOrEmpty(renderData.Title))
-            {
-                appHtml = (new System.Text.RegularExpressions.Regex("<title>.*?</title>")).Replace(appHtml, $"<title>{renderData.Title}</title>", 1);
-            }
-
             // Only rewrite url on the client if we have a baseAppUrl
-            if (baseAppUrl != null)
+            if (baseAppUrl != null && baseAppUrl != "/")
             {
                 if (baseAppUrl.EndsWith("/"))
                 {
                     baseAppUrl = baseAppUrl.Remove(baseAppUrl.Length - 1);
                 }
-                var appUrl = baseAppUrl + (relativeAppUrl == "/" ? "" : relativeAppUrl);
+                var appUrl = baseAppUrl + (relativeUrl == "/" ? "" : relativeUrl);
                 endHeadReplacement.Append($"<script>window.history.replaceState({{}}, '', '{appUrl}');</script>");
             }
-
-            if (!String.IsNullOrWhiteSpace(renderData.CanonicalUrl))
-            {
-                endHeadReplacement.Append($"<link rel='canonical' href='{renderData.CanonicalUrl}' />");
-            }
-
-            endHeadReplacement.Append(metaTags);
 
             if (hypernovaResult == null)
             {
@@ -181,36 +180,96 @@ namespace Web.App.Hypernova
             endHeadReplacement.Append("</head>");
 
             appHtml = appHtml.Replace("</head>", endHeadReplacement.ToString());
-            appHtml = appHtml.Replace("</body>", endOfBodyScripts.ToString());
 
-            if (!String.IsNullOrWhiteSpace(hypernovaResult)) {
-                appHtml = AddHypernovaRenderedReactCode(hypernovaResult, appHtml); // last for performance
+            if (!String.IsNullOrWhiteSpace(hypernovaResult))
+            {
+                appHtml = appHtml.Replace("<div id=\"root\"></div>", "<div id=\"root\">" + hypernovaResult + "</div>"); // last for performance
             }
 
             return appHtml;
         }
 
-        private static string AddHypernovaRenderedReactCode(string hypernovaResult, string appHtml)
+        private async Task<string> GetIndexHtml()
         {
-            appHtml = appHtml.Replace("<div id=\"root\"></div>", "<div id=\"root\">" + hypernovaResult + "</div>");
-            return appHtml;
-        }
+            string indexHtml;
 
-        private async Task<string> GetAppHtml()
-        {
             if (_env.IsDevelopment())
             {
                 var client = _httpClientFactory.CreateClient();
                 var indexHtmlResponse = await client.GetAsync("http://localhost:3000?prestine");
-                var indexHtml = await indexHtmlResponse.Content.ReadAsStringAsync();
-                return indexHtml;
+                if (indexHtmlResponse.IsSuccessStatusCode)
+                {
+                    indexHtml = await indexHtmlResponse.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    throw new HypernovaException($"Failed to read index.html from url 'http://localhost:3000?prestine'");
+                }
             }
             else
             {
                 var indexHtmlFileInfo = _env.ContentRootFileProvider.GetFileInfo("ClientApp/build/index.html");
-                var indexHtml = await File.ReadAllTextAsync(indexHtmlFileInfo.PhysicalPath);
-                return indexHtml;
+                try
+                {
+                    indexHtml = await File.ReadAllTextAsync(indexHtmlFileInfo.PhysicalPath);
+                }
+                catch (Exception ex)
+                {
+                    throw new HypernovaException($"Failed to read index.html from path '{indexHtmlFileInfo.PhysicalPath}'", ex);
+                }
             }
+            return indexHtml;
+        }
+
+        private async Task<string> GetAssetManifestJson()
+        {
+            if (_env.IsDevelopment())
+            {
+                return null;
+            }
+            else
+            {
+                var assetManifestJsonFileInfo = _env.ContentRootFileProvider.GetFileInfo("ClientApp/build/asset-manifest.json");
+                var assetManifestJson = await File.ReadAllTextAsync(assetManifestJsonFileInfo.PhysicalPath);
+                return assetManifestJson;
+            }
+        }
+
+        /// <summary>
+        /// Determine the used CSS and JavaScript files for a non-ejected Create React App 2 installation.
+        /// </summary>
+        /// <remarks>
+        /// When CRA2 build the production build/index.html it adds the contents of runtime~main.js inline,
+        /// reference the file as a js file.
+        /// </remarks>
+        /// <param name="indexHtml">Contents of the index.html file to parse.</param>
+        /// <param name="assetManifestJson">Contents of the asset-manifest.json file, or null</param>
+        /// <returns>A tuple with the found css and js urls.</returns>
+        private (string[] CssUrls, string[] JsUrls) ParseCra2HtmlForCssAndJs(string indexHtml, string assetManifestJson)
+        {
+            var cssUrlsList = new List<string>();
+            var jsUrlsList = new List<string>();
+
+            if (!String.IsNullOrWhiteSpace(assetManifestJson))
+            {
+                var assetManifest = JObject.Parse(assetManifestJson);
+                var runtimeMainJsToken = assetManifest["runtime~main.js"];
+                if (runtimeMainJsToken != null)
+                {
+                    jsUrlsList.Add(runtimeMainJsToken.ToString());
+                }
+            }
+
+            foreach (Match cssMatch in Regex.Matches(indexHtml, @"<link\shref=""(\/static\/ css\/.+?)""\srel=""stylesheet""", RegexOptions.IgnoreCase))
+            {
+                cssUrlsList.Add(cssMatch.Value);
+            }
+            foreach (Match jsMatch in Regex.Matches(indexHtml, @"<script\ssrc=""(\/static\/ js\/.+?)""><\/script>", RegexOptions.IgnoreCase))
+            {
+                cssUrlsList.Add(jsMatch.Value);
+            }
+
+            return (cssUrlsList.ToArray(), jsUrlsList.ToArray());
         }
     }
 }
