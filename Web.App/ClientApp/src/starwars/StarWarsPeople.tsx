@@ -10,6 +10,7 @@ import { createSetStarWarsPeopleAction } from './StarWarsActions';
 import { AsyncData } from '../store/api';
 import { StarWarsPeopleState } from './StarWarsPeopleState';
 import { FilledStarWarsState } from './StarWarsState';
+import { ComponentStatus } from '../ui/componentStatus/ComponentStatus';
 
 type StarWarsPeopleProps = {};
 
@@ -30,11 +31,11 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
     constructor(props: StarWarsPeopleAllProps) {
       super(props);
   
-      this.serverApiProxy = new ServerApiProxy();
+      this.serverApiProxy = new ServerApiProxy(props.applicationContext.baseUrl);
       this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
   
       if (Environment.isServer) {
-        props.applicationContext.addComponentDidRenderServerSideFunc(this.loadStarWarsPeople.bind(this));
+        this.asyncTaskContext.addTask(this.loadStarWarsPeople());
       }
     }
 
@@ -42,15 +43,37 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
         this.loadStarWarsPeople();
     }
 
-    private async loadStarWarsPeople(): Promise<string> {
-        var starWarsPeoplePromise = this.serverApiProxy.getStarWarsPeople();
-        this.asyncTaskContext.addTask(starWarsPeoplePromise);
-
-        return starWarsPeoplePromise;
-    }
+    private loadStarWarsPeople(): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const starWarsPeople: ApiStarWarsPerson[] = await this.serverApiProxy.getStarWarsPeople();
+            this.props.setStarWarsPeople(starWarsPeople);
+            resolve();
+          } catch (error) {
+            this.props.setStarWarsPeople([]);
+            console.log('Failed to load StarWarsPeople. Offline?');
+            reject();
+          }
+        });
+      }
 
     public render(): React.ReactNode {
-        return(<div />);
+        const { people: { loading, data } } = this.props;
+        return (
+          <div>
+                <h2>StarWars People</h2>
+                <ComponentStatus loading={[loading]} data={[data]} />
+                { data &&
+                  <ul>
+                    { data.map((person: ApiStarWarsPerson) => (
+                      <li key={person.name}>
+                        {person.name} - {person.weight}kg, hair: {person.hairColor}
+                      </li>
+                    )) }
+                  </ul>
+                }   
+          </div>
+        );    
     }
 }
 

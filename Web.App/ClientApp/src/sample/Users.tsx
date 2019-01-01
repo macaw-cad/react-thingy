@@ -25,15 +25,17 @@ class Users extends React.Component<UsersAllProps> {
   constructor(props: UsersAllProps) {
     super(props);
 
+    this.loadUsers = this.loadUsers.bind(this);
+
     this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
 
     if (Environment.isServer) {
-      props.applicationContext.addComponentDidRenderServerSideFunc(this.loadUsers.bind(this));
+      this.asyncTaskContext.addTask(this.loadUsers());
     }
   }
 
-  private async loadUsers(): Promise<void> {
-    let getUsersPromise: Promise<void> = new Promise(async (resolve, reject) => {
+  private loadUsers(): Promise<void> {
+    return new Promise(async (resolve, reject) => {
       try {
         let users: UserData[] = await getUsers(this.asyncTaskContext);
         this.props.setUsers(users);
@@ -44,14 +46,12 @@ class Users extends React.Component<UsersAllProps> {
         reject();
       }
     });
-
-    this.asyncTaskContext.addTask(getUsersPromise);
-    return getUsersPromise;
-    
   }
 
-  public componentDidMount(): void {
-    this.loadUsers();
+  public async componentDidMount(): Promise<void> {
+    if (!this.props.users) {
+      this.loadUsers();
+    }
   }
 
   public render(): React.ReactNode {

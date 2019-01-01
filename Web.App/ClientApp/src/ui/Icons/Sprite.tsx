@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { StyleSheet, css, StyleDeclarationValue } from 'aphrodite';
+// import { StyleSheet, css, StyleDeclarationValue } from 'aphrodite';
 
 // Code to obtain original viewBox
 // var clientrect = document.querySelector('svg path').getBBox();console.log(clientrect.x+' '+clientrect.y+' '+clientrect.width+' '+clientrect.height);
 
-const styles = StyleSheet.create({
-    icon: {
-        display: 'block',
-        userSelect: 'none'
-    },
-    svg: {
-        display: 'block'
-    }
-});
+// const styles = StyleSheet.create({
+//     icon: {
+//         display: 'block',
+//         userSelect: 'none'
+//     },
+//     svg: {
+//         display: 'block'
+//     }
+// });
 
 export const sprite: any = {
     hamburger: (
-        <svg version="1.1" viewBox="0 0 26 26" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 26 26" className={'' /* css(styles.svg) */}>
             <g id="Service-Request---Form" fill="none" stroke="none" strokeWidth="1" >
                 <g id="Mobile---Service-Request-Form" transform="translate(-2, 0)">
                     <g id="Icon-/-Hamburger---25px-/-White">
@@ -30,7 +30,7 @@ export const sprite: any = {
         </svg >
     ),
     close: (
-        <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" fillRule="evenodd">
                 <g id="Design-System---Icons" transform="translate(-194 -418)">
                     <g id="Icon-/-Close---25px-/-Black" transform="translate(193 417)">
@@ -45,7 +45,7 @@ export const sprite: any = {
         </svg>
     ),
     enlarge: (
-        <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Tablet" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Tablet---Portfolio" transform="translate(-957.000000, -291.000000)">
                     <g id="Molecule-/-Rolodex-Header-/-Default" transform="translate(353.000000, 278.000000)">
@@ -62,7 +62,7 @@ export const sprite: any = {
         </svg>
     ),
     shrink: (
-        <svg viewBox="0 0 11 11" version="1.1" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 11 11" version="1.1" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Tablet" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Tablet---Portfolio-(expanded)" transform="translate(-957.000000, -156.000000)">
                     <g id="Molecule-/-Rolodex-Header-/-Default" transform="translate(353.000000, 143.000000)">
@@ -79,7 +79,7 @@ export const sprite: any = {
         </svg>
     ),
     user: (
-        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Rolodex---Secondary-Navigation" fill="none" fillRule="evenodd">
                 <g id="Mobile---Secondary-Menu" fill="currentColor">
                     <g id="Artboard-1-copy-7" transform="translate(0, 1)">
@@ -93,7 +93,7 @@ export const sprite: any = {
         </svg>
     ),
     chevron: (
-        <svg version="1.1" viewBox="0 0 25 25" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 25 25" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" stroke="none" strokeWidth="1">
                 <g id="Design-System---Icons">
                     <g id="Icon-/-Chevron-Right---25px-/-White">
@@ -107,7 +107,7 @@ export const sprite: any = {
         </svg>
     ),
     search: (
-        <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" fillRule="evenodd">
                 <g id="Design-System---Icons" transform="translate(-241 -777)">
                     <g id="Icon-/-Search-/-Gray-80%" transform="translate(240 776)">
@@ -122,7 +122,7 @@ export const sprite: any = {
         </svg>
     ),
     check: (
-        <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" fillRule="evenodd">
                 <g id="Design-System---Icons">
                     <g id="Icon-/-Check---25px-/-Green">
@@ -137,14 +137,14 @@ export const sprite: any = {
         </svg>
     ),
     officePhone: (
-        <svg viewBox="0 0 13.800010681152344 13.800568580627441" version="1.1" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 13.800010681152344 13.800568580627441" version="1.1" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Tablet" stroke="none" strokeWidth="1" fill="currentColor" fillRule="evenodd">
                 <path d="M-1.16550039e-16,3.42 C-0.00105196528,3.76121091 0.076989857,4.09802299 0.228,4.404 C1.20191567,6.38197867 2.49753884,8.18449666 4.062,9.738 C5.61665456,11.3011105 7.41893464,12.5965627 9.396,13.572 C10.2695175,13.9969183 11.3166477,13.8183754 12,13.128 L13.8,11.328 L10.104,7.65 L8.628,9.108 C7.8323994,8.64486074 7.10198543,8.07788193 6.456,7.422 C5.80950626,6.77517929 5.25255517,6.04468548 4.8,5.25 L6.258,3.75 L2.478,0 L0.678,1.8 C0.245881411,2.22856747 0.00195478082,2.81140101 -1.16550039e-16,3.42 Z M1.434,2.562 L2.478,1.524 L4.722,3.762 L3.48,5.04 L3.63,5.37 C4.15273881,6.41691299 4.85081851,7.36662607 5.694,8.178 C6.50746288,9.02459707 7.4590418,9.72661478 8.508,10.254 L8.844,10.404 L10.098,9.162 L12.276,11.322 L11.238,12.372 C10.8779274,12.7325281 10.3294332,12.8263495 9.87,12.606 C7.99397793,11.6896756 6.28118361,10.4714633 4.8,9 C3.3345782,7.52638091 2.11869207,5.82414033 1.2,3.96 C0.965044071,3.49279445 1.05970958,2.9272287 1.434,2.562 Z" id="Shape" fillRule="nonzero" />
             </g>
         </svg>
     ),
     mobilePhone: (
-        <svg version="1.1" viewBox="0 0 23 23" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 23 23" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" stroke="none" strokeWidth="1">
                 <g id="Design-System---Icons" transform="translate(-196.000000, -912.000000)">
                     <g id="Icon-/-Smartphone---25px-/-Black" transform="translate(195.000000, 911.000000)">
@@ -160,7 +160,7 @@ export const sprite: any = {
         </svg>
     ),
     envelope: (
-        <svg version="1.1" viewBox="0 0 23 23" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 23 23" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" stroke="none" strokeWidth="1">
                 <g id="Design-System---Icons" transform="translate(-196.000000, -1003.000000)">
                     <g id="Icon-/-Mail---25px-/-Black" transform="translate(195.000000, 1001.000000)">
@@ -175,7 +175,7 @@ export const sprite: any = {
         </svg>
     ),
     structureChart: (
-        <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Entity-Structure-Home" fill="none" fillRule="evenodd">
                 <g id="Mobile---Entity-Home-(selected)" transform="translate(-174 -343)"
                     fill="currentColor" fillRule="nonzero">
@@ -192,7 +192,7 @@ export const sprite: any = {
         </svg>
     ),
     arrow: (
-        <svg version="1.1" viewBox="0 0 25 25" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 25 25" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" stroke="none" strokeLinecap="square" strokeWidth="1">
                 <g id="Design-System---Icons" stroke="currentColor" strokeWidth="1.5" transform="translate(-242.000000, -732.000000)">
                     <g id="Icon-/-Arrow---Right-/-Gray-80%" transform="translate(241.000000, 732.000000)">
@@ -205,7 +205,7 @@ export const sprite: any = {
         </svg>
     ),
     download: (
-        <svg viewBox="-2 -2 25 25" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="-2 -2 25 25" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Design-System---Icons" transform="translate(-197.000000, -1093.000000)">
                     <g id="Icon-/-Download-/-Black" transform="translate(195.000000, 1091.000000)">
@@ -222,7 +222,7 @@ export const sprite: any = {
         </svg>
     ),
     information: (
-        <svg viewBox="0 0 16 16" className={css(styles.svg)}>
+        <svg viewBox="0 0 16 16" className={'' /* css(styles.svg) */}>
             <title>{'67275EA9-F800-41FE-84C6-D03D210506F8'}</title>
             <g fill="none" fillRule="evenodd">
                 <text
@@ -245,18 +245,18 @@ export const sprite: any = {
         </svg>
     ),
     pencil: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={css(styles.svg)}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={'' /* css(styles.svg) */}>
             <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
             <path d="M0 0h24v24H0z" fill="none" />
         </svg>
     ),
     filter: (
-        <svg version="1.1" viewBox="0 0 247.46 247.46" x="0px" y="0px" xmlSpace="preserve" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 247.46 247.46" x="0px" y="0px" xmlSpace="preserve" className={'' /* css(styles.svg) */}>
             <path d="M246.744,13.984c-1.238-2.626-3.881-4.301-6.784-4.301H7.5c-2.903,0-5.545,1.675-6.784,4.301&#xA;&#x9;c-1.238,2.626-0.85,5.73,0.997,7.97l89.361,108.384v99.94c0,2.595,1.341,5.005,3.545,6.373c1.208,0.749,2.579,1.127,3.955,1.127&#xA;&#x9;c1.137,0,2.278-0.259,3.33-0.78l50.208-24.885c2.551-1.264,4.165-3.863,4.169-6.71l0.098-75.062l89.366-108.388&#xA;&#x9;C247.593,19.714,247.982,16.609,246.744,13.984z M143.097,122.873c-1.105,1.34-1.711,3.023-1.713,4.761l-0.096,73.103&#xA;&#x9;l-35.213,17.453v-90.546c0-1.741-0.605-3.428-1.713-4.771L23.404,24.682h200.651L143.097,122.873z" fill="currentColor" />
         </svg>
     ),
     filterFull: (
-        <svg viewBox="0 0 21 21" className={css(styles.svg)}>
+        <svg viewBox="0 0 21 21" className={'' /* css(styles.svg) */}>
             <g fill="currentColor" transform="translate(-538 -1100)">
                 <g transform="translate(536 1098)">
                     <g transform="translate(1 2)">
@@ -267,7 +267,7 @@ export const sprite: any = {
         </svg>
     ),
     calendar: (
-        <svg version="1.1" viewBox="0 0 23 23" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 23 23" className={'' /* css(styles.svg) */}>
             <g fill="none" stroke="none" strokeWidth="1">
                 <g fill="currentColor" transform="translate(-196.000000, -1047.000000)">
                     <g transform="translate(195.000000, 1046.000000)">
@@ -278,7 +278,7 @@ export const sprite: any = {
         </svg>
     ),
     list: (
-        <svg version="1.1" viewBox="0 -2 21 21" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 -2 21 21" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" stroke="none" strokeWidth="1">
                 <g id="Design-System---Icons" transform="translate(-577.000000, -866.000000)">
                     <g id="Icon-/-List---25px-/-Black" transform="translate(575.000000, 862.000000)">
@@ -297,7 +297,7 @@ export const sprite: any = {
         </svg>
     ),
     summary: (
-        <svg version="1.1" viewBox="0 0 23 23" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 23 23" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" stroke="none" strokeWidth="1">
                 <g id="Design-System---Icons" transform="translate(-575.000000, -915.000000)">
                     <g id="Icon-/-Summary---25px-/-Black" transform="translate(574.000000, 914.000000)">
@@ -319,7 +319,7 @@ export const sprite: any = {
         </svg>
     ),
     plus: (
-        <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Page-1" fill="none" fillRule="evenodd">
                 <g id="Design-System---Icons" transform="translate(-197 -823)">
                     <g id="Icon-/-Plus---25px-/-Black" transform="translate(195 821)">
@@ -336,7 +336,7 @@ export const sprite: any = {
         </svg>
     ),
     switch: (
-        <svg viewBox="0 0 15 12" xmlns="http://www.w3.org/2000/svg" className={css(styles.svg)}>
+        <svg viewBox="0 0 15 12" xmlns="http://www.w3.org/2000/svg" className={'' /* css(styles.svg) */}>
             <g id="Rolodex---Entity-Switcher" fill="none" fillRule="evenodd">
                 <g id="Tablet---Entity-Switcher" transform="translate(-44 -652)" fillRule="nonzero">
                     <g id="Organism-/-Tablet-/-Sidebar-/-Default">
@@ -362,7 +362,7 @@ export const sprite: any = {
         </svg>
     ),
     danger: (
-        <svg version="1.1" viewBox="0 0 24 24" className={css(styles.svg)}>
+        <svg version="1.1" viewBox="0 0 24 24" className={'' /* css(styles.svg) */}>
             <g id="Rolodex---Notification" fill="none" stroke="none" strokeWidth="1">
                 <g id="Tablet---Notification---Error" transform="translate(-715.000000, -652.000000)">
                     <g id="Molecule-/-Notification-/-Default-Copy" transform="translate(689.000000, 631.000000)">
@@ -380,7 +380,7 @@ export const sprite: any = {
         </svg>
     ),
     externalLink: (
-        <svg viewBox="0 0 24 24" className={css(styles.svg)}>
+        <svg viewBox="0 0 24 24" className={'' /* css(styles.svg) */}>
             <path fill="currentColor" d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
         </svg>
     )
@@ -390,13 +390,13 @@ export type IconNames = keyof typeof sprite;
 
 export interface IconSpriteProps {
     name: IconNames;
-    className?: StyleDeclarationValue;
+    className?: ''; // StyleDeclarationValue;
     onClick?: (event: React.SyntheticEvent<Element>) => void;
 }
 
 const Sprite = ({ name, className, onClick }: IconSpriteProps) => {
     return (sprite[name]) ?
-        <span className={css(styles.icon, className)} onClick={onClick}>{sprite[name]}</span>
+        <span className={'' /* css(styles.icon, className) */} onClick={onClick}>{sprite[name]}</span>
         : null;
 };
 

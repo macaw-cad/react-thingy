@@ -2,8 +2,7 @@ import * as React from 'react';
 import { ApplicationContext, ApplicationContextConsumerProps } from './ApplicationContext';
 import { Helmet } from 'react-helmet';
 
-type PwaAppFullHtmlProps = {
-};
+type PwaAppFullHtmlProps = {};
 
 type PwaAppFullHtmlAllProps = PwaAppFullHtmlProps;
 export class PwaAppFullHtml extends React.Component<PwaAppFullHtmlAllProps> {
@@ -43,7 +42,7 @@ export class PwaAppFullHtml extends React.Component<PwaAppFullHtmlAllProps> {
                                     <div data-hypernova-key="HypernovaApp" data-hypernova-id="hydrate-id">
                                         {this.props.children}
                                     </div>
-                                    <script type="application/json" data-hypernova-key="HypernovaApp" data-hypernova-id="hydrate-id"><div id="REDUX_DATA"/></script>
+                                    <script type="application/json" data-hypernova-key="HypernovaApp" data-hypernova-id="hydrate-id"><div id="REDUX_STATE"/></script>
                                 </div>
                                 { applicationContextConsumer.applicationContext.jsUrls.map((jsUrl: string, i: number) => <script key={i} src={jsUrl} /> ) }
                             </body>

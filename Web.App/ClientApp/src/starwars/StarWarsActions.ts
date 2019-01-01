@@ -12,4 +12,4 @@ export interface SetStarWarsPeopleAction {
 export type StarWarsActionTypes = 
   | SetStarWarsPeopleAction;
 
-export const createSetStarWarsPeopleAction = (payload: ApiStarWarsPerson[]) => ({type: TypeKeys.SET_STARWARSPEOPLE, payload});
+export const createSetStarWarsPeopleAction = (payload: ApiStarWarsPerson[]) => ({type: TypeKeys.SET_STARWARSPEOPLE, payload: payload});

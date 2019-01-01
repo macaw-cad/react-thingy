@@ -11,6 +11,7 @@
     "@types/node": "10.12.7",
     "@types/react": "16.7.6",
     "@types/react-dom": "16.0.9",
+    "@types/react-intl": "^2.3.14",
     "@types/react-redux": "^6.0.9",
     "@types/react-router": "^4.4.1",
     "@types/react-router-dom": "^4.3.1",
@@ -29,17 +30,19 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-helmet": "^5.2.0",
+    "react-intl": "^2.7.2",
     "react-redux": "^5.1.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.2",
+    "react-toastify": "^4.5.1",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
+    "typed-rest-client-local": "file:./local_modules/typed-rest-client-local",
     "typescript": "3.1.6",
     "url-join": "^4.0.0",
     "webpack": "4.19.1",
-    "webpack-bundle-analyzer": "^3.0.3",
-    "typed-rest-client-local": "file:./local_modules/typed-rest-client-local"
+    "webpack-bundle-analyzer": "^3.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -81,5 +84,6 @@
   },
   "rescripts": [
     "env"
-  ]
+  ],
+  "proxy": "https://localhost:5001"
 }

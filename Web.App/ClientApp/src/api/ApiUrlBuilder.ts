@@ -1,5 +1,11 @@
 export class ApiUrlBuilder {
+    private baseUrl: string;
+
+    public constructor(baseUrl: string) {
+        this.baseUrl = baseUrl;
+    }
+
     public getStarWarsPeople(): string {
-        return '/api/starwars/people';
+        return `${this.baseUrl}/api/starwars/people`;
     }
 }

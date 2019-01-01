@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'aphrodite';
-import Sprite, { sprite } from '../ui/Icons/Sprite';
+// import { StyleSheet } from 'aphrodite';
+import Sprite, { sprite } from '../ui/icons/Sprite';
 
 export class Icons extends React.Component {
     public render(): JSX.Element {
@@ -15,7 +15,7 @@ export class Icons extends React.Component {
                         return (
                             <tr key={index}>
                                 <td>
-                                    <Sprite className={styles.icon} name={code} />
+                                    <Sprite className={'' /* styles.icon */} name={code} />
                                 </td>
                                 <td><code>{code}</code></td>
                             </tr>
@@ -27,8 +27,8 @@ export class Icons extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    icon: {
-        width: '30px'
-    }
-});
+// const styles = StyleSheet.create({
+//     icon: {
+//         width: '30px'
+//     }
+// });

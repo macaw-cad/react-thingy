@@ -120,7 +120,7 @@ namespace Web.App.Hypernova
                     jsUrls = _jsUrlsCache;
                 }
 
-                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, relativeUrl);
+                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, relativeUrl, "{}", siteUrl);
                 appHtml = BuildPage(indexHtml, relativeUrl,baseAppUrl, hypernovaResult.ToString());
                 if (_settings.NoCaching == false)
                 {
@@ -262,7 +262,11 @@ namespace Web.App.Hypernova
             }
             foreach (Match jsMatch in Regex.Matches(indexHtml, @"<script\ssrc=""([^""]+?)""><\/script>", RegexOptions.IgnoreCase))
             {
-                jsUrlsList.Add(jsMatch.Groups[1].Value);
+                var jsUrl = jsMatch.Groups[1].Value;
+                if (!jsUrl.Contains("hot-update.js"))
+                {
+                    jsUrlsList.Add(jsUrl);
+                }
             }
 
             return (cssUrlsList.ToArray(), jsUrlsList.ToArray());

@@ -7,7 +7,6 @@ export default (initialReduxStoreState: any, applicationContextServer: any) => {
   const reduxStore = configureStore(initialReduxStoreState);
   
   return renderReactAsyncReduxSpaServer(
-    'HypernovaApp', // Unique component name
     PwaApp,
     reduxStore,
     applicationContextServer
@@ -16,7 +15,6 @@ export default (initialReduxStoreState: any, applicationContextServer: any) => {
 
 if (!Environment.isServer) {
   renderReactAsyncReduxSpaClient(
-    'HypernovaApp', // Unique component name
     PwaApp as React.ComponentClass<any>,
     (data: any) => configureStore(data)
   );
