@@ -1,5 +1,5 @@
 import { StarWarsPeopleState } from './StarWarsPeopleState';
-import { SetStarWarsPeopleAction, StarWarsActionTypes, TypeKeys } from './StarWarsActions';
+import { LoadStarWarsPeopleAction, SetStarWarsPeopleAction, StarWarsActionTypes, TypeKeys } from './StarWarsActions';
 import { Action } from 'redux';
 
 const initialState: StarWarsPeopleState = {
@@ -12,6 +12,8 @@ export function reduceStarWarsPeople(state: StarWarsPeopleState = initialState, 
     const action: StarWarsActionTypes = actionAny as StarWarsActionTypes;
 
     switch (action.type) {
+        case TypeKeys.LOAD_STARWARSPEOPLE:
+            return reduceLoadStarWarsPeopleAction(state, action);
         case TypeKeys.SET_STARWARSPEOPLE:
             return reduceSetStarWarsPeopleAction(state, action);
         default:
@@ -19,6 +21,10 @@ export function reduceStarWarsPeople(state: StarWarsPeopleState = initialState, 
     }
 }
 
+export function reduceLoadStarWarsPeopleAction(state: StarWarsPeopleState, action: LoadStarWarsPeopleAction): StarWarsPeopleState {
+    return  { ...state, people: { loading: true } };
+}
+
 export function reduceSetStarWarsPeopleAction(state: StarWarsPeopleState, action: SetStarWarsPeopleAction): StarWarsPeopleState {
-    return  { ...state, people: { data: action.payload, loading: false } };
+    return  { ...state, people: { data: action.data, loading: false } };
 }

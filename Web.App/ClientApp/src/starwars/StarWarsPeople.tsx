@@ -6,7 +6,7 @@ import { ApplicationContextConsumerProps, AsyncTaskContext, withApplicationConte
 import { Environment } from '../Environment';
 import { ServerApiProxy } from '../api/ServerApiProxy';
 import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
-import { createSetStarWarsPeopleAction } from './StarWarsActions';
+import { createSetStarWarsPeopleAction, createLoadStarWarsPeopleAction } from './StarWarsActions';
 import { AsyncData } from '../store/api';
 import { StarWarsPeopleState } from './StarWarsPeopleState';
 import { FilledStarWarsState } from './StarWarsState';
@@ -19,6 +19,7 @@ type StarWarsPeopleStoreProps = {
 };
 
 type StarWarsPeopleStoreActions = {
+    loadStarWarsPeople: () => void;
     setStarWarsPeople: (people: ApiStarWarsPerson[]) => void;
 };
 
@@ -35,15 +36,16 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
       this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
   
       if (Environment.isServer) {
-        this.asyncTaskContext.addTask(this.loadStarWarsPeople());
+        this.asyncTaskContext.addTask(this.getStarWarsPeopleFromApi());
       }
     }
 
     public componentDidMount(): void {
-        this.loadStarWarsPeople();
+        this.props.loadStarWarsPeople();
+        this.getStarWarsPeopleFromApi();
     }
 
-    private loadStarWarsPeople(): Promise<void> {
+    private getStarWarsPeopleFromApi(): Promise<void> {
         return new Promise(async (resolve, reject) => {
           try {
             const starWarsPeople: ApiStarWarsPerson[] = await this.serverApiProxy.getStarWarsPeople();
@@ -62,7 +64,7 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
         return (
           <div>
                 <h2>StarWars People</h2>
-                <ComponentStatus loading={[loading]} data={[data]} />
+                <ComponentStatus loading={[loading]} data={[data]} message="Failed to load StarWars people"/>
                 { data &&
                   <ul>
                     { data.map((person: ApiStarWarsPerson) => (
@@ -87,6 +89,7 @@ const mapStateToProps = (state: RootState): StarWarsPeopleStoreProps => {
       
 const mapDispatchToProps = (dispatch: Dispatch<Action>): StarWarsPeopleStoreActions => {
     return {
+        loadStarWarsPeople: () => dispatch(createLoadStarWarsPeopleAction()),
         setStarWarsPeople: (people: ApiStarWarsPerson[]) => dispatch(createSetStarWarsPeopleAction(people))
     };
 };
