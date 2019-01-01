@@ -9,28 +9,6 @@ export type AsyncData<T> = {
   readonly data?: T | null;
 };
 
-export interface UserData {
-  id: number;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-}
-
-export function getUsers(asyncTaskContext: AsyncTaskContext): Promise<UserData[]> {
-  let getUsersPromise: Promise<UserData[]> = new Promise((resolve, reject) => {
-    fetch('https://reqres.in/api/users?per_page=10')
-      .then(res => res.json())
-      .then(res => {
-        resolve(res.data);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-
-  return getUsersPromise;
-}
-
 export function getFile<T>(path: string, asyncTaskContext: AsyncTaskContext): Promise<T> {
   let getFilePromise: Promise<T> = new Promise((resolve, reject) => {
     let fullUrl = path;

@@ -4,14 +4,12 @@ import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Environment } from '../Environment';
 import { RootState } from './RootState';
 import { CounterReducer } from '../counter/CounterReducer';
-import { UserReducer } from './user/UserReducer';
 import { starWarsReducer } from '../starwars/StarWarsReducer';
 
 export const history = !Environment.isServer ? createBrowserHistory() : createMemoryHistory();
 
 const reducer = combineReducers<RootState>({
     counter: CounterReducer,
-    users: UserReducer,
     starWars: starWarsReducer
 });
 

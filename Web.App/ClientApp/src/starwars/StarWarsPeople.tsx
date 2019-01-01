@@ -41,8 +41,10 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
     }
 
     public componentDidMount(): void {
-        this.props.loadStarWarsPeople();
-        this.getStarWarsPeopleFromApi();
+        if (!this.props.people.data) {
+            this.props.loadStarWarsPeople();
+            this.getStarWarsPeopleFromApi();
+        }
     }
 
     private getStarWarsPeopleFromApi(): Promise<void> {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Route, Switch, RouteComponentProps, withRouter } from 'react-router';
 import HomePage from '../pages/HomePage';
 import CounterPage from '../pages/CounterPage';
-import UsersPage from '../pages/UsersPage';
 import StarWarsPage from '../pages/StarWarsPage';
 import { Error404 } from '../pages/404';
 
@@ -16,7 +15,6 @@ class Routes extends React.Component<RoutesAllProps> {
             <Switch>
                 <Route path="/" exact={true} component={HomePage} />
                 <Route path="/counter" exact={true} component={CounterPage} />
-                <Route path="/users" exact={true} component={UsersPage} />
                 <Route path="/starwars" exact={true} component={StarWarsPage} />
 
                 <Route component={Error404} />

@@ -26,7 +26,8 @@ namespace Web.App
         {
             var mvc = services.AddMvc();
             mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            mvc.AddRazorPagesOptions(options => {
+            mvc.AddRazorPagesOptions(options =>
+            {
                 options.RootDirectory = "/Pages";
             });
 

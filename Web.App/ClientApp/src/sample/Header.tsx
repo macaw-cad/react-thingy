@@ -39,8 +39,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         &nbsp;
                         <Link to="/counter"><button>Counter page</button></Link>
                         &nbsp;
-                        <Link to="/users"><button>Users page</button></Link>
-                        &nbsp;
                         <Link to="/starwars"><button>StarWars page</button></Link>
                     </div>
                     <div>
