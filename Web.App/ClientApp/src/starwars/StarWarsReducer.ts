@@ -13,5 +13,5 @@ const starWarsCombinedReducers = (state: StarWarsState | undefined = initialStar
 };
 
 export function starWarsReducer(state: StarWarsState, action: AnyAction): StarWarsState {
-  return starWarsCombinedReducers(state, action) as StarWarsState;
+  return starWarsCombinedReducers(state, action);
 }

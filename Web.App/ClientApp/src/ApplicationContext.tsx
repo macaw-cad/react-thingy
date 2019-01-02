@@ -78,7 +78,7 @@ export function withApplicationContext<T extends ApplicationContextConsumerProps
             return (
                 <ApplicationContext.Consumer>
                     {(applicationContextProvider: ApplicationContextProviderProps) => {
-                        console.log('applicationContextProvider', applicationContextProvider);
+                        // console.log('applicationContextProvider', applicationContextProvider);
                         if (!Environment.isServer) {
                             (window as any).applicationContext = applicationContextProvider.applicationContext;
                         }

@@ -32,6 +32,9 @@ Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.
 The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing scripts
 for developing and building the application. See [README development](./documentation/development.md) for more information on how to do development with the solution.
 
+### Generating SSL certificate
+If you're getting SSL certificate issues in your browser, you might need to generate a self-signed certificate. Do that using ```dotnet dev-certs https --trust``` in the ```\Web.app``` folder. Read more about it [here](https://www.hanselman.com/blog/DevelopingLocallyWithASPNETCoreUnderHTTPSSSLAndSelfSignedCerts.aspx).
+
 ## Deploying the solution
 
 The ```Web.App``` is deployed in a Docker container that can be run locally or deployed to a hosting platform like Azure.
