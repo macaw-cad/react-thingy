@@ -33,6 +33,7 @@ export class PwaAppFullHtml extends React.Component<PwaAppFullHtmlAllProps> {
                                 {helmet.meta.toComponent()}
                                 {helmet.link.toComponent()}
                                 { applicationContextConsumer.applicationContext.cssUrls.map((cssUrl: string, i: number) => <link key={i} href={cssUrl} rel="stylesheet" /> ) }
+                                <style data-aphrodite="true"/>
                             </head>
                             <body {...bodyAttrs}>
                                 <noscript>
@@ -44,6 +45,7 @@ export class PwaAppFullHtml extends React.Component<PwaAppFullHtmlAllProps> {
                                     </div>
                                     <script type="application/json" data-hypernova-key="HypernovaApp" data-hypernova-id="hydrate-id"><div id="REDUX_STATE"/></script>
                                 </div>
+                                <script type="application/json" data-hypernova-key="HypernovaCss" data-hypernova-id="hydrate-css"><div id="CSS_STATE"/></script>
                                 { applicationContextConsumer.applicationContext.jsUrls.map((jsUrl: string, i: number) => <script key={i} src={jsUrl} /> ) }
                             </body>
                         </html>

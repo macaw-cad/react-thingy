@@ -263,7 +263,7 @@ namespace Web.App.Hypernova
             foreach (Match jsMatch in Regex.Matches(indexHtml, @"<script\ssrc=""([^""]+?)""><\/script>", RegexOptions.IgnoreCase))
             {
                 var jsUrl = jsMatch.Groups[1].Value;
-                if (!jsUrl.Contains("hot-update.js"))
+                if (true || !jsUrl.Contains("hot-update.js"))
                 {
                     jsUrlsList.Add(jsUrl);
                 }
