@@ -37,9 +37,9 @@ namespace Web.App.JsonServer
         [Route("mockapi/{**jsonServerRequest}")]
         public async Task<IActionResult> JsonServer(string jsonServerRequest, CancellationToken cancellationToken)
         {
-            string jsonServerUrl = Settings.JsonServerUrl;
+            string jsonServerUrl = Settings.Url;
 
-            if (!Uri.TryCreate(Settings.JsonServerUrl, UriKind.Absolute, out Uri _))
+            if (!Uri.TryCreate(Settings.Url, UriKind.Absolute, out Uri _))
             {
                 throw new JsonServerException($"JsonServer url '{jsonServerUrl}' as specified in appsetting 'JsonServer' is not an absolute url");
             }

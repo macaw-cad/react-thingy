@@ -11,19 +11,19 @@ namespace Web.App.HypernovaComponentServer
 {
     public class HypernovaComponentServerController : Controller
     {
-        public readonly ILogger Logger;
-        public readonly IHostingEnvironment Env;
-        public readonly IHttpClientFactory HttpClientFactory;
-        public readonly IOptions<HypernovaComponentServerSettings> Options;
-        public readonly HypernovaComponentServerSettings Settings;
+        private readonly ILogger _logger;
+        private readonly IHostingEnvironment _env;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOptions<HypernovaComponentServerSettings> _options;
+        private readonly HypernovaComponentServerSettings _settings;
 
         public HypernovaComponentServerController(ILogger<HypernovaComponentServerController> logger, IHttpClientFactory httpClientFactory, IHostingEnvironment env, IOptions<HypernovaComponentServerSettings> options)
         {
-            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            Env = env ?? throw new ArgumentNullException(nameof(env));
-            HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            Options = options;
-            Settings = options.Value;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _options = options;
+            _settings = options.Value;
         }
 
         /// <summary>
@@ -37,13 +37,13 @@ namespace Web.App.HypernovaComponentServer
         [Route("componentserver/{**hypernovaComponentServerRequest}")]
         public async Task<IActionResult> Hypernova(string hypernovaComponentServerRequest, CancellationToken cancellationToken)
         {
-            string hypernovaComponentServerUrl = Settings.Url;
+            string hypernovaComponentServerUrl = _settings.Url;
 
-            if (!Uri.TryCreate(Settings.Url, UriKind.Absolute, out Uri _))
+            if (!Uri.TryCreate(_settings.Url, UriKind.Absolute, out Uri _))
             {
                 throw new HypernovaComponentServerException($"HypernovaComponentServer url '{hypernovaComponentServerUrl}' as specified in appsetting 'HypernovaComponentServer' is not an absolute url");
             }
-            var client = HttpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient();
             var clonedRequest = this.Request.ToHttpRequestMessage();
             clonedRequest.RequestUri = new Uri($"{hypernovaComponentServerUrl}/{hypernovaComponentServerRequest}");
             HttpResponseMessage result;

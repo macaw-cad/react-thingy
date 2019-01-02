@@ -7,7 +7,7 @@ namespace Web.App.JsonServer
     {
         internal const string SettingsName = "JsonServer";
 
-        public string JsonServerUrl { get; set; }
+        public string Url { get; set; }
     }
 
     public static class JsonServerExtensions

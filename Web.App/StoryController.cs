@@ -26,7 +26,9 @@ namespace Web.App
             _settings = options.Value;
             _cache = cache;
 
-            _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options);
+            var siteUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+
+            _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options, siteUrl);
             _contentRoot = env.ContentRootPath;
             var settings = options.Value;
         }

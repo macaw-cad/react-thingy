@@ -24,21 +24,23 @@ namespace Web.App.Hypernova
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly HypernovaSettings _settings;
         private readonly IDistributedCache _cache;
+        private readonly string _siteUrl;
 
         private static string _indexHtmlCache = null;
         private static bool _cssAndJsUrlsCached = false;
         private static string[] _cssUrlsCache;
         private static string[] _jsUrlsCache;
 
-        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
+        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl)
         {
             _logger = logger;
             _env = env;
             _httpClientFactory = httpClientFactory;
             _settings = options.Value;
             _cache = cache;
+            _siteUrl = siteUrl;
 
-            _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options);
+            _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options, siteUrl);
 
         }
 
@@ -59,12 +61,11 @@ namespace Web.App.Hypernova
         /// <summary>
         /// Render the SPA application client-side.
         /// </summary>
-        /// <param name="siteUrl">Url of the website, i.e. 'https://www.mywebsite.com'.</param>
         /// <param name="relativeUrl">The relative url of the route to show in the SPA, i.e. '/about' (or '/myapp/about' in case of baseAppUrl).</param>
         /// <param name="cacheDuration">Cache duration.</param>
         /// <param name="baseAppUrl">The relative base app url if other than '/' (default), i.e. '/myapp'.</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public async Task<SpaSsrResult> RenderSpaServerSide(string siteUrl, string relativeUrl, TimeSpan cacheDuration, string baseAppUrl = "/")
+        public async Task<SpaSsrResult> RenderSpaServerSide(string relativeUrl, TimeSpan cacheDuration, string baseAppUrl = "/")
         {
             string indexHtml;
             string appHtml;
@@ -95,7 +96,7 @@ namespace Web.App.Hypernova
 
             if (_settings.FallbackToClientSideRenderingOnly)
             {
-                appHtml = BuildPage(indexHtml, siteUrl, relativeUrl, baseAppUrl);
+                appHtml = BuildPage(indexHtml, _siteUrl, relativeUrl, baseAppUrl);
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
             }
 
@@ -120,7 +121,7 @@ namespace Web.App.Hypernova
                     jsUrls = _jsUrlsCache;
                 }
 
-                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, relativeUrl, "{}", siteUrl);
+                var hypernovaResult = await _hypernovaClient.ReactAsyncReduxSpa("pwa:HypernovaApp", cssUrls, jsUrls, relativeUrl, "{}", _siteUrl);
                 appHtml = BuildPage(indexHtml, relativeUrl,baseAppUrl, hypernovaResult.ToString());
                 if (_settings.NoCaching == false)
                 {

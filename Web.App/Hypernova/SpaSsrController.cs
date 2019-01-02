@@ -12,19 +12,37 @@ namespace Web.App
 {
     public class SpaSsrController : Controller
     {
-        private readonly SpaSsr _spaSsr;
+        private readonly ILogger _logger;
+        private readonly IHostingEnvironment _env;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOptions<HypernovaSettings> _options;
+        private readonly HypernovaSettings _settings;
+        private readonly IDistributedCache _cache;
+
+        private SpaSsr _spaSsr = null;
 
         public SpaSsrController(ILogger<SpaSsrController> logger, IHttpClientFactory httpClientFactory, IHostingEnvironment env, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
-            _spaSsr = new SpaSsr(logger, env, httpClientFactory, options, cache);
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _options = options;
+            _settings = options.Value;
+            _cache = cache;
         }
 
         public async Task<ActionResult> Index()
         {
-            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            if (_spaSsr == null)
+            {
+                var siteUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                _spaSsr = new SpaSsr(_logger, _env, _httpClientFactory, _options, _cache, siteUrl);
+
+            }
+
             var relativeUrl = $"{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
 
-            var renderResult = await _spaSsr.RenderSpaServerSide(baseUrl, relativeUrl, TimeSpan.FromDays(1.0));
+            var renderResult = await _spaSsr.RenderSpaServerSide(relativeUrl, TimeSpan.FromDays(1.0));
             var content = new ContentResult
             {
                 Content = renderResult.Html,
