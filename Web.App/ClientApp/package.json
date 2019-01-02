@@ -47,7 +47,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:jsonserver": "pushd ..\\JsonServer && nodemon --watch . jsonserver.js",
-    "start:dotnet-core": "npm run build:dotnet-core && pushd .. && dotnet run",
+    "start:dotnet-core": "npm run build:dotnet-core && pushd .. && cross-env ASPNETCORE_ENVIRONMENT=Development dotnet run",
     "start:hypernovacomponentserver": "pushd ..\\HypernovaComponentServer && nodemon --watch server-bundle.js componentserver.js",
     "start:server-bundle": "npm run build:server-bundle:development && chokidar src/** -c \"npm run build:server-bundle:development\"",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
