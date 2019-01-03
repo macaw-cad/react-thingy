@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Luke Wyskalker",
+        "weight": 77,
+        "hairColor": "blond"
+    },
+    {
+        "name": "3-CPO",
+        "weight": 75,
+        "hairColor": "n/a"
+    },
+    {
+        "name": "D2-R2",
+        "weight": 32,
+        "hairColor": "n/a"
+    },
+    {
+        "name": "Varth Dader",
+        "weight": 136,
+        "hairColor": "none"
+    },
+    {
+        "name": "Eia Lorgana",
+        "weight": 49,
+        "hairColor": "brown"
+    },
+    {
+        "name": "Lowen Nars",
+        "weight": 120,
+        "hairColor": "brown, grey"
+    },
+    {
+        "name": "Beru Whitesun lars",
+        "weight": 75,
+        "hairColor": "brown"
+    },
+    {
+        "name": "R5-D4",
+        "weight": 32,
+        "hairColor": "n/a"
+    },
+    {
+        "name": "Biggs Darklighter",
+        "weight": 84,
+        "hairColor": "black"
+    },
+    {
+        "name": "Obi-Wan Jacobi",
+        "weight": 77,
+        "hairColor": "auburn, white"
+    }
+]

@@ -6,17 +6,17 @@ import { StarWarsPeopleState } from './StarWarsPeopleState';
 import { Dispatch } from 'react';
 import { Action } from 'redux';
 import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
-import { createLoadStarWarsPeopleAction, createSetStarWarsPeopleAction } from './StarWarsActions';
+import { createSetLoaderStarWarsPeopleAction, createSetStarWarsPeopleAction } from './StarWarsActions';
 import { connect } from 'react-redux';
-import { ServerApiProxy } from '../api/ServerApiProxy';
-import { Environment } from '../Environment';
-import { AsyncTaskContext, withApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
+import { ApiProxy, ApiProxyType } from '../api/ApiProxy';
+import { withApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
+import { Logger } from '../Logger';
 
 export type WithStarWarsPeopleProps = StarWarsPeopleState;
 
 type StarWarsPeopleStoreActions = {
-    loadStarWarsPeople: () => void;
-    setStarWarsPeople: (people: ApiStarWarsPerson[]) => void;
+    setLoaderStarWarsPeople: () => void;
+    setStarWarsPeople: (people: ApiStarWarsPerson[] | null) => void;
 };
 
 export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedComponent: React.ComponentType<T>): React.ComponentType<Omit<T, keyof WithStarWarsPeopleProps>> {
@@ -30,32 +30,26 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
 
     const mapDispatchToProps = (dispatch: Dispatch<Action>): StarWarsPeopleStoreActions => {
         return {
-            loadStarWarsPeople: () => dispatch(createLoadStarWarsPeopleAction()),
-            setStarWarsPeople: (people: ApiStarWarsPerson[]) => dispatch(createSetStarWarsPeopleAction(people))
+            setLoaderStarWarsPeople: () => dispatch(createSetLoaderStarWarsPeopleAction()),
+            setStarWarsPeople: (people: ApiStarWarsPerson[] | null) => dispatch(createSetStarWarsPeopleAction(people))
         };
     };
 
     type WithStarWarsPeopleAllProps = WithStarWarsPeopleProps & StarWarsPeopleStoreActions & T & ApplicationContextConsumerProps;
 
     class WithStarWarsPeople extends React.Component<WithStarWarsPeopleAllProps> {
-        private asyncTaskContext: AsyncTaskContext;
-        private serverApiProxy: ServerApiProxy;
+        private apiProxy: ApiProxyType;
 
         constructor(props: WithStarWarsPeopleAllProps) {
             super(props);
 
-            this.serverApiProxy = new ServerApiProxy(props.applicationContext.baseUrl);
-            this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
-
-            if (Environment.isServer) {
-                this.asyncTaskContext.addTask(this.getStarWarsPeopleFromApi());
-            }
+            this.apiProxy = ApiProxy(props.applicationContext);
         }
 
         public componentDidMount(): void {
             setTimeout(() => {
                 if (!this.props.people.data && !this.props.people.loading) {
-                    this.actions.loadStarWarsPeople();
+                    this.actions.setLoaderStarWarsPeople();
                     this.getStarWarsPeopleFromApi();
                 }
             });
@@ -70,12 +64,12 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
         private getStarWarsPeopleFromApi(): Promise<void> {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const starWarsPeople: ApiStarWarsPerson[] = await this.serverApiProxy.getStarWarsPeople();
+                    const starWarsPeople: ApiStarWarsPerson[] = await this.apiProxy.getStarWarsPeople();
                     this.props.setStarWarsPeople(starWarsPeople);
                     resolve();
                 } catch (error) {
-                    this.props.setStarWarsPeople([]);
-                    console.log('Failed to load StarWarsPeople. Offline?');
+                    this.props.setStarWarsPeople(null);
+                    Logger.log('Failed to load StarWarsPeople. Offline?');
                     reject();
                 }
             });
@@ -86,6 +80,6 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
         }
     }
 
-    // @ts-ignore Getting TS errors, don't know how to fix them. It works though..    
+    // @ts-ignore Getting TS errors, don't know how to fix them. It works though..
     return connect(mapStateToProps, mapDispatchToProps)(withApplicationContext<WithStarWarsPeopleAllProps>(WithStarWarsPeople));
 }

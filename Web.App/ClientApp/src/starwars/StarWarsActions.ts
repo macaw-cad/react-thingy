@@ -20,5 +20,5 @@ export type StarWarsActionTypes =
   | LoadStarWarsPeopleAction
   | SetStarWarsPeopleAction;
 
-export const createLoadStarWarsPeopleAction = () => ({type: TypeKeys.LOAD_STARWARSPEOPLE});
-export const createSetStarWarsPeopleAction = (data: ApiStarWarsPerson[]) => ({type: TypeKeys.SET_STARWARSPEOPLE, data: data});
+export const createSetLoaderStarWarsPeopleAction = () => ({type: TypeKeys.LOAD_STARWARSPEOPLE});
+export const createSetStarWarsPeopleAction = (data: ApiStarWarsPerson[] | null) => ({type: TypeKeys.SET_STARWARSPEOPLE, data: data});

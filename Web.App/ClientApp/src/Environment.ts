@@ -13,10 +13,6 @@ export class Environment {
         return `${window.location.protocol}//${window.location.host}`;
     }
 
-    public static get apiUrl(): string {
-        return `${window.location.protocol}//${window.location.host}/api`;
-    }
-
     public static get homeUrl(): string {
         // return 'https://www.mysite.com';
         return `${window.location.protocol}//${window.location.host}`;
