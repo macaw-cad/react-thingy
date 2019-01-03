@@ -61,19 +61,18 @@ namespace Web.App.JsonServer
                 return new BadRequestObjectResult(new { status = false, message = "Is JsonServer running? " + ex.ToString() });
             }
             var content = await result.Content.ReadAsStringAsync();
+            if (jsonServerRequest == "main.js") {
+                content = content.Replace("fetch(\"db\")", "fetch(\"/mockapi/db\")");
+            }
             if (String.IsNullOrEmpty(jsonServerRequest))
             {
                 // root is html page - current replacements is for default implementation
                 content = content.Replace("\"main.css\"", "\"/mockapi/main.css\"");
                 content = content.Replace("\"favicon.ico\"", "\"/mockapi/favicon.ico\"");
                 content = content.Replace("\"main.js\"", "\"/mockapi/main.js\"");
-
-                return Content(content, "text/html"); // overview page of JsonServer
+                content = content.Replace("<head>", "<head><base href=\"/mockapi/\" />");
             }
-            else
-            {
-                return Content(content, result.Content.Headers.ContentType.ToString());
-            }
+            return Content(content, result.Content.Headers.ContentType.ToString());
         }
     }
 }

@@ -56,7 +56,6 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
         public componentDidMount(): void {
             setTimeout(() => {
                 if (!this.props.people.data && !this.props.people.loading) {
-                    this.actions.setLoaderStarWarsPeople();
                     this.getStarWarsPeopleFromApi();
                 }
             });
@@ -69,6 +68,8 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
         }
 
         private getStarWarsPeopleFromApi(): Promise<void> {
+            this.actions.setLoaderStarWarsPeople();
+
             return new Promise(async (resolve, reject) => {
                 try {
                     const starWarsPeople: ApiStarWarsPerson[] = await this.apiProxy.getStarWarsPeople();
