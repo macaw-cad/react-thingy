@@ -1,3 +1,4 @@
+import { Environment } from './../Environment';
 import { AsyncTaskContext } from './../ApplicationContext';
 import { mockDataStorageKey } from './../userSettings/MockDataFlags';
 import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
@@ -14,7 +15,9 @@ export class MockApiProxy {
         this.mockDataFlags = mockDataFlags;
         this.serverApiProxy = new ServerApiProxy(applicationContext);
 
-        sessionStorage.setItem(mockDataStorageKey, JSON.stringify(mockDataFlags));
+        if (!Environment.isServer) {
+            sessionStorage.setItem(mockDataStorageKey, JSON.stringify(mockDataFlags));
+        }
 
         this.getStarWarsPeople = this.getStarWarsPeople.bind(this);
     }

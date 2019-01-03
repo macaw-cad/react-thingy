@@ -9,8 +9,9 @@ import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
 import { createSetLoaderStarWarsPeopleAction, createSetStarWarsPeopleAction } from './StarWarsActions';
 import { connect } from 'react-redux';
 import { ApiProxy, ApiProxyType } from '../api/ApiProxy';
-import { withApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
+import { withApplicationContext, ApplicationContextConsumerProps, AsyncTaskContext } from '../ApplicationContext';
 import { Logger } from '../Logger';
+import { Environment } from '../Environment';
 
 export type WithStarWarsPeopleProps = StarWarsPeopleState;
 
@@ -39,11 +40,17 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
 
     class WithStarWarsPeople extends React.Component<WithStarWarsPeopleAllProps> {
         private apiProxy: ApiProxyType;
+        private asyncTaskContext: AsyncTaskContext;
 
         constructor(props: WithStarWarsPeopleAllProps) {
             super(props);
 
             this.apiProxy = ApiProxy(props.applicationContext);
+            this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
+        
+            if (Environment.isServer) {
+              this.asyncTaskContext.addTask(this.getStarWarsPeopleFromApi());
+            }
         }
 
         public componentDidMount(): void {

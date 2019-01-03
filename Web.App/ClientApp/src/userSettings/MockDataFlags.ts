@@ -1,3 +1,4 @@
+import { Environment } from './../Environment';
 
 export type MockDataFlags = {
     starwarsPeople: boolean;
@@ -12,7 +13,7 @@ export function getMockDataAllFlags(): MockDataFlags {
 }
 
 function getFlags<T>(key: string): null | T {
-    const mockDataFlags = sessionStorage.getItem(key);
+    const mockDataFlags = !Environment.isServer ? sessionStorage.getItem(key) : null;
     
     if (!mockDataFlags) {
         return null;

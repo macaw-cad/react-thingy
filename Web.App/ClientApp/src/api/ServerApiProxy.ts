@@ -1,6 +1,4 @@
-﻿import { Environment } from './../Environment';
-import { AsyncTaskContext } from './../ApplicationContext';
-import { MockApiProxy } from './MockApiProxy';
+﻿import { AsyncTaskContext } from './../ApplicationContext';
 const https = require('https');
 import { ApiUrlBuilder } from './ApiUrlBuilder';
 import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
@@ -43,10 +41,6 @@ export class ServerApiProxy {
                     reject(error);
                 });
         });
-
-        if (Environment.isServer) {
-            this.applicationContext.addTask(getDataPromise);
-        }
 
         return getDataPromise;
     }
