@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 import './HypernovaComponents';
 
-import './index.css';
+import './index.scss';
 
 if (!Environment.isServer) {
 

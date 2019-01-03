@@ -1,6 +1,6 @@
 import React from 'react';
-// import { StyleSheet } from 'aphrodite';
-import Sprite, { sprite } from '../ui/icons/Sprite';
+import { StyleSheet } from 'aphrodite';
+import Sprite, { sprite, IconNames } from '../ui/icons/Sprite';
 
 export class Icons extends React.Component {
     public render(): JSX.Element {
@@ -11,11 +11,12 @@ export class Icons extends React.Component {
                         <th>Example</th>
                         <th>Value</th>
                     </tr>
-                    {Object.keys(sprite).map((code, index) => {
+                    {/* TODO: Fix code type */}
+                    {Object.keys(sprite).map((code: any, index) => {
                         return (
                             <tr key={index}>
                                 <td>
-                                    <Sprite className={'' /* styles.icon */} name={code} />
+                                    <Sprite className={styles.icon} name={code} />
                                 </td>
                                 <td><code>{code}</code></td>
                             </tr>
@@ -27,8 +28,8 @@ export class Icons extends React.Component {
     }
 }
 
-// const styles = StyleSheet.create({
-//     icon: {
-//         width: '30px'
-//     }
-// });
+const styles = StyleSheet.create({
+    icon: {
+        width: '30px'
+    }
+});

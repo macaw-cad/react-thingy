@@ -14,8 +14,11 @@ namespace Web.App
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILogger _logger;
+
+        public Startup(ILogger<Startup> logger, IConfiguration configuration)
         {
+            _logger = logger;
             Configuration = configuration;
         }
 
@@ -71,31 +74,52 @@ namespace Web.App
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.MapWhen(x => !x.Request.Path.Value.StartsWith("/sockjs-node/"), whenRoutes =>
+            app.MapWhen(context => webPackDevServerMatcher(context), webpackDevServer =>
             {
-                app.UseMvc(mvcRoutes =>
+                webpackDevServer.UseSpa(spa =>
                 {
-                    mvcRoutes.MapRoute(
-                        name: "default",
-                        template: "{controller}/{action=Index}/{id?}");
-
-                    mvcRoutes.MapSpaFallbackRoute(
-                        name: "spa-fallback",
-                        defaults: new { controller = "SpaSsr", action = "Index" });
+                    spa.UseProxyToSpaDevelopmentServer(baseUri: "http://localhost:3000");
                 });
+            });
 
-                app.UseSpa(spa =>
+            app.UseMvc(mvcRoutes =>
+            {
+                mvcRoutes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+
+                mvcRoutes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "SpaSsr", action = "Index" });
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
                 {
-                    spa.Options.SourcePath = "ClientApp";
-
-                    if (env.IsDevelopment())
-                    {
                         // Start the ClientPortal through the CreateReactApp server for speedy development
                         spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                         // spa.UseReactDevelopmentServer(npmScript: "start");
                     }
-                });
             });
         }
+
+        // Captures the requests generated when using webpack dev server in the following ways:
+        // via: https://localhost:5001/app/
+        // via: https://localhost:5001/webpack-dev-server/app/
+        // captures requests like these:
+        // https://localhost:5001/webpack_dev_server.js
+        // https://localhost:5001/__webpack_dev_server__/live.bundle.js
+        // wss://localhost:5001/sockjs-node/978/qhjp11ck/websocket
+        private bool webPackDevServerMatcher(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            string pathString = context.Request.Path.ToString();
+            return pathString.Contains(context.Request.PathBase.Add("/webpack-dev-server")) ||
+                context.Request.Path.StartsWithSegments("/__webpack_dev_server__") ||
+                context.Request.Path.StartsWithSegments("/sockjs-node");
+        }
+
     }
 }

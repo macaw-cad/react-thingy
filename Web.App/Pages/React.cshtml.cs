@@ -17,7 +17,7 @@ namespace Web.App.Pages
         )
         { 
             BaseUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
-            hypernovaClient = new Web.App.Hypernova.HypernovaClient(logger, env, httpClientFactory, options);
+            hypernovaClient = new Web.App.Hypernova.HypernovaClient(logger, env, httpClientFactory, options, BaseUrl);
         }
 
         public string BaseUrl { get; set; }

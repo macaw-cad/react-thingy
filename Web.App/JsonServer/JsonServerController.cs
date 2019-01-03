@@ -6,24 +6,26 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Text;
 
 namespace Web.App.JsonServer
 {
     public class JsonServerController : Controller
     {
-        public readonly ILogger Logger;
-        public readonly IHostingEnvironment Env;
-        public readonly IHttpClientFactory HttpClientFactory;
-        public readonly IOptions<JsonServerSettings> Options;
-        public readonly JsonServerSettings Settings;
+        private readonly ILogger _logger;
+        private readonly IHostingEnvironment _env;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOptions<JsonServerSettings> _options;
+        private readonly JsonServerSettings _settings;
 
         public JsonServerController(ILogger<JsonServerController> logger, IHttpClientFactory httpClientFactory, IHostingEnvironment env, IOptions<JsonServerSettings> options)
         {
-            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            Env = env ?? throw new ArgumentNullException(nameof(env));
-            HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            Options = options;
-            Settings = options.Value;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _options = options;
+            _settings = options.Value;
         }
 
         /// <summary>
@@ -37,25 +39,41 @@ namespace Web.App.JsonServer
         [Route("mockapi/{**jsonServerRequest}")]
         public async Task<IActionResult> JsonServer(string jsonServerRequest, CancellationToken cancellationToken)
         {
-            string jsonServerUrl = Settings.JsonServerUrl;
+            string jsonServerUrl = _settings.Url;
 
-            if (!Uri.TryCreate(Settings.JsonServerUrl, UriKind.Absolute, out Uri _))
+            if (!Uri.TryCreate(_settings.Url, UriKind.Absolute, out Uri _))
             {
                 throw new JsonServerException($"JsonServer url '{jsonServerUrl}' as specified in appsetting 'JsonServer' is not an absolute url");
             }
-            var client = HttpClientFactory.CreateClient();
-            var clonedRequest = this.Request.ToHttpRequestMessage();
+            var client = _httpClientFactory.CreateClient();
+            // TODO: this fails! var clonedRequest = this.Request.ToHttpRequestMessage();
+            var clonedRequest = new HttpRequestMessage(new HttpMethod(Request.Method), "{jsonServerUrl}/{jsonServerRequest}");
             clonedRequest.RequestUri = new Uri($"{jsonServerUrl}/{jsonServerRequest}");
+            clonedRequest.Content = new StreamContent(Request.Body);
+
             HttpResponseMessage result;
             try
             {
+
                 result = await client.SendAsync(clonedRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             } catch(HttpRequestException ex)
             {
                 return new BadRequestObjectResult(new { status = false, message = "Is JsonServer running? " + ex.ToString() });
             }
             var content = await result.Content.ReadAsStringAsync();
-            return Content(content);
+            if (String.IsNullOrEmpty(jsonServerRequest))
+            {
+                // root is html page - current replacements is for default implementation
+                content = content.Replace("\"main.css\"", "\"/mockapi/main.css\"");
+                content = content.Replace("\"favicon.ico\"", "\"/mockapi/favicon.ico\"");
+                content = content.Replace("\"main.js\"", "\"/mockapi/main.js\"");
+
+                return Content(content, "text/html"); // overview page of JsonServer
+            }
+            else
+            {
+                return Content(content, result.Content.Headers.ContentType.ToString());
+            }
         }
     }
 }

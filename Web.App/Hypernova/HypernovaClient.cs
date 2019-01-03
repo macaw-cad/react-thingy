@@ -17,19 +17,21 @@ namespace Web.App.Hypernova
     /// </summary>
     public class HypernovaClient
     {
-        public readonly ILogger Logger;
-        public readonly IHostingEnvironment Env;
-        public readonly IHttpClientFactory HttpClientFactory;
-        public readonly IOptions<HypernovaSettings> Options;
-        public readonly HypernovaSettings Settings;
+        public readonly ILogger _logger;
+        public readonly IHostingEnvironment _env;
+        public readonly IHttpClientFactory _httpClientFactory;
+        public readonly IOptions<HypernovaSettings> _options;
+        public readonly HypernovaSettings _settings;
+        public readonly string _siteUrl;
 
-        public HypernovaClient(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options)
+        public HypernovaClient(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, string siteUrl)
         {
-            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            Env = env ?? throw new ArgumentNullException(nameof(env));
-            HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            Options = options;
-            Settings = options.Value;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _options = options;
+            _settings = options.Value;
+            _siteUrl = siteUrl;
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace Web.App.Hypernova
 
             baseUrl = ResolveBaseUrl(baseUrl);
 
-            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"cssUrls\": [], \"jsUrls\": [], \"isAmp\": false }} }} }} }}";
+            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {_settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"cssUrls\": [], \"jsUrls\": [], \"isAmp\": false }} }} }} }}";
 
             var result = await RenderHypernovaComponents(componentName, postBody);
             return result;
@@ -111,7 +113,7 @@ namespace Web.App.Hypernova
 
             baseUrl = ResolveBaseUrl(baseUrl);
 
-            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {Settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"cssUrls\": {JsonConvert.SerializeObject(cssUrls)}, \"jsUrls\": {JsonConvert.SerializeObject(jsUrls)}, \"isAmp\": false }} }} }} }}";
+            var postBody = $"{{ \"{componentName}\": {{ \"name\": \"{componentName}\", \"data\": {jsonSerializedReduxState}, \"metadata\": {{ \"strategy\": \"asyncRedux\", \"baseUrl\": \"{baseUrl}\", \"timeout\": {_settings.TimeoutInMilliseconds}, \"applicationContextServer\": {{ \"relativeUrl\": \"{relativeUrl}\", \"cssUrls\": {JsonConvert.SerializeObject(cssUrls)}, \"jsUrls\": {JsonConvert.SerializeObject(jsUrls)}, \"isAmp\": false }} }} }} }}";
 
             var result = await RenderHypernovaComponents(componentName, postBody);
             return result;
@@ -121,10 +123,10 @@ namespace Web.App.Hypernova
         {
             if (String.IsNullOrWhiteSpace(baseUrl))
             {
-                var hypernovaComponentServerBaseUrlOverride = Settings.ComponentServerBaseUrlOverride;
-                if (!string.IsNullOrWhiteSpace(Settings.ComponentServerBaseUrlOverride))
+                var hypernovaComponentServerBaseUrlOverride = _settings.ComponentServerBaseUrlOverride;
+                if (!string.IsNullOrWhiteSpace(_settings.ComponentServerBaseUrlOverride))
                 {
-                    baseUrl = Settings.ComponentServerBaseUrlOverride;
+                    baseUrl = _settings.ComponentServerBaseUrlOverride;
                     if (baseUrl.Contains("[local-ip]"))
                     {
                         baseUrl = baseUrl.Replace("[local-ip]", GetLocalIpAddress());
@@ -137,14 +139,15 @@ namespace Web.App.Hypernova
 
         private async Task<IHtmlContent> RenderHypernovaComponents(string componentName, string postBody)
         {
-            string hypernovaServerUrl = Settings.ComponentServerUrl;
+            string hypernovaServerUrl = _settings.ComponentServerUrl;
 
-            if (!Uri.TryCreate(Settings.ComponentServerUrl, UriKind.Absolute, out Uri _))
+            if (!Uri.TryCreate(_settings.ComponentServerUrl, UriKind.Absolute, out Uri _))
             {
-                throw new HypernovaException($"Hypernova Component Server url '{hypernovaServerUrl}' as specified in appsetting 'Hypernova.' is not an absolute url");
+                hypernovaServerUrl = $"{_siteUrl}{hypernovaServerUrl}";
+                // throw new HypernovaException($"Hypernova Component Server url '{hypernovaServerUrl}' as specified in appsetting 'Hypernova.' is not an absolute url");
             }
 
-            var client = HttpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient();
             var response = await client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"));
             var responseString = await response.Content.ReadAsStringAsync();
             var hypernovaResult = JsonConvert.DeserializeObject<HypernovaResult>(responseString);
