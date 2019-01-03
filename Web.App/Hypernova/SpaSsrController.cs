@@ -40,9 +40,10 @@ namespace Web.App
 
             }
 
+            var cacheKey = HttpContext.Request.Path.ToString().ToLowerInvariant();
             var relativeUrl = $"{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
 
-            var renderResult = await _spaSsr.RenderSpaServerSide(relativeUrl, TimeSpan.FromDays(1.0));
+            var renderResult = await _spaSsr.RenderSpaServerSide(cacheKey, relativeUrl, TimeSpan.FromDays(1.0));
             var content = new ContentResult
             {
                 Content = renderResult.Html,

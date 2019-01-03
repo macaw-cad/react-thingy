@@ -61,18 +61,19 @@ namespace Web.App.Hypernova
         /// <summary>
         /// Render the SPA application client-side.
         /// </summary>
+        /// <param name="cacheKey">The key used for caching.</param>
         /// <param name="relativeUrl">The relative url of the route to show in the SPA, i.e. '/about' (or '/myapp/about' in case of baseAppUrl).</param>
         /// <param name="cacheDuration">Cache duration.</param>
         /// <param name="baseAppUrl">The relative base app url if other than '/' (default), i.e. '/myapp'.</param>
         /// <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
-        public async Task<SpaSsrResult> RenderSpaServerSide(string relativeUrl, TimeSpan cacheDuration, string baseAppUrl = "/")
+        public async Task<SpaSsrResult> RenderSpaServerSide(string cacheKey, string relativeUrl, TimeSpan cacheDuration, string baseAppUrl = "/")
         {
             string indexHtml;
             string appHtml;
 
             if (_settings.NoCaching == false)
             {
-                appHtml = await _cache.GetStringAsync(relativeUrl);
+                appHtml = await _cache.GetStringAsync(cacheKey);
                 // If we have a cache and the rendered version is available in the cache return it, "mark" the ssr as "from cache"
                 if (appHtml != null)
                 {
@@ -126,7 +127,7 @@ namespace Web.App.Hypernova
                 if (_settings.NoCaching == false)
                 {
                     DateTime absoluteExpiration = DateTime.Now.Add((TimeSpan)cacheDuration);
-                    await _cache.SetStringAsync(relativeUrl, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
+                    await _cache.SetStringAsync(cacheKey, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
                 }
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, Exception = null };
             }
