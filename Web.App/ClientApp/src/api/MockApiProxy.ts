@@ -1,30 +1,25 @@
-import { Environment } from './../Environment';
 import { AsyncTaskContext } from './../ApplicationContext';
-import { mockDataStorageKey } from './../userSettings/MockDataFlags';
 import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
 import { ServerApiProxy } from './ServerApiProxy';
 import { MockDataFlags } from '../userSettings/MockDataFlags';
-
-const mockDataPath = `http://localhost:3001`;
+import { Environment } from '../Environment';
 
 export class MockApiProxy {
     private readonly mockDataFlags: MockDataFlags;
     private readonly serverApiProxy: ServerApiProxy;
+    private readonly mockDataPath: string;
 
     public constructor(applicationContext: AsyncTaskContext, mockDataFlags: MockDataFlags) {
         this.mockDataFlags = mockDataFlags;
         this.serverApiProxy = new ServerApiProxy(applicationContext);
-
-        if (!Environment.isServer) {
-            sessionStorage.setItem(mockDataStorageKey, JSON.stringify(mockDataFlags));
-        }
+        this.mockDataPath = Environment.isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`;
 
         this.getStarWarsPeople = this.getStarWarsPeople.bind(this);
     }
 
     public async getStarWarsPeople(): Promise<ApiStarWarsPerson[]> {
         if (this.mockDataFlags.starwarsPeople) {
-            return await this.serverApiProxy.getData<ApiStarWarsPerson[]>(`${mockDataPath}/starwars-people`);
+            return await this.serverApiProxy.getData<ApiStarWarsPerson[]>(`${this.mockDataPath}/starwars-people`);
         } else {
             return this.serverApiProxy.getStarWarsPeople();
         }

@@ -6,28 +6,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
 
-interface HeaderProps {
-}
-
 interface HeaderState {
     isMenuOpen: boolean; 
 }
 
-class Header extends React.Component<HeaderProps, HeaderState> {
-    constructor(props: HeaderProps) {
-        super(props);
-
-        this.state = {
-            isMenuOpen: false
-        };
-    }
+class Header extends React.Component<{}, HeaderState> {
+    public state = {
+        isMenuOpen: false
+    };
 
     private toggleMenu = () => {
         this.setState({ isMenuOpen: !this.state.isMenuOpen });
-    }
-
-    private get homeUrl(): string {
-        return '/';
     }
 
     public render(): React.ReactNode {
@@ -40,6 +29,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         <Link to="/counter"><button>Counter page</button></Link>
                         &nbsp;
                         <Link to="/starwars"><button>StarWars page</button></Link>
+                        &nbsp;
+                        <Link to="/user-settings-f7977542-cf72-439d-897f-8c61e0c36dc6"><button>User settings page</button></Link>
                     </div>
                     <div>
                         I'm a header
@@ -51,9 +42,4 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-    };
-};
-
-export default connect(mapStateToProps)(Header);
+export default Header;

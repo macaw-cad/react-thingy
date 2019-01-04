@@ -4,6 +4,7 @@ import { ApiUrlBuilder } from './ApiUrlBuilder';
 import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
 
 import 'isomorphic-fetch';
+import { Logger } from '../Logger';
 
 export class ServerApiProxy {
     private readonly urlBuilder: ApiUrlBuilder;
@@ -37,7 +38,7 @@ export class ServerApiProxy {
                     resolve(res as T);
                 })
                 .catch(error => {
-                    throw console.error(`API call GET '${url}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
+                    Logger.error(`API call GET '${url}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
                     reject(error);
                 });
         });

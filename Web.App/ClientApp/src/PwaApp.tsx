@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ApplicationRoutes from './router/ApplicationRoutes';
 import { Environment } from './Environment';
+
 type PwaAppState = {
     online: boolean,
 };

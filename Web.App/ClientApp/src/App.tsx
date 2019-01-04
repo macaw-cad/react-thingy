@@ -17,11 +17,11 @@ export function getGlobalStore(): Store<RootState> {
 export default class App extends React.Component {
     public render(): React.ReactNode {
         return (
-          <ApplicationContext.Provider value={applicationContextClient}>
-            <Provider store={store}>
-                <PwaApp />
-            </Provider>
-          </ApplicationContext.Provider>
+            <ApplicationContext.Provider value={applicationContextClient}>
+                <Provider store={store}>
+                    <PwaApp />
+                </Provider>
+            </ApplicationContext.Provider>
         );
     }
 }

@@ -25,7 +25,7 @@ class HomePage extends React.Component<HomeAllProps> {
         this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
     }
 
-    public render(): React.ReactNode {
+    public render(): JSX.Element {
         return (
             <>
                 <Header />

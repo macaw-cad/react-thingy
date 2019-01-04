@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { Fragment } from 'react';
 import Header from '../sample/Header';
 import Footer from '../sample/Footer';
 import Counter from '../counter/Counter';
 import { defaultApplicationContext } from '../ApplicationContext';
 
 export default class CounterPage extends React.Component {
-    public render(): React.ReactNode {
+    public render(): JSX.Element {
         return (
-            <Fragment>
+            <>
                 <Header />
                 <h1>Counter page</h1>
                 <p>
@@ -21,7 +20,7 @@ export default class CounterPage extends React.Component {
                     <Counter applicationContext={defaultApplicationContext}/>
                 </div>
                 <Footer />
-            </Fragment>
+            </>
         );
     }
 }

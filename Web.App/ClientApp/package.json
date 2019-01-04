@@ -24,6 +24,7 @@
     "hypernova-amp": "^3.2.0",
     "hypernova-react": "^2.1.0",
     "isomorphic-fetch": "^2.2.1",
+    "lodash-es": "^4.17.11",
     "node-noop": "^1.0.0",
     "nodemon": "^1.18.6",
     "raw-loader": "^0.5.1",
@@ -70,6 +71,7 @@
   "devDependencies": {
     "@rescripts/cli": "0.0.7",
     "@rescripts/rescript-env": "0.0.3",
+    "@types/lodash-es": "^4.17.1",
     "@types/react-helmet": "^5.0.7",
     "@types/storybook__addon-actions": "^3.4.1",
     "@types/storybook__addon-knobs": "^4.0.0",
