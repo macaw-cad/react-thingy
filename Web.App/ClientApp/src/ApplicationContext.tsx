@@ -14,6 +14,7 @@ interface ApplicationContextConsumerFuncsInternal {
     addTask: (promise: Promise<any>) => void;
 }
 export interface ApplicationContextConsumerDataInternal {
+    firstRun: boolean;
     cssUrls: string[]; // css files to include
     jsUrls: string[]; // js files to include
     baseUrl: string; // all fetch operations without full specified url should use the baseUrl
