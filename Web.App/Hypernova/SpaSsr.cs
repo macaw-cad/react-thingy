@@ -97,7 +97,7 @@ namespace Web.App.Hypernova
 
             if (_settings.FallbackToClientSideRenderingOnly)
             {
-                appHtml = BuildPage(indexHtml, _siteUrl, relativeUrl, baseAppUrl);
+                appHtml = BuildPage(indexHtml, _siteUrl, relativeUrl);
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false };
             }
 
@@ -137,7 +137,7 @@ namespace Web.App.Hypernova
                 _logger.LogCritical((new Exception($"Hypernova component rendering failed: {ex.Message}", ex)).ToString());
 
                 // fall back to client-side rendering
-                appHtml = BuildPage(indexHtml, relativeUrl, baseAppUrl);
+                appHtml = BuildPage(indexHtml, relativeUrl, baseAppUrl, null, ex);
 
                 return new SpaSsrResult { Html = appHtml, IsServerSideRendered = false, IsFromCache = false, Exception = new HypernovaException(ex.Message) };
             }
@@ -151,7 +151,7 @@ namespace Web.App.Hypernova
         /// <param name="baseAppUrl">The base url of the app</param>
         /// <param name="hypernovaResult">If null server-side rendering is off</param>
         /// <returns></returns>
-        private static string BuildPage(string appHtml, string relativeUrl, string baseAppUrl = null, string hypernovaResult = null)
+        private static string BuildPage(string appHtml, string relativeUrl, string baseAppUrl = null, string hypernovaResult = null, Exception ex = null)
         {
             StringBuilder endHeadReplacement = new StringBuilder();
 
@@ -166,13 +166,9 @@ namespace Web.App.Hypernova
                 endHeadReplacement.Append($"<script>window.history.replaceState({{}}, '', '{appUrl}');</script>");
             }
 
-            if (hypernovaResult == null)
+            if (String.IsNullOrWhiteSpace(hypernovaResult))
             {
-                endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - ssr:off - -->");
-            }
-            else if (String.IsNullOrWhiteSpace(hypernovaResult))
-            {
-                endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - no ssr - -->");
+                endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - no ssr -{(ex != null ? " " + ex.Message : "")} -->");
             }
             else
             {
