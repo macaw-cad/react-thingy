@@ -8,23 +8,13 @@ const initialState: StarWarsPeopleState = {
     }
 };
 
-export function reduceStarWarsPeople(state: StarWarsPeopleState = initialState, actionAny: Action): StarWarsPeopleState {
-    const action: StarWarsActionTypes = actionAny as StarWarsActionTypes;
-
+export function reduceStarWarsPeople(state: StarWarsPeopleState = initialState, action: StarWarsActionTypes): StarWarsPeopleState {
     switch (action.type) {
         case TypeKeys.SET_LOADER_STARWARSPEOPLE:
-            return reduceSetLoaderStarWarsPeopleAction(state, action);
+            return { ...state, people: { loading: true } };
         case TypeKeys.SET_STARWARSPEOPLE:
-            return reduceSetStarWarsPeopleAction(state, action);
+            return { ...state, people: { data: action.data, loading: false } };
         default:
             return state;
     }
-}
-
-export function reduceSetLoaderStarWarsPeopleAction(state: StarWarsPeopleState, action: SetLoaderStarWarsPeopleAction): StarWarsPeopleState {
-    return  { ...state, people: { loading: true } };
-}
-
-export function reduceSetStarWarsPeopleAction(state: StarWarsPeopleState, action: SetStarWarsPeopleAction): StarWarsPeopleState {
-    return  { ...state, people: { data: action.data, loading: false } };
 }
