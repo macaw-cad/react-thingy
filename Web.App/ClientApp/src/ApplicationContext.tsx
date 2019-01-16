@@ -62,6 +62,7 @@ export const applicationContextClient: ApplicationContextProviderProps = {
 export const defaultApplicationContext: ApplicationContextConsumerType = {
     addComponentDidRenderServerSideFunc: (func: ComponentDidRenderServerSideFunc) => {/* ignore on client side */},
     addTask: (promise: Promise<any>) => {/* ignore on client side */},
+    firstRun: false,
     cssUrls: [],
     jsUrls: [],
     baseUrl: '',
