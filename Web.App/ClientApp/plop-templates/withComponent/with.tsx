@@ -51,11 +51,11 @@ export function with{{name}}<T extends With{{name}}Props>(WrappedComponent: Reac
         }
 
         public componentDidMount(): void {
-            if (!this.props.{{camelCase name}}.data && !this.props.{{camelCase name}}.loading) {
-                setTimeout(() => {
-                    this.get{{name}}FromApi();
-                });
-            }
+            setTimeout(() => {
+                if (!this.props.{{camelCase name}}.data && !this.props.{{camelCase name}}.loading) {
+                        this.get{{name}}FromApi();
+                }
+            });
         }
 
         public render(): JSX.Element {
