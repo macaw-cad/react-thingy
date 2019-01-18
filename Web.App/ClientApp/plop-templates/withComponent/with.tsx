@@ -12,7 +12,7 @@ import { Environment } from '../Environment';
 import { {{name}}State } from './{{name}}State';
 import { {{name}} } from '../api/types/{{name}}';
 
-export type With{{name}}Props = {{name}}State;
+export type With{{name}}Props = {{name}}State & {{name}}StoreActions;
 
 type {{name}}StoreActions = {
     setLoader{{name}}: () => void;
@@ -20,7 +20,7 @@ type {{name}}StoreActions = {
 };
 
 export function with{{name}}<T extends With{{name}}Props>(WrappedComponent: React.ComponentType<T>): React.ComponentType<Omit<T, keyof With{{name}}Props>> {
-    const mapStateToProps = (state: RootState): With{{name}}Props => {
+    const mapStateToProps = (state: RootState): {{name}}State => {
         return {
             {{camelCase name}}: state.{{camelCase name}}.{{camelCase name}}
         };

@@ -1,4 +1,4 @@
-${
+ ${
     // download/install from visual studio extensions/tools:
     // https://marketplace.visualstudio.com/items?itemName=frhagn.Typewriter
     
@@ -33,6 +33,7 @@ ${
     string TypeName(Type t)
     {
         var type = t;
+        var typeArguments = t.TypeArguments.ToList();
 
         if (t.IsEnumerable)
         {
@@ -51,6 +52,11 @@ ${
 
         if (t.IsEnumerable)
         {
+            // Used to convert IDictionary<string, string> to  { [key: string]: string; }
+            if (typeArguments.Count == 2) {
+                return t.Name;
+            }
+            
             return name + "[]";
         }
         return name;
@@ -131,13 +137,30 @@ ${
 
     bool IsApi(string ns) 
     {
-        return ns.Equals("Web.App.Api.Models");
+       return ns.Equals("Web.App.Api.Models");
+    }
+
+    string PropertyName(Property p) {        
+        var attribute = p.Attributes.FirstOrDefault(a => a.Name == "JsonProperty");
+        if (attribute != null)
+        {
+            var value = attribute.Value;
+            var start = value.IndexOf("\"");
+            if (start >= 0)
+            {
+                value = value.Substring(start + 1);
+                var end = value.IndexOf("\"");
+                value = value.Substring(0, end);
+            }
+            return value;
+        }
+        return p.name;
     }
 
 }$Classes(e => (IsApi(e.Namespace)))[$Imports
 
 export class $ClassTypeName$TypeParameters $Inherit { $Properties[
-	public $name$IsOptional[?][!]: $PropertyComputedType;]
+	public $PropertyName$IsOptional[?][!]: $PropertyComputedType;]
 }]
 $Enums(e => IsApi(e.Namespace))[export enum Api$Name {
     $Values[

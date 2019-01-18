@@ -13,7 +13,7 @@ export function {{camelCase name}}Reducer(state: {{name}}State = initialState, a
         case TypeKeys.SET_LOADER_{{constantCase name}}:
             return { ...state, {{camelCase name}}: { loading: true } };
         case TypeKeys.SET_{{constantCase name}}:
-            return { ...state, {{camelCase name}}: { data: action.data, loading: false } };
+            return { ...state, {{camelCase name}}: { data: action.payload, loading: false } };
         default:
             return state;
     }

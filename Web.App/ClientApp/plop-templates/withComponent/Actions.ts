@@ -12,7 +12,7 @@ export class SetLoader{{name}}Action implements Action {
 
 export class Set{{name}}Action implements Action {
   public type!: TypeKeys.SET_{{constantCase name}};
-  public data!: {{name}}[] | null;
+  public payload!: {{name}}[] | null;
 }
 
 export type {{name}}ActionTypes = 
@@ -20,4 +20,4 @@ export type {{name}}ActionTypes =
   | Set{{name}}Action;
  
 export const createSetLoader{{name}}Action = () => ({ type: TypeKeys.SET_LOADER_{{constantCase name}} });
-export const createSet{{name}}Action = (data: {{name}}[] | null) => ({type: TypeKeys.SET_{{constantCase name}}, data: data});
+export const createSet{{name}}Action = (payload: {{name}}[] | null) => ({type: TypeKeys.SET_{{constantCase name}}, payload: payload});
