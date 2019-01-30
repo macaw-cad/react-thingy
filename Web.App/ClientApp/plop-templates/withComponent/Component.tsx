@@ -1,7 +1,6 @@
 import React from 'react';
 import { with{{name}}, With{{name}}Props } from './with{{name}}';
 import { ComponentStatus } from '../ui/componentStatus/ComponentStatus';
-import { VehicleCard } from '../Card/VehicleCard';
 
 type {{name}}AllProps = With{{name}}Props;
 
