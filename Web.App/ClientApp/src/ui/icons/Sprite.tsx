@@ -43,7 +43,24 @@ export const sprite = {
             </g>
         </svg>
     ),
-    danger: <svg />
+    danger: (
+        <svg version="1.1" viewBox="0 0 24 24">
+            <g id="Rolodex---Notification" fill="none" stroke="none" strokeWidth="1">
+                <g id="Tablet---Notification---Error" transform="translate(-715.000000, -652.000000)">
+                    <g id="Molecule-/-Notification-/-Default-Copy" transform="translate(689.000000, 631.000000)">
+                        <g id="Icon-/-Warning-Rounded---25px-/-Danger" transform="translate(25.000000, 20.000000)">
+                            <g id="Warning-Rounded" transform="translate(2.000000, 1.000000)">
+                                <text id="!" fill="currentColor" style={{ fontFamily: 'Precious Sans Two', fontWeight: 600, fontSize: '18px' }}>
+                                    <tspan x="8" y="18">!</tspan>
+                                </text>
+                                <circle id="Oval" cx="10.75" cy="11.75" r="10.75" stroke="currentColor" strokeWidth="1.5" />
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </svg>
+    )
 };
 
 export type IconNames = keyof typeof sprite;

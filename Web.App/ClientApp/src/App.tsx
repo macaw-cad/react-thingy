@@ -6,7 +6,7 @@ import { RootState } from './store/RootState';
 import { Store } from 'redux';
 import { PwaApp } from './PwaApp';
 
-// import './App.css';
+import './assets/css/app.scss';
 
 const store = configureStore();
 

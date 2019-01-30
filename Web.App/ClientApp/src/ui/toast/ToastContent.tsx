@@ -18,12 +18,6 @@ export const ToastContent: React.SFC<ToastContentProps> = ({ type, children }) =
     return (
         <div className="a-toast__content">
             <div className="a-toast__title xs-mb">
-                {type === 'error' || type === 'warning' ? (
-                    <IconSprite name="danger" />
-                ) : null}
-                {type === 'success' && (
-                    <IconSprite name="check" />
-                )}
                 {type 
                     ? <FormattedMessage id={`Toast.${titleMap[type]}`} defaultMessage={titleMap[type]} /> 
                     : <FormattedMessage id={`Toast.${titleMap.default}`} defaultMessage={titleMap.default} />

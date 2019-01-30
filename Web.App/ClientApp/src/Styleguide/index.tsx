@@ -8,7 +8,7 @@ import { Colors } from './Colors';
 storiesOf('Styleguide', module)
   .addDecorator(withKnobs)
   .add('Default', () => (
-      <div>test</div>
+      <div>Design system intro</div>
   ))
   .add('Colors', () => (
     <Colors />
