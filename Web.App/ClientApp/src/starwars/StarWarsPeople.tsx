@@ -21,7 +21,6 @@ class StarWarsPeople extends React.Component<StarWarsPeopleAllProps> {
     return (
       <div>
         <h2 className={css(styles.piet)}>StarWars People</h2>    
-        <Sprite name="check"/>
         <ComponentStatus loading={[loading]} data={[data]} message="Failed to load StarWars people" />
         {data &&
           <ul>
