@@ -1,6 +1,28 @@
-# Web.App
+# React Thingy - getting started 
 
-This Web.App is a complete configured front-end development project containing sample code to show how it works with a real example.
+Welcome to **React Thingy**. a sample project where we combined learnings and best practices of
+previous React projects we executed at Macaw Interactive, a Dutch Digital Agency. We don't call it a
+boilerplate, a starter kit or something like that - it is the current state of best practices that
+we might use for our next project (we are actually doing that right now). But for other projects
+we are going to start in the future we will look at our insight in front-end development at that moment.
+Things in front-end land are changing so fast! We don't want to invest in standardizing code for
+all our projects because that will result in dragging a large code base into a project, where that
+code must be maintained and becomes legacy the moment it is pulled in. That is why we don't give it
+a hefty name, but just call it a **Thingy**.
+
+## How to use this code base?
+
+If you think this Thingy is useful then clone it and make it your own. Throw away the stuff you
+don't use, modify the code you use. All the code is here - no dependencies on custom created nuget
+or npm packages - that makes it more difficult to change the stuff. If you find issues or have 
+improvement then please give us a pull request.
+
+## The Web.App project
+
+The provided .NET core 2.2 Web.App project is a complete configured front-end development project
+containing sample code to show how it works with a real example. The project is based on a
+default .NET core web site project with React as provided by Visual Studio, but we changed the
+setup and configuration to extend it and move TypeScript for the font-end development.
 
 The project combines the following technologies:
 
@@ -8,8 +30,12 @@ The project combines the following technologies:
 - The frontend project is bootstrapped with Create React App 2 (CRA2)
 - All frontend code is written in TypeScript and checked with TSLint
 - Hypernova based server-side rendering for single components, the complete SPA or AMP pages
-- Server-side rendered SPA can be async, so components in the SPAcan make async calls to retrieve data or have promises to be resolved before rendering
+- Server-side rendered SPA can be async, so components in the SPA can make async calls to retrieve data 
+  or have promises to be resolved before rendering
+  JSon Server based mock api
 - Storybook to manage the design system
+
+And all of this is packed into a Linux Docker image to be deployed.
 
 ## Configure the solution
 
