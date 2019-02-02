@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
 using Web.App.Hypernova;
 using Web.App.HypernovaComponentServer;
 using Web.App.JsonServer;
@@ -28,6 +29,12 @@ namespace Web.App
         public void ConfigureServices(IServiceCollection services)
         {
             var mvc = services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Web.App B4F Api", Version = "v1" });
+            });
+
             mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             mvc.AddRazorPagesOptions(options =>
             {
@@ -63,6 +70,12 @@ namespace Web.App
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web.App B4F Api V1");
+                });
             }
             else
             {
