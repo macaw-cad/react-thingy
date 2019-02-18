@@ -45,7 +45,7 @@ export function with{{name}}<T extends With{{name}}Props>(WrappedComponent: Reac
             this.apiProxy = ApiProxy(props.applicationContext);
             this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
         
-            if (Environment.isServer) {
+            if (Environment.isServer && props.applicationContext.firstRun) {
               this.asyncTaskContext.addTask(this.get{{name}}FromApi());
             }
         }
