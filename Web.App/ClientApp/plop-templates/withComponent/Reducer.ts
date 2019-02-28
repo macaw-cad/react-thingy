@@ -1,5 +1,4 @@
 import { {{name}}State } from './{{name}}State';
-import { Action } from 'redux';
 import { {{name}}ActionTypes, TypeKeys } from './{{name}}Actions';
 
 const initialState: {{name}}State = {
