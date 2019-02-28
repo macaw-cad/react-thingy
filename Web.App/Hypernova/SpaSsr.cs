@@ -256,11 +256,18 @@ namespace Web.App.Hypernova
 
             foreach (Match cssMatch in Regex.Matches(indexHtml, @"<link\shref=""([^""]+?)""\srel=""stylesheet""", RegexOptions.IgnoreCase))
             {
-                cssUrlsList.Add(cssMatch.Value);
+                if (cssMatch.Groups.Count > 1)
+                {
+                    cssUrlsList.Add(cssMatch.Groups[1].Value);
+                }
             }
+
             foreach (Match jsMatch in Regex.Matches(indexHtml, @"<script\ssrc=""([^""]+?)""><\/script>", RegexOptions.IgnoreCase))
             {
-                jsUrlsList.Add(jsMatch.Groups[1].Value);
+                if (jsMatch.Groups.Count > 1)
+                {
+                    jsUrlsList.Add(jsMatch.Groups[1].Value);
+                }
             }
 
             return (cssUrlsList.ToArray(), jsUrlsList.ToArray());
