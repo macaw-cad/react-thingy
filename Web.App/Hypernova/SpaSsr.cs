@@ -154,6 +154,7 @@ namespace Web.App.Hypernova
         private static string BuildPage(string appHtml, string relativeUrl, string baseAppUrl = null, string hypernovaResult = null, Exception ex = null)
         {
             StringBuilder endHeadReplacement = new StringBuilder();
+            StringBuilder startHeadReplacement = new StringBuilder();
 
             // Only rewrite url on the client if we have a baseAppUrl
             if (baseAppUrl != null && baseAppUrl != "/")
@@ -178,7 +179,10 @@ namespace Web.App.Hypernova
 
             endHeadReplacement.Append("</head>");
 
+            startHeadReplacement.Append("<!DOCTYPE html><html");
+
             appHtml = appHtml.Replace("</head>", endHeadReplacement.ToString());
+            appHtml = appHtml.Replace("<html", startHeadReplacement.ToString());
 
             return appHtml;
         }
