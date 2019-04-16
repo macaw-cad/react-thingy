@@ -39,7 +39,6 @@
     "react-toastify": "^4.5.1",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
-    "typed-rest-client-local": "file:./local_modules/typed-rest-client-local",
     "typescript": "3.1.6",
     "url-join": "^4.0.0",
     "webpack": "4.19.1",

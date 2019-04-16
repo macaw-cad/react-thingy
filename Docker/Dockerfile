@@ -19,7 +19,7 @@ RUN apt-get install -yq \
 		supervisor
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -yq nodejs
 
-# Enable with ssh
+# Enable with ssh 
 ENV SSH_PASSWD "root:Docker!"
 RUN apt-get update \
         && apt-get install -y --no-install-recommends dialog \

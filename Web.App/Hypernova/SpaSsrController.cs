@@ -34,8 +34,10 @@ namespace Web.App
         public async Task<ActionResult> Index()
         {
             if (_spaSsr == null)
-            {
-                var siteUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+			{
+				bool isHttps = HttpContext.Request.Headers["X-Forwarded-Proto"] == "https" || HttpContext.Request.IsHttps;
+				string protocol = isHttps ? "https" : "http";
+				var siteUrl = $"{protocol}://{HttpContext.Request.Host}";
                 _spaSsr = new SpaSsr(_logger, _env, _httpClientFactory, _options, _cache, siteUrl);
 
             }

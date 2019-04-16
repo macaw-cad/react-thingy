@@ -28,7 +28,7 @@ namespace Web.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvc = services.AddMvc();
+			var mvc = services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {

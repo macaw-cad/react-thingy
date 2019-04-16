@@ -1,5 +1,6 @@
 ﻿import { AsyncTaskContext } from './../ApplicationContext';
 const https = require('https');
+const http = require('http');
 import { ApiUrlBuilder } from './ApiUrlBuilder';
 import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
 
@@ -26,7 +27,9 @@ export class ServerApiProxy {
         // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
         // RequestInit TypeScript type definition does not contain agent, so put it on in an untyped way.
         const options: RequestInit = {};
-        (options as any).agent = new https.Agent({ rejectUnauthorized: false });
+        (options as any).agent = this.applicationContext.baseUrl.indexOf('https') > -1 
+            ? new https.Agent({ rejectUnauthorized: false })
+            : new http.Agent();
 
         let getDataPromise: Promise<T> = new Promise((resolve, reject) => {
             fetch(url, options)

@@ -147,16 +147,9 @@ function wrapWithTimeout(promise, timeoutMilliseconds, timeoutRejectionValue) {
             reject(timeoutRejectionValue);
         }, timeoutMilliseconds);
 
-        promise.then(
-            resolvedValue => {
-                clearTimeout(timeoutTimer);
-                resolve(resolvedValue);
-            },
-            rejectedValue => {
-                clearTimeout(timeoutTimer);
-                reject(rejectedValue);
-            }
-        )
+        promise
+            .then(resolve, reject)
+            .finally(() => { clearTimeout(timeoutTimer); });
     });
 }
 
@@ -197,7 +190,9 @@ function getComponentAsyncRedux(component, context) {
     });
 
     // First render of the initialized component - should register promises using addTask 
-    initializedComponent();
+	if (initializedComponent) {
+		initializedComponent();
+	}
     applicationContextServer.applicationContext.firstRun = false;
 
     // Execute all registered componentDidRender funcs

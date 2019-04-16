@@ -77,7 +77,7 @@ export function withStarWarsPeople<T extends WithStarWarsPeopleProps>(WrappedCom
                     resolve();
                 } catch (error) {
                     this.props.setStarWarsPeople(null);
-                    reject();
+                    reject(error);
                 }
             });
         }

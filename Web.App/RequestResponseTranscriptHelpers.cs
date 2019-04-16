@@ -29,7 +29,7 @@ namespace Web.App
             {
                 Scheme = req.Scheme,
                 Host = req.Host.Host,
-                Port = req.Host.Port.Value,
+                Port = req.Host.Port.HasValue ? req.Host.Port.Value : 80,
                 Path = req.PathBase.Add(req.Path),
                 Query = req.QueryString.ToString()
             }.Uri);

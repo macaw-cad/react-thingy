@@ -141,17 +141,25 @@ namespace Web.App.Hypernova
         {
             string hypernovaServerUrl = _settings.ComponentServerUrl;
 
-            if (!Uri.TryCreate(_settings.ComponentServerUrl, UriKind.Absolute, out Uri _))
+            if (!Uri.IsWellFormedUriString(_settings.ComponentServerUrl, UriKind.Absolute))
             {
                 hypernovaServerUrl = $"{_siteUrl}{hypernovaServerUrl}";
                 // throw new HypernovaException($"Hypernova Component Server url '{hypernovaServerUrl}' as specified in appsetting 'Hypernova.' is not an absolute url");
             }
 
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"));
-            var responseString = await response.Content.ReadAsStringAsync();
-            var hypernovaResult = JsonConvert.DeserializeObject<HypernovaResult>(responseString);
+			var responseString = "";
 
+			try
+			{
+				var client = _httpClientFactory.CreateClient();
+				var response = await client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"));
+				responseString = await response.Content.ReadAsStringAsync();
+			} catch(Exception e) {
+				throw new HypernovaException($"Post to Hypernova Component Server at '{hypernovaServerUrl}/batch' failed. Error: {e.Message}");
+			}
+			
+			var hypernovaResult = JsonConvert.DeserializeObject<HypernovaResult>(responseString);
+			
             if (hypernovaResult.Succes == false && hypernovaResult.Error != null)
             {
                 throw new HypernovaException($"Call to Hypernova Component Server at '{hypernovaServerUrl}' failed. Error: {hypernovaResult.Error.Message}");
@@ -161,7 +169,7 @@ namespace Web.App.Hypernova
 
             if (componentResult.StatusCode != 200)
             {
-                throw new HypernovaException($"Failed to render component '{componentName}' using the Hypernova Component Server at '{hypernovaServerUrl}'. Error: {componentResult.Error.Message}, Stacktrace: {string.Join("\r\n", componentResult.Error.Stack)}");
+                throw new HypernovaException($"Failed to render component '{componentName}' using the Hypernova Component Server at '{hypernovaServerUrl}'. Error: {componentResult.Error?.Message}, Stacktrace: {(componentResult.Error != null ? string.Join("\r\n", componentResult.Error.Stack) : "")}");
             }
 
             return new HtmlString(hypernovaResult.Results[componentName].Html);

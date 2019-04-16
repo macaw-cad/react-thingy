@@ -74,7 +74,7 @@ export function with{{name}}<T extends With{{name}}Props>(WrappedComponent: Reac
                     resolve();
                 } catch (error) {
                     this.props.set{{name}}(null);
-                    reject();
+                    reject(error);
                 }
             });
         }
