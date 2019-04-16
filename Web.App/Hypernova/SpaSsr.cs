@@ -167,7 +167,7 @@ namespace Web.App.Hypernova
                 endHeadReplacement.Append($"<script>window.history.replaceState({{}}, '', '{appUrl}');</script>");
             }
 
-			endHeadReplacement.Append($"\n\n<!-- BaseUrl: {baseAppUrl}, RelativeUrl: {relativeUrl}, SiteUrl: {_siteUrl}, ComponentServerUrl: {_settings.ComponentServerUrl} -->\n\n");
+			//endHeadReplacement.Append($"\n\n<!-- BaseUrl: {baseAppUrl}, RelativeUrl: {relativeUrl}, SiteUrl: {_siteUrl}, ComponentServerUrl: {_settings.ComponentServerUrl} -->\n\n");
 
 			if (String.IsNullOrWhiteSpace(hypernovaResult))
             {
