@@ -33,14 +33,20 @@ namespace Web.App
 
         public async Task<ActionResult> Index()
         {
-            if (_spaSsr == null)
+			if (_spaSsr == null)
 			{
 				bool isHttps = HttpContext.Request.Headers["X-Forwarded-Proto"] == "https" || HttpContext.Request.IsHttps;
 				string protocol = isHttps ? "https" : "http";
-				var siteUrl = $"{protocol}://{HttpContext.Request.Host}";
-                _spaSsr = new SpaSsr(_logger, _env, _httpClientFactory, _options, _cache, siteUrl);
+				string host = HttpContext.Request.Host.ToString();
 
-            }
+				if (HttpContext.Request.Headers.ContainsKey("X-ORIGINAL-HOST")) {
+					host = HttpContext.Request.Headers["X-ORIGINAL-HOST"];
+				}
+
+				var siteUrl = $"{protocol}://{host}";
+				_spaSsr = new SpaSsr(_logger, _env, _httpClientFactory, _options, _cache, siteUrl, _configuration, HttpContext);
+
+			}
 
             var cacheKey = HttpContext.Request.Path.ToString().ToLowerInvariant();
             var relativeUrl = $"{HttpContext.Request.Path}{HttpContext.Request.QueryString}";
