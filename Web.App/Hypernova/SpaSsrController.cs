@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Web.App.Hypernova;
@@ -18,10 +19,11 @@ namespace Web.App
         private readonly IOptions<HypernovaSettings> _options;
         private readonly HypernovaSettings _settings;
         private readonly IDistributedCache _cache;
+		private readonly IConfiguration _configuration;
 
-        private SpaSsr _spaSsr = null;
+		private SpaSsr _spaSsr = null;
 
-        public SpaSsrController(ILogger<SpaSsrController> logger, IHttpClientFactory httpClientFactory, IHostingEnvironment env, IOptions<HypernovaSettings> options, IDistributedCache cache)
+        public SpaSsrController(ILogger<SpaSsrController> logger, IHttpClientFactory httpClientFactory, IHostingEnvironment env, IOptions<HypernovaSettings> options, IDistributedCache cache, IConfiguration configuration)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _env = env ?? throw new ArgumentNullException(nameof(env));
@@ -29,7 +31,8 @@ namespace Web.App
             _options = options;
             _settings = options.Value;
             _cache = cache;
-        }
+			_configuration = configuration;
+		}
 
         public async Task<ActionResult> Index()
         {

@@ -10,6 +10,9 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Web.App.Hypernova
 {
@@ -31,7 +34,7 @@ namespace Web.App.Hypernova
         private static string[] _cssUrlsCache;
         private static string[] _jsUrlsCache;
 
-        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl)
+        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl, IConfiguration configuration, HttpContext httpContext)
         {
             _logger = logger;
             _env = env;
@@ -171,8 +174,10 @@ namespace Web.App.Hypernova
 
 			if (String.IsNullOrWhiteSpace(hypernovaResult))
             {
-                //endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - no ssr -{(ex != null ? " " + ex.ToString() : "")} -->");
                 endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - no ssr -->");
+#if DEBUG
+				endHeadReplacement.Append($"<!-- {(ex != null ? " " + ex.ToString() : "")} -->");
+#endif
 			}
             else
             {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from '../Styles';
-import Sprite, { sprite, IconNames } from '../ui/icons/Sprite';
+import Sprite, { sprite } from '../ui/icons/Sprite';
 
 export class Icons extends React.Component {
     public render(): JSX.Element {

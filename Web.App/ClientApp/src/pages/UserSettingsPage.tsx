@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { map } from 'lodash-es';
+import map from 'lodash/map';
 import Header from '../sample/Header';
 import Footer from '../sample/Footer';
 import { getMockDataAllFlags, MockDataFlags, mockDataStorageKey, getMockDataFlags, mockDataEnvKey } from '../userSettings/MockDataFlags';

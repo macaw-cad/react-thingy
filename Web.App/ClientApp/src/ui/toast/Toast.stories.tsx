@@ -3,8 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, text, select, number } from '@storybook/addon-knobs';
 import { ToastContent } from './ToastContent';
 import IconSprite from '../icons/Sprite';
-const toastLibrary = require('react-toastify/dist/ReactToastify');
-const { ToastContainer, toast } = toastLibrary;
+import { ToastContainer, toast } from 'react-toastify';
 
 const toastPositions = [
     'top-right',
