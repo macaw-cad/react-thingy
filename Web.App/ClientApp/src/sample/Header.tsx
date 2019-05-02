@@ -1,8 +1,6 @@
 // tslint:disable:max-line-length
 
 import * as React from 'react';
-import { RootState } from '../store/RootState';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
 
@@ -14,10 +12,6 @@ class Header extends React.Component<{}, HeaderState> {
     public state = {
         isMenuOpen: false
     };
-
-    private toggleMenu = () => {
-        this.setState({ isMenuOpen: !this.state.isMenuOpen });
-    }
 
     public render(): React.ReactNode {
         return (

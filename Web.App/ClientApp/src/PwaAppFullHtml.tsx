@@ -6,10 +6,6 @@ type PwaAppFullHtmlProps = {};
 
 type PwaAppFullHtmlAllProps = PwaAppFullHtmlProps;
 export class PwaAppFullHtml extends React.Component<PwaAppFullHtmlAllProps> {
-    constructor(props: PwaAppFullHtmlAllProps) {
-        super(props);
-    }
-    
     public render(): React.ReactNode {
         const favIconUrl = process.env.PUBLIC_URL + '/favicon.ico';
         const manifestUrl =  process.env.PUBLIC_URL + '/manifest.json';

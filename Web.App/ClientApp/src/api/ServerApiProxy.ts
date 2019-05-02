@@ -1,11 +1,12 @@
 ﻿import { AsyncTaskContext } from './../ApplicationContext';
-const https = require('https');
-const http = require('http');
 import { ApiUrlBuilder } from './ApiUrlBuilder';
 import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
 
 import 'isomorphic-fetch';
 import { Logger } from '../Logger';
+
+const https = require('https');
+const http = require('http');
 
 export class ServerApiProxy {
     private readonly urlBuilder: ApiUrlBuilder;

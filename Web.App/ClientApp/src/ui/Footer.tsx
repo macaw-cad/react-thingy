@@ -1,14 +1,12 @@
-// tslint:disable:max-line-length
-
 import * as React from 'react';
 
 interface FooterProps {
 }
 
-const Footer: React.SFC<FooterProps> = ({}) => {
+const Footer: React.FunctionComponent<FooterProps> = () => {
     return (
         <footer>
-            <hr/>
+            <hr />
             <div>
                 I'm a footer
             </div>

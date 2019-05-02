@@ -1,6 +1,5 @@
 import { StarWarsPeopleState } from './StarWarsPeopleState';
-import { SetStarWarsPeopleAction, StarWarsActionTypes, TypeKeys, SetLoaderStarWarsPeopleAction } from './StarWarsActions';
-import { Action } from 'redux';
+import { StarWarsActionTypes, TypeKeys } from './StarWarsActions';
 
 const initialState: StarWarsPeopleState = {
     people: {

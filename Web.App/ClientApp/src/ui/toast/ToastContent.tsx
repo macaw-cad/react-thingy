@@ -1,12 +1,11 @@
 import React from 'react';
-import IconSprite from '../icons/Sprite';
 import { FormattedMessage } from 'react-intl';
 
 type ToastContentProps = {
     type?: string;
 };
 
-export const ToastContent: React.SFC<ToastContentProps> = ({ type, children }) => {
+export const ToastContent: React.FunctionComponent<ToastContentProps> = ({ type, children }) => {
     const titleMap: { [key: string]: string } = {
         default: 'Notification',
         success: 'Success',

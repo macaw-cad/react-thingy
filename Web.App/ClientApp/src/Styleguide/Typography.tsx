@@ -27,7 +27,7 @@ export class Typography extends React.Component {
                     <th>Example</th>
                 </tr>
                 {[1, 2, 3, 4, 5, 6].map((size, index) => {
-                    const Heading = `h${size}`; 
+                    const Heading: React.FunctionComponent = () => <>{`h${size}`}</>; 
                     return (
                         <tr key={index}>
                             <td><code>&lt;h{size}&gt;&lt;/h{size}&gt;</code></td>

@@ -23,7 +23,7 @@ export const renderReactAsyncReduxSpaServer = (C: React.ComponentClass<any>, sto
       }));
 
       if (applicationContextServer.applicationContext.firstRun) {
-        const { html, css } = StyleSheetServer.renderStatic(() => {
+        StyleSheetServer.renderStatic(() => {
           return ReactDOMServer.renderToStaticMarkup(<ApplicationContext.Provider value={applicationContextServer}><Provider store={store}><C /></Provider></ApplicationContext.Provider>);
         });
         return ''; // first run contents will be ignored

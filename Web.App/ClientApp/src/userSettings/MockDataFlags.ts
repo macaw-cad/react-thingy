@@ -52,7 +52,7 @@ export function getMockDataEnvValue(): boolean | undefined {
     try {
         return JSON.parse(value);
     } catch (e) {
-        throw 'Mock data env value is not valid JSON. Should be either true or false';
+        throw new Error('Mock data env value is not valid JSON. Should be either true or false');
     }
 }
 

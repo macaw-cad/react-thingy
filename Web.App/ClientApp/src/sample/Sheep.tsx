@@ -1,10 +1,14 @@
 import * as React from 'react';
 
-export const Sheep = ({name = 'Serge'}) => {
+type SheepProps = {
+    name: string;
+};
+
+export const Sheep: React.FunctionComponent<SheepProps> = ({ name = 'Serge' }) => {
     let text = '- and my name is ' + name;
     return (
-    <div>
-        <p>beep beep I'm a sheep <a onClick={() => alert('Im clicked')}>{text}</a></p>
-    </div>
+        <div>
+            <p>beep beep I'm a sheep <span onClick={() => alert('Im clicked')}>{text}</span></p>
+        </div>
     );
 };

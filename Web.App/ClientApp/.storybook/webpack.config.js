@@ -1,13 +1,13 @@
 var path = require('path');
 
-module.exports = (baseConfig, env, defaultConfig) => {
-  defaultConfig.node = {
+module.exports = async ({ config, mode }) => {
+  config.node = {
     fs: 'empty',
     tls: 'empty',
     net: 'empty'
   }
 
-  defaultConfig.module.rules.push({
+  config.module.rules.push({
     test: /\.(ts|tsx)$/,
     include: [
       path.resolve(__dirname, '.'),
@@ -19,7 +19,7 @@ module.exports = (baseConfig, env, defaultConfig) => {
     }
   });
 
-  defaultConfig.resolve.extensions.push('.ts', '.tsx');
+  config.resolve.extensions.push('.ts', '.tsx');
   
-  return defaultConfig;
+  return config;
 };

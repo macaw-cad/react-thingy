@@ -10,7 +10,6 @@ import { createSetLoaderStarWarsPeopleAction, createSetStarWarsPeopleAction } fr
 import { connect } from 'react-redux';
 import { ApiProxy, ApiProxyType } from '../api/ApiProxy';
 import { withApplicationContext, ApplicationContextConsumerProps, AsyncTaskContext } from '../ApplicationContext';
-import { Logger } from '../Logger';
 import { Environment } from '../Environment';
 
 export type WithStarWarsPeopleProps = StarWarsPeopleState;
