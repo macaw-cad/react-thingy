@@ -7,12 +7,21 @@ import { Store } from 'redux';
 import { ApplicationContext, ApplicationContextProviderProps, applicationContextClient } from '../ApplicationContext';
 import { StyleSheetServer, StyleSheet } from 'aphrodite/no-important';
 import { PwaAppFullHtml } from '../PwaAppFullHtml';
+import { ContextHistory } from '../ContextHistory';
+import { createMemoryHistory, createBrowserHistory } from 'history';
 
 export const renderReactAsyncReduxSpaServer = (C: React.ComponentClass<any>, store: Store<any>, applicationContextServer: ApplicationContextProviderProps) => hypernova({
   server(): (props: any) => string {
     return (props: any) => {
-      // console.log('applicationContextServer', JSON.stringify(applicationContextServer, null, 2));
-      // console.log('component render contents', contents);
+
+      // Make sure we can use the relativeUrl using the memory history on SSR
+      const contextHistory = new ContextHistory();
+      contextHistory.setHistory(createMemoryHistory({
+        initialEntries: [
+          applicationContextServer.applicationContext.relativeUrl || '/'
+        ]
+      }));
+
       if (applicationContextServer.applicationContext.firstRun) {
         const { html, css } = StyleSheetServer.renderStatic(() => {
           return ReactDOMServer.renderToStaticMarkup(<ApplicationContext.Provider value={applicationContextServer}><Provider store={store}><C /></Provider></ApplicationContext.Provider>);
@@ -40,11 +49,15 @@ export const renderReactAsyncReduxSpaClient = (C: React.ComponentClass<any>, red
   },
   client(): void {
     const payloads: any[] = load('HypernovaApp');
+
+    const contextHistory = new ContextHistory();
+    contextHistory.setHistory(createBrowserHistory());
+
     if (!!payloads && payloads.length > 0) {
-        const { node, data } = payloads[0];
-        const store = reduxStoreCreator(data);
-        const wrappedComponent = <ApplicationContext.Provider value={applicationContextClient}><Provider store={store}><C /></Provider></ApplicationContext.Provider>;
-        ReactDOM.hydrate(wrappedComponent, node);
+      const { node, data } = payloads[0];
+      const store = reduxStoreCreator(data);
+      const wrappedComponent = <ApplicationContext.Provider value={applicationContextClient}><Provider store={store}><C /></Provider></ApplicationContext.Provider>;
+      ReactDOM.hydrate(wrappedComponent, node);
     }
 
     const payloadsCss: any[] = load('HypernovaCss');

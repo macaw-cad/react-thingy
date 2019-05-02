@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StaticRouter, Router } from 'react-router';
-import { history } from '../store/store';
 import { Environment } from '../Environment';
 import { ApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
 import Routes from './Routes';
 import { ErrorBoundary } from '../ui/ErrorBoundary';
+import { ContextHistory } from '../ContextHistory';
 
 type ApplicationRoutesAllProps = {};
 
@@ -26,7 +26,7 @@ export default class ApplicationRoutes extends React.Component<ApplicationRoutes
                                 </StaticRouter>
                             )
                             : (
-                                <Router history={history}>
+                                <Router history={new ContextHistory().getHistory()}>
                                     <Routes />
                                 </Router>
                             )
