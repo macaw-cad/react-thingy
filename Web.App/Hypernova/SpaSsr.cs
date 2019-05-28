@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 namespace Web.App.Hypernova
 {
@@ -81,7 +82,7 @@ namespace Web.App.Hypernova
                 if (appHtml != null)
                 {
                     appHtml = (new System.Text.RegularExpressions.Regex("- ssr -")).Replace(appHtml, "- ssr:cached -", 1);
-                    return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = true, Exception = null };
+                    return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = true, StatusCode = getStatusCodeFromHtml(appHtml), Exception = null };
                 }
             }
 
@@ -132,7 +133,7 @@ namespace Web.App.Hypernova
                     DateTime absoluteExpiration = DateTime.Now.Add((TimeSpan)cacheDuration);
                     await _cache.SetStringAsync(cacheKey, appHtml, new DistributedCacheEntryOptions { AbsoluteExpiration = absoluteExpiration });
                 }
-                return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, Exception = null };
+                return new SpaSsrResult { Html = appHtml, IsServerSideRendered = true, IsFromCache = false, StatusCode = getStatusCodeFromHtml(appHtml), Exception = null };
             }
             catch (Exception ex)
             {
@@ -284,5 +285,23 @@ namespace Web.App.Hypernova
 
             return (cssUrlsList.ToArray(), jsUrlsList.ToArray());
         }
-    }
+
+		/// <summary>
+		/// Return if a page should show a certain status after serverside rendering
+		/// </summary>
+		/// <remarks>
+		/// The status should be set in Redux on the clientside so we can pick it up from here
+		/// </remarks>
+		/// <param name="html">Html string including the Redux state in html.</param>
+		/// <returns>An HttpStatusCode or null if no status is found</returns>
+		private HttpStatusCode? getStatusCodeFromHtml(string html)
+		{
+			if (html.Contains("{\"httpStatus\":404}"))
+			{
+				return HttpStatusCode.NotFound;
+			}
+
+			return null;
+		}
+	}
 }

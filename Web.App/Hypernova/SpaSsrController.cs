@@ -60,7 +60,13 @@ namespace Web.App
                 Content = renderResult.Html,
                 ContentType = "text/html"
             };
-            return content;
+
+			if (renderResult.StatusCode.HasValue)
+			{
+				content.StatusCode = (int)renderResult.StatusCode.Value;
+			}
+
+			return content;
         }
     }
 }
