@@ -16,21 +16,25 @@ namespace Web.App
     public class StoryController : Controller
     {
         private readonly TimeSpan _cacheDuration = TimeSpan.FromDays(1.0);
+        private readonly ILogger<StoryController> _logger;
+        private readonly IHostingEnvironment _env;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOptions<HypernovaSettings> _options;
         private readonly IDistributedCache _cache;
         private readonly HypernovaClient _hypernovaClient;
         private readonly HypernovaSettings _settings;
         private readonly string _contentRoot;
 
+
         public StoryController(ILogger<StoryController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
-            _settings = options.Value;
+            _logger = logger;
+            _env = env;
+            _httpClientFactory = httpClientFactory;
+            _options = options;
             _cache = cache;
-
-            var siteUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-
-            _hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options, siteUrl);
+            _settings = options.Value;
             _contentRoot = env.ContentRootPath;
-            var settings = options.Value;
         }
 
         public async Task<IActionResult> ArtistStory(string artistId)
@@ -50,10 +54,13 @@ namespace Web.App
                     return NotFound();
                 }
 
+                var siteUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                var hypernovaClient = new HypernovaClient(_logger, _env, _httpClientFactory, _options, siteUrl);
+
                 var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
                 artistJson.Add(new JProperty("baseUrl", baseUrl));
 
-                var hypernovaResult = await _hypernovaClient.React("pwa:HypernovaArtistStory", artistJson.ToString());
+                var hypernovaResult = await hypernovaClient.React("pwa:HypernovaArtistStory", artistJson.ToString());
                 appHtml = hypernovaResult.ToString();
 
                 if (_settings.NoCaching == false)

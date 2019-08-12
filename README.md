@@ -1,7 +1,21 @@
-# React Thingy - getting started 
+# React Thingy 
 
 Welcome to **React Thingy**. a sample project where we combined learnings and best practices of
-previous React projects we executed at Macaw Interactive, a Dutch Digital Agency. We don't call it a
+previous React projects we executed at Macaw Interactive, a Dutch Digital Agency. 
+
+# The technology stack
+
+At Macaw Interactive we made choices with respect to the front-end development technology stack that we use, and the way we build web applications. Our primary front-end technology stack consists of:
+
+- ReactJS (using Redux where applicable)
+- TypeScript
+- Server-side rendering for SEO
+
+For more information on the Macaw Interactive thoughts on technology complemented with an assessment result see the [Macaw Interactive front-end Technology Radar](https://github.com/macaw-interactive/radar).
+
+# Why we named it React Thingy?
+
+We don't call it a
 boilerplate, a starter kit or something like that - it is the current state of best practices that
 we might use for our next project (we are actually doing that right now). But for other projects
 we are going to start in the future we will look at our insight in front-end development at that moment.
@@ -10,33 +24,62 @@ all our projects because that will result in dragging a large code base into a p
 code must be maintained and becomes legacy the moment it is pulled in. That is why we don't give it
 a hefty name, but just call it a **Thingy**.
 
-## How to use this code base?
+## Features of React Thingy
 
-If you think this Thingy is useful then clone it and make it your own. Throw away the stuff you
-don't use, modify the code you use. All the code is here - no dependencies on custom created nuget
-or npm packages - that makes it more difficult to change the stuff. If you find issues or have 
-improvement then please give us a pull request.
-
-## The Web.App project
-
-The provided .NET core 2.2 Web.App project is a complete configured front-end development project
-containing sample code to show how it works with a real example. The project is based on a
-default .NET core web site project with React as provided by Visual Studio, but we changed the
-setup and configuration to extend it and move TypeScript for the font-end development.
+The provided .NET Core 2.2 Web.App solution is a complete configured front-end development solution
+containing sample code to show how it works. The solution is based on a
+default .NET Core web site project (Web.App) with React as provided by the Visual Studio .NET Core
+starter, but we changed the setup and configuration to extend it and to enable TypeScript for font-end
+development.
 
 The project combines the following technologies:
 
 - A .NET Core 2.2 web application rendering a Single Page Application (SPA), Razor Pages and AMP pages
-- The frontend project is bootstrapped with Create React App 2 (CRA2)
+- The frontend project is bootstrapped with Create React App 3 (CRA3)
 - All frontend code is written in TypeScript and checked with TSLint
 - Hypernova based server-side rendering for single components, the complete SPA or AMP pages
 - Server-side rendered SPA can be async, so components in the SPA can make async calls to retrieve data 
   or have promises to be resolved before rendering
-  JSon Server based mock api
+- JSon Server based mock api
 - Storybook to manage the design system
 
-And all of this is packed into a Linux Docker image to be deployed.
+And the solution provides the configuration and scripts to package all this goodness into a Linux Docker 
+image that can be used as unit of deployment.
 
+## How to use this code base?
+
+If you think this Thingy is useful then clone it and make it your own. Throw away the stuff you
+don't use, modify the code you use. All the code is here - no dependencies on custom created nuget
+or npm packages that makes it more difficult to change the stuff. If you find issues or have 
+improvement then please give us a pull request.
+
+## Get the solution working on your local box
+
+Before tayloring the solution it is best to get the solution up and running on your local developer machine.
+To do this you need to execute the following steps:
+
+- Install the npm packages in the folders `Web.App/ClientApp` and `Web.App/HypernovaComponentServer` by executing the command `npm install` in these folders.
+- in the folder `Web.App/ClientApp` execute the following commands:
+  - `npm start` to transpile and start the front-end code on port 3000, runs in watch mode so restarts on code changes
+  - `npm run start:server-bundle` to transpile the server-bundle.js, runs in watch mode so restarts on code changes
+  - `npm run start:hypernovacomponentserver` to start the Hypernova based component server on port 8080
+  - `npm run start:jsonserver` to start the mock server
+  - `npm run start:storybook` to start Storybook for out of context component development
+- Open the `Web.App.sln` solution in Visual Studio
+- Right-click on the Web.App project, and select `properties`. Configure the properties on the `Debug` tab to reflect the values below, and start the debugger:
+
+![Debug configuration](./README.artifacts/Web.App_debug_configuration.png)
+
+## Hotel
+
+An easier way to start one or more of the above npm scripts is through a tool called [Hotel](https://github.com/typicode/hotel). In the folder `Web.App/ClientApp` execute the script `starthotel.bat` to start the tool. This scripts configures Hotel and opens a web browser on `http://localhost:2000` where you can start/stop any of the above mentioned npm scripts:
+
+![Hotel](./README.artifacts/Hotel.png)
+
+- Flip the switch to start/stop the npm script
+- Click on the bar outside the title to see output of the script
+- Click on the title in the bar to open the web browser on the specific script
+  
 ## Configure the solution
 
 To tailor the solution for your project there are two configuration files:
@@ -70,10 +113,12 @@ See [documentation on using Docker](./documentation/Docker.md) for more informat
 
 The code provides some examples that can be found at the folowing URL's when the application is running:
 
-- ```http://localhost:3000``` - the SPA built by CRA2, running only client-side
-- ```http://localhost:5001``` - the SPA running from the DotNet Core application
-- ```http://localhost:5001/React``` - Razor Page using Hypernova to render components
-- ```http://localhost:5001/Story/ArtistStory?artistId=big_l``` - AMP Story
+- ```http://localhost:3000``` - the SPA built by CRA3, running only client-side
+- ```https://localhost:5001``` - the SPA running from the DotNet Core application
+
+All parts of the sample application can be reached through the web UI.
+
+Note that the AMP stories page does not work when running under http://localhost:3000 because AMP pages need to be rendered server-side.
 
 ## TODO
 

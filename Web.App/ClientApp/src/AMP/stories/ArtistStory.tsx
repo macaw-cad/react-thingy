@@ -9,8 +9,8 @@ declare module 'react' {
   }
 }
 
-function getArtistBackground(artist: ArtistData) {
-  return "";
+function getArtistBackground(artist: ArtistData): string {
+  return '';
 }
 
 export const ArtistStory = (artist: ArtistData) => {
@@ -27,8 +27,7 @@ export const ArtistStory = (artist: ArtistData) => {
     >
       <amp-story-page id="cover">
         <amp-story-grid-layer template="fill">
-          <amp-img src={`/artists/${artist.id}/cover.jpg`} width="720" height="1280" layout="responsive">
-          </amp-img>
+          <amp-img src={`/artists/${artist.id}/cover.jpg`} width="720" height="1280" layout="responsive" />
         </amp-story-grid-layer>
         <amp-story-grid-layer template="vertical">
           <h1>{artist.cover_artistname}</h1>
@@ -45,8 +44,7 @@ export const ArtistStory = (artist: ArtistData) => {
 
       <amp-story-page id="life">
         <amp-story-grid-layer template="fill">
-          <amp-img src={`/artists/${artist.id}/life.jpg`} width="720" height="1280" layout="responsive">
-          </amp-img>
+          <amp-img src={`/artists/${artist.id}/life.jpg`} width="720" height="1280" layout="responsive" />
         </amp-story-grid-layer>
         <amp-story-grid-layer template="vertical">
           <h1>Life</h1>
@@ -62,7 +60,7 @@ export const ArtistStory = (artist: ArtistData) => {
 
       <amp-story-page id="hit">
         <amp-story-grid-layer template="fill">
-          <amp-video autoplay loop width="720" height="1280" layout="responsive" poster="images/black.png">
+          <amp-video autoplay={true} loop={true} width="720" height="1280" layout="responsive" poster="/images/black.png">
             <source src={`/artists/${artist.id}/hit.mp4`} type="video/mp4" />
           </amp-video>
         </amp-story-grid-layer>
@@ -80,8 +78,7 @@ export const ArtistStory = (artist: ArtistData) => {
 
       <amp-story-page id="facts">
         <amp-story-grid-layer template="fill">
-          <amp-img src={`/artists/${artist.id}/facts.jpg`} width="720" height="1280" layout="responsive">
-          </amp-img>
+          <amp-img src={`/artists/${artist.id}/facts.jpg`} width="720" height="1280" layout="responsive" />
         </amp-story-grid-layer>
         <amp-story-grid-layer template="vertical">
           <h1>Facts</h1>

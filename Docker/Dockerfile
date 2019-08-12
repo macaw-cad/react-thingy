@@ -5,9 +5,10 @@
 
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
 
-# Runtime needs node & supervisor (manages running multiple applications)
+# Runtime needs node & supervisor (supervisor manages running multiple applications)
 RUN apt-get update -yq && apt-get upgrade -yq
-RUN apt-get install -yq \
+RUN apt-get install -yq --fix-missing \
+		dos2unix \
 		curl \
 		git \
 		nano \
@@ -26,18 +27,22 @@ RUN apt-get update \
         && apt-get update \
 	&& apt-get install -y --no-install-recommends openssh-server \
 	&& echo "$SSH_PASSWD" | chpasswd 
-COPY Docker/sshd_config /etc/ssh/
+COPY Docker/sshd_config /etc/ssh/sshd_config
+RUN dos2unix /etc/ssh/sshd_config
 
 RUN mkdir -p /var/log/supervisor
 COPY Docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN dos2unix /etc/supervisor/conf.d/supervisord.conf
 COPY Docker/init.sh /usr/local/bin/init.sh
+RUN dos2unix /usr/local/bin/init.sh
+
 RUN chmod u+x /usr/local/bin/init.sh
 
 FROM microsoft/dotnet:2.2-sdk AS sdk
 
 # Build needs node
 RUN apt-get update -yq && apt-get upgrade -yq
-RUN apt-get install -yq \
+RUN apt-get install -yq --fix-missing \
 		curl \
 		git \
 		nano \

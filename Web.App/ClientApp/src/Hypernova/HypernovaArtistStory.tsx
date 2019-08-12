@@ -4,7 +4,7 @@ import { ArtistData } from '../AMP/stories/ArtistData';
 import ArtistStorySEO from '../AMP/stories/ArtistStorySEO';
 
 declare var require: any;
-let prependCSS = require('raw-loader!sass-loader!../AMP/stories/ArtistStory.scss');
+let prependCSS = require('raw-loader!sass-loader!../AMP/stories/ArtistStory.scss').default;
 
 export default (artist: ArtistData) => {
   console.log(`Rendering artist ${artist.cover_artistname}`);
