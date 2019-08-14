@@ -41,7 +41,7 @@ RUN chmod u+x /usr/local/bin/init.sh
 WORKDIR /app
 
 # Copy the published web app
-COPY /src/Web.App/out /app
+COPY /Web.App/ /app
 
 WORKDIR /app/HypernovaComponentServer
 RUN npx rimraf node_modules
