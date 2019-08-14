@@ -130,7 +130,9 @@ Open the [Azure Portal](https://portal.azure.com) and search for **DevOps Projec
 
 1. Select the **New** button
 2. Select the .NET project (Next)
+   ![.NET Project](README.artifacts/1&#32;-&#32;New&#32;DevOps&#32;-&#32;DotNet.png)
 3. Select ASP.NET Core (Next)
+   ![ASP.NET Core](README.artifacts/2&#32;-&#32;New&#32;DevOps&#32;ASPNET&#32;Core.png)
 4. Select Web App for Containers (Next)
 
 In the release pipeline we want to use the existing hosting plan and registry:

@@ -83,6 +83,15 @@
     <None Update="ClientApp\src\api\types\ApiStarWarsPerson.ts">
       <CustomToolNamespace>Api\Models\StarWarsPerson.cs</CustomToolNamespace>
     </None>
+    <None Update="Docker\init.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Docker\sshd_config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Docker\supervisord.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
