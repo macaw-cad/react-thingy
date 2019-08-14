@@ -1,0 +1,57 @@
+# Some links
+# https://andrewlock.net/exploring-the-net-core-2-1-docker-files-dotnet-runtime-vs-aspnetcore-runtime-vs-sdk/ 
+# https://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
+# https://satjinder.com/2018/11/02/how-to-create-a-dotnet-based-spa-and-deploy-it-in-docker/
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS runtime
+
+# Runtime needs node & supervisor (supervisor manages running multiple applications)
+RUN apt-get update -yq && apt-get upgrade -yq
+RUN apt-get install -yq --fix-missing \
+		dos2unix \
+		curl \
+		git \
+		nano \
+		gnupg \
+		gnupg2 \
+		gnupg1 \
+		procps \
+		net-tools \
+		supervisor
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -yq nodejs
+
+# Enable with ssh 
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends dialog \
+        && apt-get update \
+	&& apt-get install -y --no-install-recommends openssh-server \
+	&& echo "$SSH_PASSWD" | chpasswd 
+COPY Docker/sshd_config /etc/ssh/sshd_config
+RUN dos2unix /etc/ssh/sshd_config
+
+RUN mkdir -p /var/log/supervisor
+COPY Docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN dos2unix /etc/supervisor/conf.d/supervisord.conf
+
+COPY Docker/init.sh /usr/local/bin/init.sh
+RUN dos2unix /usr/local/bin/init.sh
+RUN chmod u+x /usr/local/bin/init.sh
+
+WORKDIR /app
+
+# Copy the published web app
+COPY /src/Web.App/out /app
+
+WORKDIR /app/HypernovaComponentServer
+RUN npx rimraf node_modules
+RUN npm install
+
+WORKDIR /app/JsonServer
+RUN npx rimraf node_modules
+RUN npm install
+
+WORKDIR /app
+
+EXPOSE 80 2222
+ENTRYPOINT ["/usr/local/bin/init.sh"]

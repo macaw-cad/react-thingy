@@ -124,6 +124,21 @@ Note that the AMP stories page does not work when running under http://localhost
 
 See the [TODO](./TODO.md) file for things still to be implemented in Web.App.
 
+## Setting up an Azure DevOps project for build and deploy
+
+Open the [Azure Portal](https://portal.azure.com) and search for **DevOps Projects**. This is one of the coolest features of the Azure Portal that enables you to set up a completely configured Azure DevOps project including Ci/CD configuration.
+
+1. Select the **New** button
+2. Select the .NET project (Next)
+3. Select ASP.NET Core (Next)
+4. Select Web App for Containers (Next)
+
+In the release pipeline we want to use the existing hosting plan and registry:
+
+```
+-webAppName reactthingy -hostingPlanName linuxappserviceplan -appInsightsLocation "West Europe" -sku "S1 Standard" -registryName "svdoever" -registryLocation "West Europe" -registrySku "Standard" -imageName reactthingy:$(Build.BuildId)
+```
+
 ## Learn More
 
 You can learn more about Create React App in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
