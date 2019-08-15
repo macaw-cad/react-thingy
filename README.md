@@ -134,6 +134,12 @@ Open the [Azure Portal](https://portal.azure.com) and search for **DevOps Projec
 3. Select ASP.NET Core (Next)
    ![ASP.NET Core](README.artifacts/2&#32;-&#32;New&#32;DevOps&#32;ASPNET&#32;Core.png)
 4. Select Web App for Containers (Next)
+   ![Web App for Containers](README.artifacts/3&#32;-&#32;New&#32;DevOps&#32;Web&#32;App&#32;for&#32;Containers.png)
+5. Final configuration
+   ![xxx](README.artifacts/4&#32;-&#32;New&#32;DevOps&#32;Configuration.png)
+   Note that we use as resource group **linuxresourcesX** and as container registry name **svdoeverX**. We want to use an existing resource group (linuxresources) and an existing container registry (svdoeverX), but the Azure DevOps project creation tool does not support reuse of existing elements. We correct this when we modifying the created build and release pipelines for out project.
+
+This results in a 
 
 In the release pipeline we want to use the existing hosting plan and registry:
 

@@ -27,14 +27,14 @@ RUN apt-get update \
         && apt-get update \
 	&& apt-get install -y --no-install-recommends openssh-server \
 	&& echo "$SSH_PASSWD" | chpasswd 
-COPY Docker/sshd_config /etc/ssh/sshd_config
+COPY /Web.App/Docker/sshd_config /etc/ssh/sshd_config
 RUN dos2unix /etc/ssh/sshd_config
 
 RUN mkdir -p /var/log/supervisor
-COPY Docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY /Web.App/Docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN dos2unix /etc/supervisor/conf.d/supervisord.conf
 
-COPY Docker/init.sh /usr/local/bin/init.sh
+COPY /Web.App/Docker/init.sh /usr/local/bin/init.sh
 RUN dos2unix /usr/local/bin/init.sh
 RUN chmod u+x /usr/local/bin/init.sh
 
