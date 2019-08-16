@@ -136,10 +136,16 @@ Open the [Azure Portal](https://portal.azure.com) and search for **DevOps Projec
 4. Select Web App for Containers (Next)
    ![Web App for Containers](README.artifacts/3&#32;-&#32;New&#32;DevOps&#32;Web&#32;App&#32;for&#32;Containers.png)
 5. Final configuration
-   ![xxx](README.artifacts/4&#32;-&#32;New&#32;DevOps&#32;Configuration.png)
+   ![Final DevOps configuration](README.artifacts/4&#32;-&#32;New&#32;DevOps&#32;Configuration.png)
    Note that we use as resource group **linuxresourcesX** and as container registry name **svdoeverX**. We want to use an existing resource group (linuxresources) and an existing container registry (svdoeverX), but the Azure DevOps project creation tool does not support reuse of existing elements. We correct this when we modifying the created build and release pipelines for out project.
 
-This results in a 
+The DevOps project generator start working until the deployment is complete.
+
+![](README.artifacts/5&#32;-&#32;New&#32;DevOps&#32;deployment&#32;complete.png)
+
+This results in a DevOps project configuration with a code repository, a build pipeline and a release pipeline that starts building an releasing right away.
+
+![CI/CD pipeline](README.artifacts/6&#32;-&#32;New&#32;DevOps&#32;azure&#32;resources&#32;not&#32;created&#32;yet.png)
 
 In the release pipeline we want to use the existing hosting plan and registry:
 
