@@ -1,0 +1,12 @@
+﻿apps:
+  - script   : 'componentserver.js'
+    name     : 'Component server'
+    exec_mode: 'cluster_mode'
+    cwd      : '/app/HypernovaComponentServer'
+    instances: 'max'
+  - script   : 'jsonserver.js'
+    name     : 'Json server'
+    cwd      : '/app/JsonServer'
+  - script   : 'dotnet Web.App.dll'
+    name     : '.NET Core Web.App'
+    cwd      : '/app' 

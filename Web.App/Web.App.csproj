@@ -39,6 +39,7 @@
     <None Remove="HypernovaComponentServer\creationinfo.txt" />
     <None Remove="HypernovaComponentServer\server-bundle.js" />
     <None Remove="init.sh" />
+    <None Remove="JsonServer\db.js" />
     <None Remove="JsonServer\jsonserver.js" />
     <None Remove="sshd_config" />
     <None Remove="supervisord.conf" />
@@ -54,6 +55,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="HypernovaComponentServer\server-bundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JsonServer\db.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="JsonServer\jsonserver.js">
@@ -83,14 +87,17 @@
     <None Update="ClientApp\src\api\types\ApiStarWarsPerson.ts">
       <CustomToolNamespace>Api\Models\StarWarsPerson.cs</CustomToolNamespace>
     </None>
-    <None Update="Docker\init.sh">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="LinuxConfigurationFiles\init.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Docker\sshd_config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="LinuxConfigurationFiles\pm2-configuration.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Docker\supervisord.conf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="LinuxConfigurationFiles\sshd_config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="LinuxConfigurationFiles\supervisord.conf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

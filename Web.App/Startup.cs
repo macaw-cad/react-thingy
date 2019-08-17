@@ -28,7 +28,7 @@ namespace Web.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			var mvc = services.AddMvc();
+            var mvc = services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {
@@ -112,10 +112,10 @@ namespace Web.App
 
                 if (env.IsDevelopment())
                 {
-                        // Start the ClientPortal through the CreateReactApp server for speedy development
-                        spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-                        // spa.UseReactDevelopmentServer(npmScript: "start");
-                    }
+                    // Start the ClientPortal through the CreateReactApp server for speedy development
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                    // spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
 
@@ -133,6 +133,5 @@ namespace Web.App
                 context.Request.Path.StartsWithSegments("/__webpack_dev_server__") ||
                 context.Request.Path.StartsWithSegments("/sockjs-node");
         }
-
     }
 }

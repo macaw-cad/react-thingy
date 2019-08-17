@@ -153,6 +153,17 @@ In the release pipeline we want to use the existing hosting plan and registry:
 -webAppName reactthingy -hostingPlanName linuxappserviceplan -appInsightsLocation "West Europe" -sku "S1 Standard" -registryName "svdoever" -registryLocation "West Europe" -registrySku "Standard" -imageName reactthingy:$(Build.BuildId)
 ```
 
+## FAQ
+
+### Why are the docker configuration files in the folder Web.App\Docker?
+
+### How can I open a bash shell on my locally running Docker container?
+
+1. Execute the command `docker ps` to see the docker id of your running container
+2. Execute the command `docker exec -it <CONTAINER ID> /bin/bash`
+
+You will now have a running bash in the folder /app.
+
 ## Learn More
 
 You can learn more about Create React App in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

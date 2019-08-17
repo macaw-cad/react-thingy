@@ -4,5 +4,5 @@ set -e
 echo "Starting SSH ..."
 service ssh start
 
-echo "Starting supervisord with dotnet core webapp, HypernovaComponentServer, JsonServer"
-/usr/bin/supervisord --configuration /etc/supervisor/conf.d/supervisord.conf
+echo "Starting dotnet core webapp, HypernovaComponentServer, JsonServer managed by pm2"
+pm2-runtime /usr/local/bin/pm2-configuration.yml

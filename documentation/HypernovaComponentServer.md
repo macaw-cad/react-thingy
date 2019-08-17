@@ -94,7 +94,7 @@ The best way to do a deployment of the HypernovaComponentServer is in a Docker i
 
 * ```BuildockerImage.bat (development|production)``` - builds the ```hypernovacomponentserver:1.0.0``` image. There are two types of images that can be built:
   * ```BuildockerImage.bat development``` is a fast build of the image that can be used to run locally
-  * ```BuildockerImage.bat production``` is a (slower) build of the image that can be used to deploy to an Azure Linux Web App. This image contains an SSH server that makes t possible to connect from the Azure Web App UI over Web SSH to the running container.
+  * ```BuildockerImage.bat production``` is a (slower) build of the image that can be used to deploy to an Azure Linux Web App. This image contains an SSH server that makes it possible to connect from the Azure Web App UI over Web SSH to the running container.
 
   Note 1: by default a production build is done.
 

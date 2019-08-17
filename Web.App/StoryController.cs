@@ -41,7 +41,7 @@ namespace Web.App
         {
             var cacheItemName = $"ArtistStory_{artistId}.html";
             string appHtml = null;
-           if (_settings.NoCaching == false)
+            if (_settings.NoCaching == false)
             {
                 appHtml = await _cache.GetStringAsync(cacheItemName);
             }
@@ -126,9 +126,10 @@ namespace Web.App
 
         private JObject FindArtist(string artistId)
         {
-            var artistDataFile = Path.Combine(_contentRoot, $@"ClientApp\public\artists\{artistId}\data.json");
+            var artistDataFile = Path.Combine(_contentRoot, "ClientApp", "build", "artists", artistId, "data.json");
             if (!System.IO.File.Exists(artistDataFile))
             {
+                _logger.LogWarning($"Artist data file '{artistDataFile}' not found");
                 return null;
             }
 
@@ -138,10 +139,10 @@ namespace Web.App
             return json;
         }
 
-        private List<string> GetAllArtistIds()
+        private List<string> GetAllArtistIds() 
         {
             var artistIds = new List<string>();
-            var artistRoot = Path.Combine(_contentRoot, @"ClientApp\public\artists");
+            var artistRoot = Path.Combine(_contentRoot, "ClientApp", "build", "artists");
             var directories = Directory.GetDirectories(artistRoot);
             foreach (string dir in directories)
             {

@@ -7,17 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.App", "Web.App\Web.App.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{3517FD73-C288-42DD-9F32-5A7AC8FD9DCC}"
 	ProjectSection(SolutionItems) = preProject
+		Docker\DockerBash.bat = Docker\DockerBash.bat
 		Docker\DockerBuildWebApp.bat = Docker\DockerBuildWebApp.bat
 		Docker\Dockerfile = Docker\Dockerfile
+		Docker\DockerKillWebApp.bat = Docker\DockerKillWebApp.bat
 		Docker\DockerPushWebApp.bat = Docker\DockerPushWebApp.bat
 		Docker\DockerRunWebApp.bat = Docker\DockerRunWebApp.bat
-		Docker\DockerShowLog.bat = Docker\DockerShowLog.bat
-		Docker\dos2unix.exe = Docker\dos2unix.exe
+		Docker\DockerShowAzureLog.bat = Docker\DockerShowAzureLog.bat
+		Docker\DockerShowPm2Log.bat = Docker\DockerShowPm2Log.bat
 		Docker\init.sh = Docker\init.sh
+		Docker\pm2-configuration.yml = Docker\pm2-configuration.yml
 		Docker\PreviewUserEnvironment.bat = Docker\PreviewUserEnvironment.bat
 		Docker\SetUserEnvironment.bat = Docker\SetUserEnvironment.bat
 		Docker\sshd_config = Docker\sshd_config
-		Docker\supervisord.conf = Docker\supervisord.conf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{02B16386-929B-4CED-B7C5-75DAE12B41DB}"

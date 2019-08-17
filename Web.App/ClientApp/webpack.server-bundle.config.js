@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -24,32 +24,6 @@ module.exports = x => {
         }
     }));
     plugins.push(new CheckerPlugin());
-    if (isProduction) {
-        new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            generateStatsFile: true
-        }),
-            // Minify the code.
-            plugins.push(new UglifyJsPlugin({
-                uglifyOptions: {
-                    compress: {
-                        warnings: false,
-                        // Disabled because of an issue with Uglify breaking seemingly valid code:
-                        // https://github.com/facebookincubator/create-react-app/issues/2376
-                        // Pending further investigation:
-                        // https://github.com/mishoo/UglifyJS2/issues/2011
-                        comparisons: false,
-                    },
-                    output: {
-                        comments: false,
-                        // Turned on because emoji and regex is not minified properly using default
-                        // https://github.com/facebookincubator/create-react-app/issues/2488
-                        ascii_only: true,
-                    },
-                },
-                sourceMap: true,
-            }));
-    }
 
     return {
         devtool: 'source-map',
@@ -65,6 +39,9 @@ module.exports = x => {
             pathinfo: true
         },
         mode: process.env.NODE_ENV,
+        optimization: {
+            minimizer: [new TerserPlugin()],
+        },
         module: {
             rules: [
                 {
