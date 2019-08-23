@@ -260,7 +260,7 @@ namespace Web.App.Hypernova
             if (!String.IsNullOrWhiteSpace(assetManifestJson))
             {
                 var assetManifest = JObject.Parse(assetManifestJson);
-                var runtimeMainJsToken = assetManifest["runtime~main.js"];
+                var runtimeMainJsToken = assetManifest["files"]["runtime~main.js"];
                 if (runtimeMainJsToken != null)
                 {
                     jsUrlsList.Add(runtimeMainJsToken.ToString());

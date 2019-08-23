@@ -4,11 +4,23 @@
 # https://satjinder.com/2018/11/02/how-to-create-a-dotnet-based-spa-and-deploy-it-in-docker/
 # https://blog.playmoweb.com/speed-up-your-builds-with-docker-cache-bfed14c051bf
 
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
+# Some links
+# https://andrewlock.net/exploring-the-net-core-2-1-docker-files-dotnet-runtime-vs-aspnetcore-runtime-vs-sdk/ 
+# https://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
+# https://satjinder.com/2018/11/02/how-to-create-a-dotnet-based-spa-and-deploy-it-in-docker/
+# https://blog.playmoweb.com/speed-up-your-builds-with-docker-cache-bfed14c051bf
 
-# Runtime needs node & supervisor (supervisor manages running multiple applications)
+# NGINX 1.16 is Debian 9 distribution (see cat /etc/os-release)
+FROM nginx:1.16 AS runtime
+
+# Runtime needs:
+# - wget to download .NET Core
+# - gettext-base for the tool envsubst used to replace environment variables in nginx template file
+# - node
+# - .NET Core
 RUN apt-get update -yq && apt-get upgrade -yq
 RUN apt-get install -yq --fix-missing \
+		wget \
 		dos2unix \
 		curl \
 		git \
@@ -18,7 +30,24 @@ RUN apt-get install -yq --fix-missing \
 		gnupg1 \
 		procps \
 		net-tools \
-		supervisor
+		gettext-base
+
+### Install .NET Core (https://dotnet.microsoft.com/download/linux-package-manager/debian9/runtime-2.2.6)
+
+# Register Microsoft key and feed
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
+RUN mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/
+RUN wget -q https://packages.microsoft.com/config/debian/9/prod.list
+RUN mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
+RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
+RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
+
+# Install .NET Core
+RUN apt-get install apt-transport-https -yq
+RUN apt-get update -yq
+RUN apt-get install aspnetcore-runtime-2.2 -yq
+
+# Install NodeJS 12.x
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -yq nodejs
 
 # Enable with ssh 
@@ -35,7 +64,8 @@ RUN npm install -g pm2
 WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_URLS=http://+:5000
+
 EXPOSE 80 2222
 
 ENTRYPOINT ["/usr/local/bin/init.sh"]
@@ -97,4 +127,17 @@ RUN dotnet publish -c Release -o out
 FROM runtime AS final
 
 COPY --from=sdk /src/Web.App/out /app/
+
+# Below only needed for development
+RUN apt-get install vim -yq
+
+# NGINX configuration copied last - lots of optimizations expected on this so will change often
+
+COPY Docker/index.html /www/test/index.html
+
+COPY Docker/nginx.config /etc/nginx/nginx.conf
+RUN dos2unix /etc/nginx/nginx.conf
+# RUN envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+COPY Docker/mime.types /etc/nginx//mime.types
+RUN dos2unix /etc/nginx/mime.types
 

@@ -151,6 +151,7 @@ namespace Web.App.Hypernova
 
 			try
 			{
+                _logger.LogInformation($"URL: {hypernovaServerUrl}/batch, POSTBODY: {postBody}");
 				var client = _httpClientFactory.CreateClient();
 				var response = await client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"));
 				responseString = await response.Content.ReadAsStringAsync();
