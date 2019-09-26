@@ -3,6 +3,7 @@ import { Environment } from './../Environment';
 export type MockDataFlags = {
     [key: string]: boolean;
     starwarsPeople: boolean;
+    serverRoute: boolean;
 };
 
 export const mockDataStorageKey = 'mockDataFlags';
@@ -10,7 +11,8 @@ export const mockDataEnvKey = 'REACT_APP_MOCK_DATA';
 
 export function getMockDataAllFlags(): MockDataFlags {
     let mockFlags: MockDataFlags = {
-        starwarsPeople: false
+        starwarsPeople: false,
+        serverRoute: false
     };
 
     // Always overwrite when .env value is present

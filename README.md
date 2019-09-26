@@ -101,7 +101,7 @@ Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.
 The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing scripts
 for developing and building the application. See [README development](./documentation/development.md) for more information on how to do development with the solution.
 
-### Generating SSL certificate
+### Generating SSL certificate for development
 If you're getting SSL certificate issues in your browser, you might need to generate a self-signed certificate. Do that using ```dotnet dev-certs https --trust``` in the ```\Web.app``` folder. Read more about it [here](https://www.hanselman.com/blog/DevelopingLocallyWithASPNETCoreUnderHTTPSSSLAndSelfSignedCerts.aspx).
 
 ## Deploying the solution
@@ -119,6 +119,23 @@ The code provides some examples that can be found at the folowing URL's when the
 All parts of the sample application can be reached through the web UI.
 
 Note that the AMP stories page does not work when running under http://localhost:3000 because AMP pages need to be rendered server-side.
+
+## Hosting the application
+
+The complete application will be hosted in one or more Docker containers so we have a unit of deployment to go through dev, test, acceptation and production.
+
+The application currently consists of the following parts:
+
+- Web.App - The ASP.NET Core based web application running on Kestrel
+- HypernovaComponentServer - The NodeJS + Hypernova based component server for server-side React rendering
+- JsonServer - A NodeJS based mock server for serving mock data
+
+In front of the web application NGINX is used as a reverse proxy. NGINX handles caching and forwards requests to the Kestrel web server. 
+
+When working with a reverse proxy server in front of the ASP.NET Core web application we need to use forwarding headers as described in [Configure ASP.NET Core to work with proxy servers and load balancers](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2).
+
+
+
 
 ## TODO
 

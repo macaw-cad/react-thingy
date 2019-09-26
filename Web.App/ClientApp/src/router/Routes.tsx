@@ -5,7 +5,7 @@ import CounterPage from '../pages/CounterPage';
 import StarWarsPage from '../pages/StarWarsPage';
 import AmpStoriesPage from '../pages/AmpStoriesPage';
 import UserSettingsPage from '../pages/UserSettingsPage';
-import { Error404 } from '../pages/404';
+import ServerRoutePageRenderer from '../pages/ServerRoutePageRenderer';
 
 type RoutingParams = {};
 type RoutesAllProps = RouteComponentProps<RoutingParams>;
@@ -21,7 +21,7 @@ class Routes extends React.Component<RoutesAllProps> {
                 <Route path="/ampstories" exact={true} component={AmpStoriesPage} />
                 <Route path="/user-settings-f7977542-cf72-439d-897f-8c61e0c36dc6" exact={true} component={UserSettingsPage} />
 
-                <Route component={Error404} />
+                <Route component={ServerRoutePageRenderer} />
             </Switch>
         );
     }

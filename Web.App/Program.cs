@@ -21,6 +21,14 @@ namespace Web.App
             // - enables IIS integration (how about Linux? - no IIS)
             // - enables the ability for frameworks to bind their options to their default configuration sections
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                //.ConfigureKestrel(options =>
+                //{
+                //    options.ListenLocalhost(5000, listenOption =>
+                //    {
+                //        listenOptions.Protocols = HttpProtocols.
+                //    })
+                //})
+                ;
     }
 }

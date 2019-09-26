@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
+using NSwag;
+using System;
 using Web.App.Hypernova;
 using Web.App.HypernovaComponentServer;
 using Web.App.JsonServer;
@@ -28,12 +30,24 @@ namespace Web.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvc = services.AddMvc();
-
-            services.AddSwaggerGen(c =>
+            // The Kestrel configuration assumes that ASP.NET Core application runs behind a reverse proxy server (i.e. NGINX)
+            // The reverse proxy forwards requests to the Kestrel web server.
+            // Forwarded Headers: set environment variable ASPNETCORE_FORWARDEDHEADERS_ENABLED to true.
+            // https://devblogs.microsoft.com/aspnet/forwarded-headers-middleware-updates-in-net-core-3-0-preview-6/
+            // See also: https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.2
+            if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_FORWARDEDHEADERS_ENABLED"), "true", StringComparison.OrdinalIgnoreCase))
             {
-                c.SwaggerDoc("v1", new Info { Title = "Web.App B4F Api", Version = "v1" });
-            });
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                    // Only loopback proxies are allowed by default.
+                    // Clear that restriction because forwarders are enabled by explicit configuration.
+                    options.KnownNetworks.Clear();
+                    options.KnownProxies.Clear();
+                });
+            }
+
+            var mvc = services.AddMvc();
 
             mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             mvc.AddRazorPagesOptions(options =>
@@ -62,20 +76,27 @@ namespace Web.App
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSwaggerDocument(settings =>
+            {
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "B4F API's";
+                    document.Info.Description = "The B4F API's.<br/></br>For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.";
+                };
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web.App B4F Api V1");
-                });
             }
             else
             {
@@ -94,6 +115,10 @@ namespace Web.App
                     spa.UseProxyToSpaDevelopmentServer(baseUri: "http://localhost:3000");
                 });
             });
+
+            // Enable the Swagger UI middleware and the Swagger generator
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseMvc(mvcRoutes =>
             {

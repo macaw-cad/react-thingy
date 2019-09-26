@@ -26,6 +26,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",
     "node-noop": "^1.0.0",
+    "nswag": "^13.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
@@ -53,6 +54,7 @@
     "build:server-bundle:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
+    "gen:apiclients": "nswag run /runtime:NetCore22 /input:nswag.json",
     "test": "react-scripts test",
     "plop": "plop"
   },
