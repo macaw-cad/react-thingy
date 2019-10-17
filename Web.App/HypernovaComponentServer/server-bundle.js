@@ -75328,10 +75328,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ServerRouteDataActions */ "./src/ServerRouteData/ServerRouteDataActions.ts");
 /* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
-/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-node.js");
-/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(isomorphic_fetch__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
 
 
 
@@ -75339,6 +75338,53 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+const useServerRouteData = () => {
+    const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
+    const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_6__["ApplicationContext"]);
+    const serverRouteData = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])((state) => state.serverRouteData.serverRouteData);
+    const fetchServerRouteData = async () => {
+        dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setLoaderServerRouteDataAction"])());
+        // @ts-ignore
+        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_4__["ServerRouteClient"](applicationContext.applicationContext.baseUrl, { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+        const path = location.pathname.substring(1); // no leading '/'
+        return new Promise(async (resolve, reject) => {
+            try {
+                const data = await client.getServerRoute(path);
+                dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setDataServerRouteDataAction"])(data));
+                resolve();
+            }
+            catch (e) {
+                dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setErrorServerRouteDataAction"])(e));
+                reject();
+            }
+        });
+    };
+    if (_Environment__WEBPACK_IMPORTED_MODULE_7__["Environment"].isServer && applicationContext.applicationContext.firstRun) {
+        applicationContext.applicationContext.addTask(fetchServerRouteData());
+    }
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+        fetchServerRouteData();
+    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
+    return { serverRouteData };
+};
+
+
+/***/ }),
+
+/***/ "./src/api/ApiClientIsomorphicFetch.ts":
+/*!*********************************************!*\
+  !*** ./src/api/ApiClientIsomorphicFetch.ts ***!
+  \*********************************************/
+/*! exports provided: isomorphicFetch */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isomorphicFetch", function() { return isomorphicFetch; });
+/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-node.js");
+/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(isomorphic_fetch__WEBPACK_IMPORTED_MODULE_0__);
 
 const https = __webpack_require__(/*! https */ "https");
 const http = __webpack_require__(/*! http */ "http");
@@ -75364,41 +75410,29 @@ async function getData(url) {
     });
     return getDataPromise;
 }
-const useServerRouteData = () => {
-    const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
-    const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
-    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"]);
-    const serverRouteData = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])((state) => state.serverRouteData.serverRouteData);
-    const fetchServerRouteData = async () => {
-        dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setLoaderServerRouteDataAction"])());
-        // @ts-ignore
-        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_4__["ServerRouteClient"](applicationContext.applicationContext.baseUrl, {
-            fetch: (url, init) => {
-                console.log('URL:', url);
-                console.log('INIT:', init);
-                return getData(url.toString());
-            }
+const isomorphicFetch = (url, init) => {
+    const requestUrl = url.toString();
+    // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
+    // RequestInit TypeScript type definition does not contain agent, so put it on in an untyped way.
+    const options = init ? init : {};
+    options.agent = requestUrl.indexOf('https') > -1
+        ? new https.Agent({ rejectUnauthorized: false })
+        : new http.Agent();
+    let getDataPromise = new Promise((resolve, reject) => {
+        fetch(requestUrl, options)
+            .then(res => {
+            return res;
+        })
+            .then(res => {
+            resolve(res);
+        })
+            .catch(error => {
+            console.error(`API call GET '${requestUrl}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
+            reject(error);
         });
-        const path = location.pathname.substring(1); // no leading '/'
-        return new Promise(async (resolve, reject) => {
-            try {
-                const data = await client.getServerRoute(path);
-                dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setDataServerRouteDataAction"])(data));
-                resolve();
-            }
-            catch (e) {
-                dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setErrorServerRouteDataAction"])(e));
-                reject();
-            }
-        });
-    };
-    if (_Environment__WEBPACK_IMPORTED_MODULE_6__["Environment"].isServer && applicationContext.applicationContext.firstRun) {
-        applicationContext.applicationContext.addTask(fetchServerRouteData());
-    }
-    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        fetchServerRouteData();
-    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
-    return { serverRouteData };
+        return getData(requestUrl);
+    });
+    return getDataPromise;
 };
 
 
