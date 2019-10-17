@@ -63,8 +63,10 @@ export const useServerRouteData = (): UseServerRouteDataProps => {
             try {
                 const data = await client.getServerRoute(path);
                 dispatch(setDataServerRouteDataAction(data));
+                resolve();
             } catch (e) {
                 dispatch(setErrorServerRouteDataAction(e));
+                reject();
             }
         });
     };

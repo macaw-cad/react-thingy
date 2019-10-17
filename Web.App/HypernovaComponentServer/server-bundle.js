@@ -75384,9 +75384,11 @@ const useServerRouteData = () => {
             try {
                 const data = await client.getServerRoute(path);
                 dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setDataServerRouteDataAction"])(data));
+                resolve();
             }
             catch (e) {
                 dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setErrorServerRouteDataAction"])(e));
+                reject();
             }
         });
     };
