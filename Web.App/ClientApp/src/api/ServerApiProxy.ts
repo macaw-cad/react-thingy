@@ -4,7 +4,6 @@ import { ApiStarWarsPerson } from './types/ApiStarWarsPerson';
 
 import 'isomorphic-fetch';
 import { Logger } from '../Logger';
-import { ServerRoute } from './types/ServerRoute';
 
 const https = require('https');
 const http = require('http');
@@ -23,10 +22,6 @@ export class ServerApiProxy {
 
     public async getStarWarsPeople(): Promise<ApiStarWarsPerson[]> {
         return await this.getData<ApiStarWarsPerson[]>(this.urlBuilder.getStarWarsPeople());
-    }
-
-    public async getServerRoute(path: string): Promise<ServerRoute> {
-        return await this.getData<ServerRoute>(this.urlBuilder.getServerRoute(path));
     }
 
     public async getData<T>(url: string): Promise<T> {

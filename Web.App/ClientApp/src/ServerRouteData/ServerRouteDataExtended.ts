@@ -1,9 +1,9 @@
-import { IAnimal, ICar } from '../api/ApiClients';
+import { IAnimal, ICar, PageType } from '../api/ApiClients';
 
-export type ServerRouteData = {
-    pageType: string;
-    carData?: ExtendedCar;
-    animalData?: ExtendedAnimal;
+export type ServerRouteDataExtended = {
+    type?: PageType | undefined;
+    carData?: ExtendedCar | undefined;
+    animalData?: ExtendedAnimal | undefined;
 };
 
 // The ServerRouteData as retrieved for the ServerRoute API service returns the data as available on the server.
@@ -13,6 +13,6 @@ interface ExtendedCar extends ICar {
 }
 
 interface ExtendedAnimal extends IAnimal {
-    latinName: string;
-    count: number;
+    latinName?: string;
+    count?: number;
 }

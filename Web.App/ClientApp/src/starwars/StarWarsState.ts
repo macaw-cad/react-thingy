@@ -1,7 +1,6 @@
-import { StarWarsPeopleState } from './StarWarsPeopleState';
+import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
+import { AsyncData } from '../store/AsyncData';
 
-export type FilledStarWarsState = {
-  people: StarWarsPeopleState;
+export type StarWarsState = {
+    people: AsyncData<ApiStarWarsPerson[]>;
 };
-
-export type StarWarsState = FilledStarWarsState | undefined;

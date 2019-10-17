@@ -1,43 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { withApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
-import { ApiProxy } from '../api/ApiProxy';
-import { ServerRoute as ServerRouteType } from '../api/types/ServerRoute';
+import { withApplicationContext, ApplicationContextConsumerProps, ApplicationContext } from '../ApplicationContext';
+import 'isomorphic-fetch';
+import { ServerRouteClient, ServerRouteData, Animal, Car } from '../api/ApiClients';
+import AnimalPage from './AnimalPage';
+import CarPage from './CarPage';
 import { Error404 } from './404';
+import { useServerRouteData } from '../ServerRouteData/useServerRouteData';
 
 type ServerRoutePageRendererProps = RouteComponentProps<{}> & ApplicationContextConsumerProps;
 
 const ServerRoutePageRenderer: React.FC<ServerRoutePageRendererProps> = (props) => {
-    const [serverRouteData, setServerRouteData] = useState<ServerRouteType>(new ServerRouteType());
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { serverRouteData } = useServerRouteData();
 
-    const fetchServerRouteData = async (): Promise<ServerRouteType> => {
-        const api = ApiProxy(props.applicationContext);
-        const data = await api.getServerRoute(props.location.pathname);
-        return data;
-    };
+    const pageTypeName = (serverRouteData && serverRouteData.data && serverRouteData.data.type) ? serverRouteData.data.type.name : '_unknown_';
 
-    const serverRouteDataToState = async () => {
-        const data = await fetchServerRouteData();
-        setServerRouteData(data);
-    };
+    if (serverRouteData.loading) { return <div>loading....</div>; }
 
-    useEffect(() => {
-        serverRouteDataToState();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps 
- 
-    const pageTypeName = serverRouteData.type.name;
-    if (isLoading) {
-        return <div>loading....</div>;
+    if (serverRouteData.error) {
+        return <Error404 />;
     }
-
+ 
     switch (pageTypeName) {
         case 'animal':
-            return <p>BEAR</p>;  
+            return <AnimalPage animal={serverRouteData.data!.animalData as Animal} />;
         case 'car':
-            return <p>MULTIPLA</p>;  
+            return <CarPage car={serverRouteData.data!.carData as Car} />;
         default:
-        return <Error404/>;
+            return <Error404 />;
     }
 }
 

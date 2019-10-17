@@ -1,4 +1,4 @@
-import { ServerRouteData } from './ServerRouteData';
+import { ServerRouteDataExtended } from './ServerRouteDataExtended';
 import { SetLoaderAction, SetErrorAction, SetDataAction } from '../BaseRedux/BaseActions';
 
 export enum TypeKeys {
@@ -9,13 +9,13 @@ export enum TypeKeys {
 
 export type setLoaderServerRouteDataAction = SetLoaderAction<TypeKeys.SET_LOADER>;
 export type setErrorServerRouteDataAction = SetErrorAction<TypeKeys.SET_ERROR>;
-export type setServerRouteDataAction = SetDataAction<TypeKeys.SET_DATA, ServerRouteData>;
+export type setDataServerRouteDataAction = SetDataAction<TypeKeys.SET_DATA, ServerRouteDataExtended>;
 
-export type ServerRoutePageActionTypes = 
+export type ServerRouteDataActionTypes = 
     | setLoaderServerRouteDataAction 
     | setErrorServerRouteDataAction
-    | setServerRouteDataAction;
+    | setDataServerRouteDataAction;
 
 export const setLoaderServerRouteDataAction = () => ({ type: TypeKeys.SET_LOADER });
 export const setErrorServerRouteDataAction = (error: string) => ({ type: TypeKeys.SET_ERROR, error });
-export const setServerRouteDataAction = (data: ServerRouteData | null) => ({ type: TypeKeys.SET_DATA, data }); 
+export const setDataServerRouteDataAction = (data: ServerRouteDataExtended | null) => ({ type: TypeKeys.SET_DATA, data }); 

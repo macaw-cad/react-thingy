@@ -8,11 +8,4 @@ export class ApiUrlBuilder {
     public getStarWarsPeople(): string {
         return `${this.baseUrl}/api/starwars/people`;
     }
-
-    public getServerRoute(path: string): string {
-        if (!path.startsWith('/')) {
-            path = `/${path}`;
-        }
-        return `${this.baseUrl}/api/serverroute${path}`;
-    }
 }

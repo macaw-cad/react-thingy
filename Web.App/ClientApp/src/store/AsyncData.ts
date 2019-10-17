@@ -1,7 +1,7 @@
 export type AsyncData<T> = {
   readonly loading: boolean;
-  readonly error?: string | null;
-  readonly data?: T | null;
+  readonly error: string | null;
+  readonly data: T | null;
 };
 
 export const asyncDataInitialState = {

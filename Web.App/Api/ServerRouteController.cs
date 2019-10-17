@@ -15,11 +15,11 @@ namespace Web.App.Api
         /// </remarks>
         /// <param name="route">The route path to resolve.</param>
         /// <returns>The server determined routing information of type <see cref="ServerRouteData"/>.</returns>
-        [HttpGet("{**route}")]
+        [HttpGet]
         [ProducesResponseType(typeof(ServerRouteData), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<ServerRouteData> GetServerRoute(string route)
+        public ActionResult<ServerRouteData> GetServerRoute([FromQuery] string route)
         {
             route = route.ToLower();
             try
@@ -35,6 +35,21 @@ namespace Web.App.Api
                                 Make = "Fiat",
                                 Year = 1998,
                                 Speed = 170
+                            }
+                        }
+                    );
+                }
+                else if (route == "ford/fiesta")
+                {
+                    return Ok(
+                        new ServerRouteData
+                        {
+                            Type = PageType.CarPage,
+                            CarData = new Car
+                            {
+                                Make = "Ford",
+                                Year = 1976,
+                                Speed = 190
                             }
                         }
                     );

@@ -4,7 +4,7 @@ import { asyncDataInitialState } from '../store/AsyncData';
 import { baseReducer } from '../BaseRedux/BaseReducer';
 
 const initialState: ServerRouteDataState = {
-    ServerRouteData: asyncDataInitialState
+    serverRouteData: asyncDataInitialState
 };
 
 export const ServerRoutePageReducer = (state: ServerRouteDataState = initialState, action: ServerRouteDataActionTypes) =>
@@ -12,5 +12,5 @@ export const ServerRoutePageReducer = (state: ServerRouteDataState = initialStat
         state,
         action,
         typeKeys: TypeKeys,
-        dataProperty: 'ServerRouteData'
+        dataProperty: 'serverRouteData'
     });

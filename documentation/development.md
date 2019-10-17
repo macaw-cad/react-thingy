@@ -12,21 +12,23 @@ When doing development many scripts come into play to start the different subsys
 
 The following scripts are relevant while developing:
 
-- **Client-side React web application**: ```npm start``` - Start the Create React App 2 front-end development transpilation. Creates a running
+- **Client-side React web application**: `npm start` - Start the Create React App 2 front-end development transpilation. Creates a running
   client-side React application running on port 3000.
 
-- **Jsonserver**: ```npm run start:jsonserver``` - Start the jsonserver mock web server. Jsonserver runs on port 3001.
+- **Jsonserver**: `npm run start:jsonserver` - Start the jsonserver mock web server. Jsonserver runs on port 3001.
 
-- **Web server**: ```npm run start:dotnet-core``` - Compile and run the dotnet core web server. The web server runs on port 5000 (http) and 5001 (https).
+- **Web server**: `npm run start:dotnet-core` - Compile and run the dotnet core web server. The web server runs on port 5000 (http) and 5001 (https).
 
-- **HypernovaComponentServer**: ```npm run start:hypernovacomponentserver``` - Start the HypenovaComponentServer with the ```server-bundle.js``` 
-  as created by ```npm run start:serverbundle```. The HypernovaComponentServer runs on port 8080.
+- **HypernovaComponentServer**: `npm run start:hypernovacomponentserver` - Start the HypenovaComponentServer with the `server-bundle.js`
+  as created by `npm run start:serverbundle`. The HypernovaComponentServer runs on port 8080.
 
-- **Server bundle compilation**: ```npm run start:server-bundle``` - (Re)build the ```server-bundle.js``` as required by the HypernovaCompnentServer.
-  On any change in the ```Web.App\ClientApp\src``` folder the server bundle is rebuilt.
+- **Server bundle compilation**: `npm run start:server-bundle` - (Re)build the `server-bundle.js` as required by the HypernovaCompnentServer.
+  On any change in the `Web.App\ClientApp\src` folder the server bundle is rebuilt.
 
-- **Storybook**: ```npm run storybook``` - Start the Storybook server on port 9001.
+- **Storybook**: `npm run storybook` - Start the Storybook server on port 9001.
 
+- **Generate API clients**: `npm run gen:apiclients` - Generate the TypeScript API clients for all available services. The API clients including all required TypeScript types are generate in the file `Web.App\ClientApp\src\api\ApiClients.ts`. During development this command must be re-executed after changes to C# Web API or used types. On the build server this npm command should be executed to ensure that the C# code and TypeScript code are aligned. 
+  
 Although it is possible to combine two or more of the above scripts into one script and run them in parallel, there are a few downsides to this approach:
 
 - Output of multiple scripts will be mized into one terminal output window

@@ -4,10 +4,6 @@ const urljoin = require('url-join');
 
 import 'isomorphic-fetch';
 
-export type AsyncData<T> = {
-  readonly loading: boolean;
-  readonly data?: T | null;
-};
 
 export function getFile<T>(path: string, asyncTaskContext: AsyncTaskContext): Promise<T> {
   let getFilePromise: Promise<T> = new Promise((resolve, reject) => {

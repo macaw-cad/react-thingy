@@ -169,7 +169,7 @@ export class HypernovaComponentServerClient {
     }
 }
 
-export class ServerRouteClient {
+export class AnimalLatinNameClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -179,11 +179,10 @@ export class ServerRouteClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    getServerRoute(route: string | null): Promise<ServerRouteData> {
-        let url_ = this.baseUrl + "/api/serverroute/{route}";
-        if (route === undefined || route === null)
-            throw new Error("The parameter 'route' must be defined.");
-        url_ = url_.replace("{route}", encodeURIComponent("" + route)); 
+    get(animalName: string | null | undefined): Promise<string> {
+        let url_ = this.baseUrl + "/api/animallatinname?";
+        if (animalName !== undefined)
+            url_ += "animalName=" + encodeURIComponent("" + animalName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -194,8 +193,59 @@ export class ServerRouteClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetServerRoute(_response);
+            return this.processGet(_response);
         });
+    }
+
+    protected processGet(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(<any>null);
+    }
+}
+
+export class ServerRouteClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : <any>window;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    getServerRoute(route: string | null | undefined): Promise<ServerRouteData> {
+        let url_ = this.baseUrl + "/api/serverroute?";
+        if (route !== undefined)
+            url_ += "route=" + encodeURIComponent("" + route) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+        
+        // @ts-ignore
+        console.log("THIS:", this);
+
+        // @ts-ignore
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetServerRoute(_response);
+        }).catch((e) => { console.log("EXCEPTION:", e) });
     }
 
     protected processGetServerRoute(response: Response): Promise<ServerRouteData> {

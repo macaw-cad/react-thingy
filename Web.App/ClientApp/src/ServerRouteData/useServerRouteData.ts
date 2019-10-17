@@ -1,40 +1,81 @@
-import { useEffect, useState } from 'react';
-// @ts-ignore Types are not up to date yet
+import { useEffect, useState, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/RootState';
-import { setLoaderServerRouteDataAction, setErrorServerRouteDataAction, setServerRouteDataAction } from './ServerRouteDataActions';
-import { ApiProxyType, ApiProxy } from '../api/ApiProxy';
-import { ApiServerRoutePagePerson } from '../api/types/ApiServerRoutePagePerson';
+import { setLoaderServerRouteDataAction, setErrorServerRouteDataAction, setDataServerRouteDataAction } from './ServerRouteDataActions';
 import { AsyncData } from '../store/AsyncData';
+import { ServerRouteClient, ServerRouteData } from '../api/ApiClients';
+import { ServerRouteDataExtended } from './ServerRouteDataExtended';
+import { ApplicationContext } from '../ApplicationContext';
+import { Environment } from '../Environment';
+import 'isomorphic-fetch';
+const https = require('https');
+const http = require('http');
 
 type UseServerRouteDataProps = {
-    people: AsyncData<ApiServerRoutePagePerson[]>;
-    loadPeople: (query?: string) => void;
+    serverRouteData: AsyncData<ServerRouteDataExtended>
 };
 
-export const useServerRouteData = (): UseServerRouteDataProps => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const people: AsyncData<ApiServerRoutePagePerson[]> = useSelector((state: RootState) => state.ServerRoutePage.people);
-    const apiProxy: ApiProxyType = ApiProxy();
-    let dispatch = useDispatch();
+async function getData<T>(url: string): Promise<T> {
+    // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
+    // RequestInit TypeScript type definition does not contain agent, so put it on in an untyped way.
+    const options: RequestInit = {};
+    (options as any).agent = url.indexOf('https') > -1 
+        ? new https.Agent({ rejectUnauthorized: false })
+        : new http.Agent();
 
-    const fetchData = async (query: string) => {
+    let getDataPromise: Promise<T> = new Promise((resolve, reject) => {
+        fetch(url, options)
+            .then(res => {
+                return res;
+            })
+            .then(res => {
+                resolve(res as any);
+            })
+            .catch(error => {
+                console.error(`API call GET '${url}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
+                reject(error);
+            });
+    });
+
+    return getDataPromise;
+}
+
+export const useServerRouteData = (): UseServerRouteDataProps => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const applicationContext = useContext(ApplicationContext);
+    const serverRouteData: AsyncData<ServerRouteDataExtended> = useSelector((state: RootState) => state.serverRouteData.serverRouteData);
+
+    const fetchServerRouteData = async (): Promise<void> => {
         dispatch(setLoaderServerRouteDataAction());
-        try {
-            const data = await apiProxy.getServerRouteDataPeople(query);
-            dispatch(setServerRoutePageAction(data.results));
-        } catch (e) {
-            dispatch(setErrorServerRoutePageAction(e));
-        }
+        // @ts-ignore
+        const client = new ServerRouteClient(applicationContext.applicationContext.baseUrl, { 
+            fetch: (url: RequestInfo, init?: RequestInit | undefined): Promise<Response> | undefined => {
+                console.log('URL:', url); 
+                console.log('INIT:', init); 
+                return getData(url.toString()); 
+            }
+        });
+        const path = location.pathname.substring(1); // no leading '/'
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                const data = await client.getServerRoute(path);
+                dispatch(setDataServerRouteDataAction(data));
+            } catch (e) {
+                dispatch(setErrorServerRouteDataAction(e));
+            }
+        });
     };
+
+    if (Environment.isServer && applicationContext.applicationContext.firstRun) {
+        applicationContext.applicationContext.addTask(fetchServerRouteData());
+    }
 
     useEffect(() => {
-        fetchData(searchQuery);
-    }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+        fetchServerRouteData();
+    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
-
-    const loadPeople = (query?: string) => {
-        setSearchQuery(query || '');
-    };
-
-    return { people, loadPeople };
+    return { serverRouteData };
+}

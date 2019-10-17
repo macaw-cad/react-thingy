@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../sample/Header';
 import Footer from '../sample/Footer';
-import StarWarsPeople from '../starwars/StarWarsPeople';
+import { StarWars } from '../starwars/StarWars';
 
 class StarWarsPage extends React.Component {
     public render(): JSX.Element {
@@ -11,7 +11,7 @@ class StarWarsPage extends React.Component {
                 <h1>StarWars page</h1>
 
                 <div>
-                    <StarWarsPeople />
+                    <StarWars />
                 </div>
                 <Footer />
             </>

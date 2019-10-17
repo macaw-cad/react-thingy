@@ -1,17 +1,16 @@
-import { reduceStarWarsPeople } from './StarWarsPeopleReducer';
+import { TypeKeys, StarWarsActionTypes } from './StarWarsActions';
 import { StarWarsState } from './StarWarsState';
-import { AnyAction } from 'redux';
+import { asyncDataInitialState } from '../store/AsyncData';
+import { baseReducer } from '../BaseRedux/BaseReducer';
 
-const initialStarWarsState: StarWarsState = {
-  people: reduceStarWarsPeople(undefined, {} as AnyAction)
+const initialState: StarWarsState = {
+    people: asyncDataInitialState
 };
 
-const starWarsCombinedReducers = (state: StarWarsState | undefined = initialStarWarsState, action: AnyAction): StarWarsState => {
-  return {
-    people: reduceStarWarsPeople(state.people, action)
-  };
-};
-
-export function starWarsReducer(state: StarWarsState, action: AnyAction): StarWarsState {
-  return starWarsCombinedReducers(state, action);
-}
+export const starWarsReducer = (state: StarWarsState = initialState, action: StarWarsActionTypes) =>
+    baseReducer<StarWarsState>({
+        state,
+        action,
+        typeKeys: TypeKeys,
+        dataProperty: 'people'
+    });
