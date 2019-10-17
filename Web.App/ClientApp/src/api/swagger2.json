@@ -1,0 +1,269 @@
+﻿{
+  "x-generator": "NSwag v13.1.0.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v12.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "B4F API's",
+    "description": "The B4F API's.<br/></br>For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.",
+    "version": "v1"
+  },
+  "paths": {
+    "/mockapi/{jsonServerRequest}": {
+      "post": {
+        "tags": [
+          "JsonServer"
+        ],
+        "operationId": "JsonServer_JsonServer",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "jsonServerRequest",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "JsonServer"
+        ],
+        "operationId": "JsonServer_JsonServer2",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "jsonServerRequest",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/componentserver/{hypernovaComponentServerRequest}": {
+      "post": {
+        "tags": [
+          "HypernovaComponentServer"
+        ],
+        "operationId": "HypernovaComponentServer_Hypernova",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "hypernovaComponentServerRequest",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "HypernovaComponentServer"
+        ],
+        "operationId": "HypernovaComponentServer_Hypernova2",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "hypernovaComponentServerRequest",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/animallatinname": {
+      "get": {
+        "tags": [
+          "AnimalLatinName"
+        ],
+        "operationId": "AnimalLatinName_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "animalName",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/api/serverroute": {
+      "get": {
+        "tags": [
+          "ServerRoute"
+        ],
+        "operationId": "ServerRoute_GetServerRoute",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "route",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ServerRouteData"
+            }
+          },
+          "500": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/starwars/people": {
+      "get": {
+        "tags": [
+          "StarWars"
+        ],
+        "operationId": "StarWars_GetPeople",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ServerRouteData": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/PageType"
+        },
+        "carData": {
+          "$ref": "#/definitions/Car"
+        },
+        "animalData": {
+          "$ref": "#/definitions/Animal"
+        }
+      }
+    },
+    "PageType": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Enumeration"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "Enumeration": {
+      "type": "object",
+      "x-abstract": true,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Car": {
+      "type": "object",
+      "required": [
+        "year",
+        "speed"
+      ],
+      "properties": {
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "make": {
+          "type": "string"
+        },
+        "speed": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Animal": {
+      "type": "object",
+      "required": [
+        "maxAge"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "maxAge": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}
