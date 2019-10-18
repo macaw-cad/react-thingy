@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { withApplicationContext, ApplicationContextConsumerProps, ApplicationContext } from '../ApplicationContext';
 import 'isomorphic-fetch';
-import { ServerRouteClient, ServerRouteData, Animal, Car } from '../api/ApiClients';
+import { Animal, Car } from '../api/ApiClients';
 import AnimalPage from './AnimalPage';
 import CarPage from './CarPage';
 import { Error404 } from './404';
@@ -11,7 +10,7 @@ import { useServerRouteData } from '../ServerRouteData/useServerRouteData';
 type ServerRoutePageRendererProps = RouteComponentProps<{}> & ApplicationContextConsumerProps;
 
 const ServerRoutePageRenderer: React.FC<ServerRoutePageRendererProps> = (props) => {
-    const { serverRouteData } = useServerRouteData();
+    const serverRouteData = useServerRouteData();
 
     const pageTypeName = (serverRouteData && serverRouteData.data && serverRouteData.data.type) ? serverRouteData.data.type.name : '_unknown_';
 
