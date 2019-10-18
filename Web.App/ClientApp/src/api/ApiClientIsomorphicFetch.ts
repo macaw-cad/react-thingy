@@ -2,7 +2,7 @@ import 'isomorphic-fetch';
 const https = require('https');
 const http = require('http');
 
-export const isomorphicFetch = (url: RequestInfo, init?: RequestInit | undefined): Promise<Response> | undefined => {
+export const isomorphicFetch = (url: RequestInfo, init?: RequestInit | undefined): Promise<Response> => {
     const requestUrl = url.toString();
 
     // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
