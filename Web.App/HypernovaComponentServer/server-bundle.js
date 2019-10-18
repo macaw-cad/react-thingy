@@ -75388,28 +75388,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const https = __webpack_require__(/*! https */ "https");
 const http = __webpack_require__(/*! http */ "http");
-async function getData(url) {
-    // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
-    // RequestInit TypeScript type definition does not contain agent, so put it on in an untyped way.
-    const options = {};
-    options.agent = url.indexOf('https') > -1
-        ? new https.Agent({ rejectUnauthorized: false })
-        : new http.Agent();
-    let getDataPromise = new Promise((resolve, reject) => {
-        fetch(url, options)
-            .then(res => {
-            return res;
-        })
-            .then(res => {
-            resolve(res);
-        })
-            .catch(error => {
-            console.error(`API call GET '${url}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
-            reject(error);
-        });
-    });
-    return getDataPromise;
-}
 const isomorphicFetch = (url, init) => {
     const requestUrl = url.toString();
     // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
@@ -75418,7 +75396,7 @@ const isomorphicFetch = (url, init) => {
     options.agent = requestUrl.indexOf('https') > -1
         ? new https.Agent({ rejectUnauthorized: false })
         : new http.Agent();
-    let getDataPromise = new Promise((resolve, reject) => {
+    let fetchPromise = new Promise((resolve, reject) => {
         fetch(requestUrl, options)
             .then(res => {
             return res;
@@ -75430,9 +75408,8 @@ const isomorphicFetch = (url, init) => {
             console.error(`API call GET '${requestUrl}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
             reject(error);
         });
-        return getData(requestUrl);
     });
-    return getDataPromise;
+    return fetchPromise;
 };
 
 
