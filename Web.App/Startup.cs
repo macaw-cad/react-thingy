@@ -101,10 +101,10 @@ namespace Web.App
             else
             {
                 app.UseExceptionHandler("/Error");
-                // app.UseHsts();
+                app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
