@@ -11,17 +11,17 @@ import { MockStarWarsClient } from '../api/MockStarWarsClient';
 
 const getContainer = () => {
     const containerInstance = new Container();
-
+    
     containerInstance.bind<IServerRouteClient>(TYPE.ServerRouteDataClient).to(ServerRouteClient);
     containerInstance.bind<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient).to(AnimalLatinNameClient);
     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).toFactory(() => {
         const mockDataFlags: MockDataFlags | null = getMockDataFlags();
         if (mockDataFlags && mockDataFlags.starwarsPeople) {
-            return new MockStarWarsClient('http://localhost:3001');
+            return new MockStarWarsClient(containerInstance.get<string>(TYPE.BaseUrl));
         } else {
             return new StarWarsClient();
         }
-    });
+    })/*.inSingletonScope()*/;
 
     return containerInstance;
 };

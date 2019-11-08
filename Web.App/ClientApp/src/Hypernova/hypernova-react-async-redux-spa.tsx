@@ -10,7 +10,7 @@ import { PwaAppFullHtml } from '../PwaAppFullHtml';
 import { ContextHistory } from '../ContextHistory';
 import { createMemoryHistory, createBrowserHistory } from 'history';
 
-export const renderReactAsyncReduxSpaServer = (C: React.ComponentClass<any>, store: Store<any>, applicationContextServer: ApplicationContextProviderProps) => hypernova({
+export const renderReactAsyncReduxSpaServer = (C: React.ComponentType, store: Store<any>, applicationContextServer: ApplicationContextProviderProps) => hypernova({
   server(): (props: any) => string {
     return (props: any) => {
 
@@ -43,7 +43,7 @@ export const renderReactAsyncReduxSpaServer = (C: React.ComponentClass<any>, sto
   }
 });
 
-export const renderReactAsyncReduxSpaClient = (C: React.ComponentClass<any>, reduxStoreCreator: (data: any) => Store<any>) => hypernova({
+export const renderReactAsyncReduxSpaClient = (C: React.ComponentType, reduxStoreCreator: (data: any) => Store<any>) => hypernova({
   server(): void {
     /* tslint:disable:no-empty */
   },

@@ -75321,45 +75321,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _router_ApplicationRoutes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router/ApplicationRoutes */ "./src/router/ApplicationRoutes.tsx");
 /* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Environment */ "./src/Environment.ts");
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _services_container__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/container */ "./src/services/container.ts");
+
+
 
 
 
 const Online = ({ online, children }) => online ? children : null;
 const Offline = ({ online, children }) => !online ? children : null;
-class PwaApp extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-        super(props);
-        this.state = {
-            online: (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) ? window.navigator.onLine : true,
-        };
+const PwaApp = (props) => {
+    const [isOnline, setIsOnline] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])((!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) ? window.navigator.onLine : true);
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_3__["ApplicationContext"]).applicationContext;
+    // We now know from the application context the baseUrl - we need check if already bound because 
+    // server-side rendering executes this code twice, but no check available...
+    try {
+        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].get(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].BaseUrl);
     }
-    componentDidMount() {
+    catch (_a) {
+        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].bind(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].BaseUrl).toValue(_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`);
+    }
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
         if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
             window.addEventListener('offline', (e) => {
-                this.setState({
-                    online: false
-                });
+                setIsOnline(false);
             });
             window.addEventListener('online', (e) => {
-                this.setState({
-                    online: true
-                });
+                setIsOnline(true);
             });
         }
-    }
-    refreshPage() {
-        if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer && window.location) {
-            window.location.reload();
-        }
-    }
-    render() {
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Online, { online: this.state.online },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_router_ApplicationRoutes__WEBPACK_IMPORTED_MODULE_1__["default"], null)),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Offline, { online: this.state.online },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "You are ofline"))));
-    }
-}
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Online, { online: isOnline },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_router_ApplicationRoutes__WEBPACK_IMPORTED_MODULE_1__["default"], null)),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Offline, { online: isOnline },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "You are offline"))));
+};
 
 
 /***/ }),
@@ -76122,25 +76119,23 @@ function throwException(message, status, response, headers, result) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MockStarWarsClient", function() { return MockStarWarsClient; });
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
-/* harmony import */ var _ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
-/* harmony import */ var _Logger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Logger */ "./src/Logger.ts");
-
+/* harmony import */ var _ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+/* harmony import */ var _Logger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Logger */ "./src/Logger.ts");
 
 
 class MockStarWarsClient {
     constructor(baseUrl) {
-        this.mockDataPath = _Environment__WEBPACK_IMPORTED_MODULE_0__["Environment"].isProduction ? `${baseUrl}/mockapi` : `http://localhost:3001`;
+        this.mockApiBaseUrl = baseUrl;
     }
     getPeople() {
         const getPeoplePromise = new Promise(async (resolve, reject) => {
-            const url = `${this.mockDataPath}/starwars-people`;
+            const url = `${this.mockApiBaseUrl}/starwars-people`;
             try {
-                const response = await Object(_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_1__["isomorphicFetch"])(url);
+                const response = await Object(_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_0__["isomorphicFetch"])(url);
                 resolve(response.json());
             }
             catch (e) {
-                _Logger__WEBPACK_IMPORTED_MODULE_2__["Logger"].error(`API call GET '${url}' fails with code: ${e.statusCode}. Exception: ${e.toString()}`);
+                _Logger__WEBPACK_IMPORTED_MODULE_1__["Logger"].error(`API call GET '${url}' fails with code: ${e.statusCode}. Exception: ${e.toString()}`);
                 reject(e);
             }
         });
@@ -76614,16 +76609,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class StarWarsPage extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    render() {
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "StarWars page"),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_starwars_StarWars__WEBPACK_IMPORTED_MODULE_3__["StarWars"], null)),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
-    }
-}
+const StarWarsPage = (props) => {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "StarWars page"),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_starwars_StarWars__WEBPACK_IMPORTED_MODULE_3__["default"], null)),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
+};
 /* harmony default export */ __webpack_exports__["default"] = (StarWarsPage);
 
 
@@ -77020,12 +77013,12 @@ const getContainer = () => {
     containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).toFactory(() => {
         const mockDataFlags = Object(_userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__["getMockDataFlags"])();
         if (mockDataFlags && mockDataFlags.starwarsPeople) {
-            return new _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__["MockStarWarsClient"]('http://localhost:3001');
+            return new _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__["MockStarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl));
         }
         else {
             return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["StarWarsClient"]();
         }
-    });
+    }) /*.inSingletonScope()*/;
     return containerInstance;
 };
 const container = getContainer();
@@ -77047,6 +77040,7 @@ const resolve = Object(_owja_ioc__WEBPACK_IMPORTED_MODULE_0__["createResolve"])(
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TYPE", function() { return TYPE; });
 const TYPE = {
+    BaseUrl: Symbol('BaseUrl'),
     AnimalLatinNameClient: Symbol('AnimalLatinNameClient'),
     ServerRouteDataClient: Symbol('ServerRouteDataClient'),
     StarWarsClient: Symbol('StarWarsClient')
@@ -77059,19 +77053,19 @@ const TYPE = {
 /*!***********************************!*\
   !*** ./src/starwars/StarWars.tsx ***!
   \***********************************/
-/*! exports provided: StarWars */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StarWars", function() { return StarWars; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _useStarWars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useStarWars */ "./src/starwars/useStarWars.ts");
 
 
-const StarWars = () => {
+const StarWars = (props) => {
     const { starWarsPeople, starWarsPeopleLoader } = Object(_useStarWars__WEBPACK_IMPORTED_MODULE_1__["useStarWars"])();
+    starWarsPeopleLoader();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "StarWars list"),
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { onClick: () => starWarsPeopleLoader() }, "Filter data"),
@@ -77082,6 +77076,7 @@ const StarWars = () => {
         starWarsPeople.data &&
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, starWarsPeople.data.map((person, index) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", { key: index }, person.name))))));
 };
+/* harmony default export */ __webpack_exports__["default"] = (StarWars);
 
 
 /***/ }),

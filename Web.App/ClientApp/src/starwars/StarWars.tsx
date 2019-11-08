@@ -1,9 +1,13 @@
 import React from 'react';
 import { useStarWars } from './useStarWars';
 
-export const StarWars: React.FC = (): JSX.Element => {
-    const { starWarsPeople, starWarsPeopleLoader } = useStarWars();
+type StarWarsProps = {
+};
 
+const StarWars: React.FC<StarWarsProps> = (props: StarWarsProps) => {
+    const { starWarsPeople, starWarsPeopleLoader } = useStarWars();
+    
+    starWarsPeopleLoader();
     return (
         <div>
             <h1>StarWars list</h1>
@@ -22,3 +26,5 @@ export const StarWars: React.FC = (): JSX.Element => {
         </div>
     );
 };
+
+export default StarWars;

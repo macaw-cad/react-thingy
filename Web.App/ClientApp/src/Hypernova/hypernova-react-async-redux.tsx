@@ -6,7 +6,7 @@ import hypernova, { serialize, load } from 'hypernova';
 import { Store } from 'redux';
 import { ApplicationContext, ApplicationContextProviderProps, applicationContextClient } from '../ApplicationContext';
 import { PwaAppFullHtml } from '../PwaAppFullHtml';
-export const renderReactAsyncReduxServer = (name: string, C: React.ComponentClass<any>, store: Store<any>, applicationContextServer: ApplicationContextProviderProps) => hypernova({
+export const renderReactAsyncReduxServer = (name: string, C: React.ComponentType, store: Store<any>, applicationContextServer: ApplicationContextProviderProps) => hypernova({
   server(): (props: any) => string {
     return (props: any) => {
       // console.log('applicationContextServer', JSON.stringify(applicationContextServer, null, 2));
@@ -26,7 +26,7 @@ export const renderReactAsyncReduxServer = (name: string, C: React.ComponentClas
   }
 });
 
-export const renderReactAsyncReduxClient = (name: string, C: React.ComponentClass<any>, reduxStoreCreator: (data: any) => Store<any>) => hypernova({
+export const renderReactAsyncReduxClient = (name: string, C: React.ComponentType, reduxStoreCreator: (data: any) => Store<any>) => hypernova({
   server(): void {
     /* tslint:disable:no-empty */
   },

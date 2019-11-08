@@ -15,7 +15,7 @@ export default (initialReduxStoreState: any, applicationContextServer: any) => {
 
 if (!Environment.isServer) {
   renderReactAsyncReduxSpaClient(
-    PwaApp as React.ComponentClass<any>,
+    PwaApp,
     (data: any) => configureStore(data)
   );
 }
