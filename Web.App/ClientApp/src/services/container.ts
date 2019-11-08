@@ -1,25 +1,27 @@
-// import { MockDataFlags } from '../userSettings/MockDataFlags';
 import { Container, createWire, createResolve } from '@owja/ioc';
 import { TYPE } from './types';
+import { getMockDataFlags, MockDataFlags } from '../userSettings/MockDataFlags';
 
 import { 
-    IAnimalLatinNameClient, AnimalLatinName,
-    IServerRouteClient, ServerRouteClient, AnimalLatinNameClient, 
+    IAnimalLatinNameClient, AnimalLatinNameClient,
+    IServerRouteClient, ServerRouteClient, 
     IStarWarsClient, StarWarsClient
  } from '../api/ApiClients';
-// import { MockStarWarsClient } from '../api/MockStarWarsClient';
-// import { AsyncTaskContext } from '../ApplicationContext';
+import { MockStarWarsClient } from '../api/MockStarWarsClient';
 
-const getContainer = (/*applicationContext: AsyncTaskContext, mockDataFlags: MockDataFlags*/) => {
+const getContainer = () => {
     const containerInstance = new Container();
 
     containerInstance.bind<IServerRouteClient>(TYPE.ServerRouteDataClient).to(ServerRouteClient);
     containerInstance.bind<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient).to(AnimalLatinNameClient);
-    // if (mockDataFlags.starwarsPeople) {
-    //     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).to(MockStarWarsClient);
-    // } else {
-    containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).to(StarWarsClient);
-    // }
+    containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).toFactory(() => {
+        const mockDataFlags: MockDataFlags | null = getMockDataFlags();
+        if (mockDataFlags && mockDataFlags.starwarsPeople) {
+            return new MockStarWarsClient('http://localhost:3001');
+        } else {
+            return new StarWarsClient();
+        }
+    });
 
     return containerInstance;
 };

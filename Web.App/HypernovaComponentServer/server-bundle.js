@@ -75257,6 +75257,56 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/Logger.ts":
+/*!***********************!*\
+  !*** ./src/Logger.ts ***!
+  \***********************/
+/*! exports provided: Logger */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
+var LoggerLevels;
+(function (LoggerLevels) {
+    LoggerLevels["ERROR"] = "error";
+    LoggerLevels["WARNING"] = "warning";
+    LoggerLevels["INFORMATION"] = "information";
+})(LoggerLevels || (LoggerLevels = {}));
+class Logger {
+    static error(...log) {
+        this.sendLog(LoggerLevels.ERROR, ...log);
+    }
+    static warn(...log) {
+        this.sendLog(LoggerLevels.WARNING, ...log);
+    }
+    static log(...log) {
+        this.sendLog(LoggerLevels.INFORMATION, ...log);
+    }
+    static sendLog(level, ...log) {
+        if (!Logger.shouldShowLogs()) {
+            return;
+        }
+        switch (level) {
+            case LoggerLevels.ERROR:
+                console.error(...log);
+                break;
+            case LoggerLevels.WARNING:
+                console.warn(...log);
+                break;
+            default:
+                console.log(...log);
+        }
+    }
+    // A check should be added for dev environment
+    static shouldShowLogs() {
+        return false;
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/PwaApp.tsx":
 /*!************************!*\
   !*** ./src/PwaApp.tsx ***!
@@ -76057,6 +76107,45 @@ function throwException(message, status, response, headers, result) {
         throw result;
     else
         throw new ApiException(message, status, response, headers, null);
+}
+
+
+/***/ }),
+
+/***/ "./src/api/MockStarWarsClient.ts":
+/*!***************************************!*\
+  !*** ./src/api/MockStarWarsClient.ts ***!
+  \***************************************/
+/*! exports provided: MockStarWarsClient */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MockStarWarsClient", function() { return MockStarWarsClient; });
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+/* harmony import */ var _Logger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Logger */ "./src/Logger.ts");
+
+
+
+class MockStarWarsClient {
+    constructor(baseUrl) {
+        this.mockDataPath = _Environment__WEBPACK_IMPORTED_MODULE_0__["Environment"].isProduction ? `${baseUrl}/mockapi` : `http://localhost:3001`;
+    }
+    getPeople() {
+        const getPeoplePromise = new Promise(async (resolve, reject) => {
+            const url = `${this.mockDataPath}/starwars-people`;
+            try {
+                const response = await Object(_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_1__["isomorphicFetch"])(url);
+                resolve(response.json());
+            }
+            catch (e) {
+                _Logger__WEBPACK_IMPORTED_MODULE_2__["Logger"].error(`API call GET '${url}' fails with code: ${e.statusCode}. Exception: ${e.toString()}`);
+                reject(e);
+            }
+        });
+        return getPeoplePromise;
+    }
 }
 
 
@@ -76916,22 +77005,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./src/services/types.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TYPE", function() { return _types__WEBPACK_IMPORTED_MODULE_1__["TYPE"]; });
 
-/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
-// import { MockDataFlags } from '../userSettings/MockDataFlags';
+/* harmony import */ var _userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../userSettings/MockDataFlags */ "./src/userSettings/MockDataFlags.ts");
+/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
+/* harmony import */ var _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/MockStarWarsClient */ "./src/api/MockStarWarsClient.ts");
 
 
 
-// import { MockStarWarsClient } from '../api/MockStarWarsClient';
-// import { AsyncTaskContext } from '../ApplicationContext';
-const getContainer = ( /*applicationContext: AsyncTaskContext, mockDataFlags: MockDataFlags*/) => {
+
+
+const getContainer = () => {
     const containerInstance = new _owja_ioc__WEBPACK_IMPORTED_MODULE_0__["Container"]();
-    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].ServerRouteDataClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["ServerRouteClient"]);
-    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].AnimalLatinNameClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["AnimalLatinNameClient"]);
-    // if (mockDataFlags.starwarsPeople) {
-    //     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).to(MockStarWarsClient);
-    // } else {
-    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["StarWarsClient"]);
-    // }
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].ServerRouteDataClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"]);
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].AnimalLatinNameClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["AnimalLatinNameClient"]);
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).toFactory(() => {
+        const mockDataFlags = Object(_userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__["getMockDataFlags"])();
+        if (mockDataFlags && mockDataFlags.starwarsPeople) {
+            return new _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__["MockStarWarsClient"]('http://localhost:3001');
+        }
+        else {
+            return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["StarWarsClient"]();
+        }
+    });
     return containerInstance;
 };
 const container = getContainer();
