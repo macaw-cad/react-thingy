@@ -1,0 +1,6 @@
+{
+    "name": "HyperNova SSR",
+    "version": "1.0",
+    "description": "Show if page is server-side rendered by HyperNova",
+    "manifest_version": 2
+}

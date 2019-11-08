@@ -1,52 +1,38 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect,  useContext } from 'react';
 // @ts-ignore Types are not up to date yet
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/RootState';
-import { setLoaderStarWarsAction, setErrorStarWarsAction, setStarWarsAction } from './StarWarsActions';
-import { ApiProxyType, ApiProxy } from '../api/ApiProxy';
-import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
+import { TypeKeysBaseName } from './StarWarsActions';
 import { AsyncData } from '../store/AsyncData';
 import { ApplicationContext } from '../ApplicationContext';
-import { Environment } from '../Environment';
+import { reduxDataLoader } from '../BaseRedux/HookLessReduxDataLoader';
+import { IStarWarsClient, StarWarsPerson } from '../api/ApiClients';
+import { TYPE, resolve } from '../services/container';
 
 type UseStarWarsProps = {
-    people: AsyncData<ApiStarWarsPerson[]>;
-    loadPeople: (query?: string) => void;
+    starWarsPeople: AsyncData<StarWarsPerson[]>;
+    starWarsPeopleLoader: () => void;
 };
 
 export const useStarWars = (): UseStarWarsProps => {
-    const [searchQuery, setSearchQuery] = useState('');
-    const people: AsyncData<ApiStarWarsPerson[]> = useSelector((state: RootState) => state.starWars.people);
-    const applicationContext = useContext(ApplicationContext);
-    const apiProxy: ApiProxyType = ApiProxy(applicationContext.applicationContext);
-    let dispatch = useDispatch();
+    const applicationContext = useContext(ApplicationContext).applicationContext;
+    const dispatch = useDispatch();
 
-    const fetchData = async () => {
-        dispatch(setLoaderStarWarsAction());
+    const starWarsClient = resolve<IStarWarsClient>(TYPE.StarWarsClient);
 
-        return new Promise(async (resolve, reject) => {
-            try {
-                const data = await apiProxy.getStarWarsPeople();
-                dispatch(setStarWarsAction(data));
-                resolve();
-            } catch (e) {
-                dispatch(setErrorStarWarsAction(e));
-                reject(e);
-            }
-        });
+    const starWarsPeople: AsyncData<StarWarsPerson[]> = useSelector((state: RootState) => state.starWars.people);
+
+    const starWarsPeopleFetch = async (): Promise<StarWarsPerson[]> => {
+        return starWarsClient().getPeople();
     };
 
-    if (Environment.isServer && applicationContext.applicationContext.firstRun) {
-        applicationContext.applicationContext.addTask(fetchData());
-    }
+    const starWarsPeopleLoader = async () => {
+        reduxDataLoader<StarWarsPerson[]>(starWarsPeopleFetch, applicationContext, dispatch, TypeKeysBaseName);
+    };
 
     useEffect(() => {
-        fetchData();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        starWarsPeopleLoader();
+    },        []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const loadPeople = (query?: string) => {
-        setSearchQuery(query || '');
-    };
-
-    return { people, loadPeople };
+    return { starWarsPeople, starWarsPeopleLoader };
 };

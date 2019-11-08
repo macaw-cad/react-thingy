@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +9,10 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NSwag;
 using System;
+using Web.App.Api;
 using Web.App.Hypernova;
 using Web.App.HypernovaComponentServer;
 using Web.App.JsonServer;
@@ -94,15 +98,25 @@ namespace Web.App
         {
             app.UseForwardedHeaders();
 
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "application/json";
+                    var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                    if (errorFeature != null)
+                    {
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiErrorInternalServerError(errorFeature.Error.ToString())));
+                    }
+                });
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

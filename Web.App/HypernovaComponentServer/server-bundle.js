@@ -178,6 +178,26 @@ module.exports = _inheritsLoose;
 
 /***/ }),
 
+/***/ "./node_modules/@owja/ioc/dist/ioc.mjs":
+/*!*********************************************!*\
+  !*** ./node_modules/@owja/ioc/dist/ioc.mjs ***!
+  \*********************************************/
+/*! exports provided: Container, createDecorator, createWire, createResolve, NOCACHE */
+/***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Container", function() { return i; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDecorator", function() { return u; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createWire", function() { return e; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createResolve", function() { return f; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NOCACHE", function() { return r; });
+var n=function(n){this.t=n};n.prototype.inSingletonScope=function(){this.t.singleton=!0};var t=function(n){this.t=n};t.prototype.to=function(t){return this.t.object=t,new n(this.t)},t.prototype.toFactory=function(t){return this.t.factory=t,new n(this.t)},t.prototype.toValue=function(n){if(void 0===n)throw"cannot bind a value of type undefined";this.t.value=n};var i=function(){this.i=new Map,this.o=[]};i.prototype.bind=function(n){return new t(this.u(n))},i.prototype.rebind=function(n){return this.remove(n).bind(n)},i.prototype.remove=function(n){if(void 0===this.i.get(n))throw n.toString()+" was never bound";return this.i.delete(n),this},i.prototype.get=function(n){var t=this.i.get(n);if(void 0===t)throw"nothing bound to "+n.toString();var i=t.object,r=t.factory,o=t.value,u=t.cache,e=t.singleton,f=function(n){return e&&void 0!==u?u:e?(t.cache=n(),t.cache):n()};if(void 0!==o)return o;if(void 0!==i)return f(function(){return new i});if(void 0!==r)return f(function(){return r()});throw"nothing is bound to "+n.toString()},i.prototype.snapshot=function(){return this.o.push(new Map(this.i)),this},i.prototype.restore=function(){return this.i=this.o.pop()||this.i,this},i.prototype.u=function(n){if(void 0!==this.i.get(n))throw"object can only bound once: "+n.toString();var t={singleton:!1};return this.i.set(n,t),t};var r=Symbol("NOCACHE");function o(n,t,i,o,u){Object.defineProperty(n,t,{get:function(){var n=i.get(o);return-1===u.indexOf(r)&&Object.defineProperty(this,t,{value:n,enumerable:!0}),n},configurable:!0,enumerable:!0})}function u(n){return function(t){for(var i=[],r=arguments.length-1;r-- >0;)i[r]=arguments[r+1];return function(n,t,i){return function(r,u){o(r,u,t,n,i)}}(t,n,i)}}function e(n){return function(t,i,r){for(var u=[],e=arguments.length-3;e-- >0;)u[e]=arguments[e+3];o(t,i,n,r,u)}}function f(n){return function(t){for(var i,o=[],u=arguments.length-1;u-- >0;)o[u]=arguments[u+1];return function(){return-1===o.indexOf(r)&&void 0!==i||(i=n.get(t)),i}}}
+//# sourceMappingURL=ioc.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/ansi-styles/index.js":
 /*!*******************************************!*\
   !*** ./node_modules/ansi-styles/index.js ***!
@@ -74703,6 +74723,102 @@ class ArtistStorySEO {
 
 /***/ }),
 
+/***/ "./src/AnimalLatinName/AnimalLatinNameActions.ts":
+/*!*******************************************************!*\
+  !*** ./src/AnimalLatinName/AnimalLatinNameActions.ts ***!
+  \*******************************************************/
+/*! exports provided: TypeKeysBaseName, TypeKeys */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeysBaseName", function() { return TypeKeysBaseName; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeys", function() { return TypeKeys; });
+const TypeKeysBaseName = 'ANIMALLATINNAME';
+var TypeKeys;
+(function (TypeKeys) {
+    TypeKeys["SET_LOADER"] = "SET_LOADER_ANIMALLATINNAME";
+    TypeKeys["SET_ERROR"] = "SET_ERROR_ANIMALLATINNAME";
+    TypeKeys["SET_DATA"] = "SET_DATA_ANIMALLATINNAME";
+})(TypeKeys || (TypeKeys = {}));
+
+
+/***/ }),
+
+/***/ "./src/AnimalLatinName/AnimalLatinNameReducer.ts":
+/*!*******************************************************!*\
+  !*** ./src/AnimalLatinName/AnimalLatinNameReducer.ts ***!
+  \*******************************************************/
+/*! exports provided: AnimalLatinNameReducer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimalLatinNameReducer", function() { return AnimalLatinNameReducer; });
+/* harmony import */ var _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AnimalLatinNameActions */ "./src/AnimalLatinName/AnimalLatinNameActions.ts");
+/* harmony import */ var _store_AsyncData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/AsyncData */ "./src/store/AsyncData.ts");
+/* harmony import */ var _BaseRedux_BaseReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../BaseRedux/BaseReducer */ "./src/BaseRedux/BaseReducer.ts");
+
+
+
+const initialState = {
+    animalLatinName: _store_AsyncData__WEBPACK_IMPORTED_MODULE_1__["asyncDataInitialState"]
+};
+const AnimalLatinNameReducer = (state = initialState, action) => Object(_BaseRedux_BaseReducer__WEBPACK_IMPORTED_MODULE_2__["baseReducer"])({
+    state,
+    action,
+    typeKeys: _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_0__["TypeKeys"],
+    dataProperty: 'animalLatinName'
+});
+
+
+/***/ }),
+
+/***/ "./src/AnimalLatinName/useAnimalLatinName.ts":
+/*!***************************************************!*\
+  !*** ./src/AnimalLatinName/useAnimalLatinName.ts ***!
+  \***************************************************/
+/*! exports provided: useAnimalLatinName */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAnimalLatinName", function() { return useAnimalLatinName; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
+/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../BaseRedux/HookLessReduxDataLoader */ "./src/BaseRedux/HookLessReduxDataLoader.ts");
+/* harmony import */ var _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AnimalLatinNameActions */ "./src/AnimalLatinName/AnimalLatinNameActions.ts");
+
+
+
+
+
+
+
+const useAnimalLatinName = () => {
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_4__["ApplicationContext"]).applicationContext;
+    const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+    const animalLatinName = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])((state) => {
+        return state.animalLatinName &&
+            state.animalLatinName.animalLatinName;
+    });
+    const animalLatinNameFetch = async (name) => {
+        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["AnimalLatinNameClient"](applicationContext.baseUrl, { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_3__["isomorphicFetch"] });
+        return client.get(name);
+    };
+    const animalLatinNameLoader = (name) => {
+        Object(_BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__["reduxDataLoader"])(animalLatinNameFetch, applicationContext, dispatch, _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__["TypeKeysBaseName"], name);
+    };
+    return { animalLatinName, animalLatinNameLoader };
+};
+
+
+/***/ }),
+
 /***/ "./src/ApplicationContext.tsx":
 /*!************************************!*\
   !*** ./src/ApplicationContext.tsx ***!
@@ -74787,6 +74903,50 @@ const baseReducer = (props) => {
             return { ...state, [dataProperty]: { ...state[dataProperty], loading: false, data: action.data } };
         default:
             return state;
+    }
+};
+
+
+/***/ }),
+
+/***/ "./src/BaseRedux/HookLessReduxDataLoader.ts":
+/*!**************************************************!*\
+  !*** ./src/BaseRedux/HookLessReduxDataLoader.ts ***!
+  \**************************************************/
+/*! exports provided: setLoaderTAction, setErrorTAction, setDataTAction, reduxDataLoader */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLoaderTAction", function() { return setLoaderTAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setErrorTAction", function() { return setErrorTAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDataTAction", function() { return setDataTAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reduxDataLoader", function() { return reduxDataLoader; });
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+
+const setLoaderTAction = (postfix) => ({ type: 'SET_LOADER_' + postfix });
+const setErrorTAction = (postfix, error) => ({ type: 'SET_ERROR_' + postfix, error });
+const setDataTAction = (postfix, data) => ({ type: 'SET_DATA_' + postfix, data });
+const reduxDataLoader = (dataLoader, applicationContext, dispatch, postfix, ...useArgs) => {
+    const reduxAwareDataLoader = (...args) => {
+        dispatch(setLoaderTAction(postfix));
+        return new Promise(async (resolve, reject) => {
+            try {
+                const data = await dataLoader(...args);
+                dispatch(setDataTAction(postfix, data));
+                resolve();
+            }
+            catch (e) {
+                dispatch(setErrorTAction(postfix, e));
+                reject();
+            }
+        });
+    };
+    if (_Environment__WEBPACK_IMPORTED_MODULE_0__["Environment"].isServer && applicationContext.firstRun) {
+        applicationContext.addTask(reduxAwareDataLoader(...useArgs)); // execute once at server
+    }
+    else if (!_Environment__WEBPACK_IMPORTED_MODULE_0__["Environment"].isServer) {
+        reduxAwareDataLoader(...useArgs);
     }
 };
 
@@ -75097,56 +75257,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/Logger.ts":
-/*!***********************!*\
-  !*** ./src/Logger.ts ***!
-  \***********************/
-/*! exports provided: Logger */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
-var LoggerLevels;
-(function (LoggerLevels) {
-    LoggerLevels["ERROR"] = "error";
-    LoggerLevels["WARNING"] = "warning";
-    LoggerLevels["INFORMATION"] = "information";
-})(LoggerLevels || (LoggerLevels = {}));
-class Logger {
-    static error(...log) {
-        this.sendLog(LoggerLevels.ERROR, ...log);
-    }
-    static warn(...log) {
-        this.sendLog(LoggerLevels.WARNING, ...log);
-    }
-    static log(...log) {
-        this.sendLog(LoggerLevels.INFORMATION, ...log);
-    }
-    static sendLog(level, ...log) {
-        if (!Logger.shouldShowLogs()) {
-            return;
-        }
-        switch (level) {
-            case LoggerLevels.ERROR:
-                console.error(...log);
-                break;
-            case LoggerLevels.WARNING:
-                console.warn(...log);
-                break;
-            default:
-                console.log(...log);
-        }
-    }
-    // A check should be added for dev environment
-    static shouldShowLogs() {
-        return false;
-    }
-}
-
-
-/***/ }),
-
 /***/ "./src/PwaApp.tsx":
 /*!************************!*\
   !*** ./src/PwaApp.tsx ***!
@@ -75261,24 +75371,20 @@ class PwaAppFullHtml extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 /*!*******************************************************!*\
   !*** ./src/ServerRouteData/ServerRouteDataActions.ts ***!
   \*******************************************************/
-/*! exports provided: TypeKeys, setLoaderServerRouteDataAction, setErrorServerRouteDataAction, setDataServerRouteDataAction */
+/*! exports provided: TypeKeysBaseName, TypeKeys */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeysBaseName", function() { return TypeKeysBaseName; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeys", function() { return TypeKeys; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLoaderServerRouteDataAction", function() { return setLoaderServerRouteDataAction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setErrorServerRouteDataAction", function() { return setErrorServerRouteDataAction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDataServerRouteDataAction", function() { return setDataServerRouteDataAction; });
+const TypeKeysBaseName = 'SERVERROUTEDATA';
 var TypeKeys;
 (function (TypeKeys) {
     TypeKeys["SET_LOADER"] = "SET_LOADER_SERVERROUTEDATA";
     TypeKeys["SET_ERROR"] = "SET_ERROR_SERVERROUTEDATA";
     TypeKeys["SET_DATA"] = "SET_DATA_SERVERROUTEDATA";
 })(TypeKeys || (TypeKeys = {}));
-const setLoaderServerRouteDataAction = () => ({ type: TypeKeys.SET_LOADER });
-const setErrorServerRouteDataAction = (error) => ({ type: TypeKeys.SET_ERROR, error });
-const setDataServerRouteDataAction = (data) => ({ type: TypeKeys.SET_DATA, data });
 
 
 /***/ }),
@@ -75326,11 +75432,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ServerRouteDataActions */ "./src/ServerRouteData/ServerRouteDataActions.ts");
-/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
-/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
+/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../BaseRedux/HookLessReduxDataLoader */ "./src/BaseRedux/HookLessReduxDataLoader.ts");
+/* harmony import */ var _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ServerRouteDataActions */ "./src/ServerRouteData/ServerRouteDataActions.ts");
+
 
 
 
@@ -75340,34 +75448,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useServerRouteData = () => {
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"]).applicationContext;
     const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
     const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
-    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_6__["ApplicationContext"]);
     const serverRouteData = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])((state) => state.serverRouteData.serverRouteData);
-    const fetchServerRouteData = async () => {
-        dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setLoaderServerRouteDataAction"])());
-        // @ts-ignore
-        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_4__["ServerRouteClient"](applicationContext.applicationContext.baseUrl, { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+    const serverRouteDataFetch = async () => {
+        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"](applicationContext.baseUrl, { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_4__["isomorphicFetch"] });
         const path = location.pathname.substring(1); // no leading '/'
-        return new Promise(async (resolve, reject) => {
-            try {
-                const data = await client.getServerRoute(path);
-                dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setDataServerRouteDataAction"])(data));
-                resolve();
-            }
-            catch (e) {
-                dispatch(Object(_ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_3__["setErrorServerRouteDataAction"])(e));
-                reject();
-            }
-        });
+        return client.getServerRoute(path);
     };
-    if (_Environment__WEBPACK_IMPORTED_MODULE_7__["Environment"].isServer && applicationContext.applicationContext.firstRun) {
-        applicationContext.applicationContext.addTask(fetchServerRouteData());
-    }
+    const serverRouteReduxDataLoader = () => {
+        Object(_BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__["reduxDataLoader"])(serverRouteDataFetch, applicationContext, dispatch, _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__["TypeKeysBaseName"]);
+    };
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        fetchServerRouteData();
+        console.log(`useEffect - location.pathname=${location.pathname}, location.search=${location.search}`);
+        serverRouteReduxDataLoader();
     }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
-    return { serverRouteData };
+    if (_Environment__WEBPACK_IMPORTED_MODULE_6__["Environment"].isServer && applicationContext.firstRun) {
+        serverRouteReduxDataLoader();
+    }
+    return serverRouteData;
 };
 
 
@@ -75419,7 +75519,7 @@ const isomorphicFetch = (url, init) => {
 /*!*******************************!*\
   !*** ./src/api/ApiClients.ts ***!
   \*******************************/
-/*! exports provided: JsonServerClient, HypernovaComponentServerClient, AnimalLatinNameClient, ServerRouteClient, StarWarsClient, ServerRouteData, Enumeration, PageType, Car, Animal, ApiException */
+/*! exports provided: JsonServerClient, HypernovaComponentServerClient, AnimalLatinNameClient, ServerRouteClient, StarWarsClient, AnimalLatinName, ServerRouteData, Enumeration, PageType, Car, Animal, StarWarsPerson, ApiException */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75429,11 +75529,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimalLatinNameClient", function() { return AnimalLatinNameClient; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerRouteClient", function() { return ServerRouteClient; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StarWarsClient", function() { return StarWarsClient; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimalLatinName", function() { return AnimalLatinName; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerRouteData", function() { return ServerRouteData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Enumeration", function() { return Enumeration; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageType", function() { return PageType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Car", function() { return Car; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Animal", function() { return Animal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StarWarsPerson", function() { return StarWarsPerson; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ApiException", function() { return ApiException; });
 /* tslint:disable */
 /* eslint-disable */
@@ -75633,7 +75735,7 @@ class AnimalLatinNameClient {
             return response.text().then((_responseText) => {
                 let result200 = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : null;
+                result200 = AnimalLatinName.fromJS(resultData200);
                 return result200;
             });
         }
@@ -75662,12 +75764,9 @@ class ServerRouteClient {
                 "Accept": "application/json"
             }
         };
-        // @ts-ignore
-        console.log("THIS:", this);
-        // @ts-ignore
         return this.http.fetch(url_, options_).then((_response) => {
             return this.processGetServerRoute(_response);
-        }).catch((e) => { console.log("EXCEPTION:", e); });
+        });
     }
     processGetServerRoute(response) {
         const status = response.status;
@@ -75714,7 +75813,7 @@ class StarWarsClient {
         let options_ = {
             method: "GET",
             headers: {
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             }
         };
         return this.http.fetch(url_, options_).then((_response) => {
@@ -75728,11 +75827,17 @@ class StarWarsClient {
             response.headers.forEach((v, k) => _headers[k] = v);
         }
         ;
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+                let result200 = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                if (Array.isArray(resultData200)) {
+                    result200 = [];
+                    for (let item of resultData200)
+                        result200.push(StarWarsPerson.fromJS(item));
+                }
+                return result200;
+            });
         }
         else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
@@ -75740,6 +75845,34 @@ class StarWarsClient {
             });
         }
         return Promise.resolve(null);
+    }
+}
+class AnimalLatinName {
+    constructor(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    init(data) {
+        if (data) {
+            this.originalName = data["originalName"];
+            this.latinName = data["latinName"];
+        }
+    }
+    static fromJS(data) {
+        data = typeof data === 'object' ? data : {};
+        let result = new AnimalLatinName();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === 'object' ? data : {};
+        data["originalName"] = this.originalName;
+        data["latinName"] = this.latinName;
+        return data;
     }
 }
 class ServerRouteData {
@@ -75875,6 +76008,36 @@ class Animal {
         return data;
     }
 }
+class StarWarsPerson {
+    constructor(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    init(data) {
+        if (data) {
+            this.name = data["name"];
+            this.weight = data["weight"];
+            this.hairColor = data["hairColor"];
+        }
+    }
+    static fromJS(data) {
+        data = typeof data === 'object' ? data : {};
+        let result = new StarWarsPerson();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["weight"] = this.weight;
+        data["hairColor"] = this.hairColor;
+        return data;
+    }
+}
 class ApiException extends Error {
     constructor(message, status, response, headers, result) {
         super();
@@ -75894,147 +76057,6 @@ function throwException(message, status, response, headers, result) {
         throw result;
     else
         throw new ApiException(message, status, response, headers, null);
-}
-
-
-/***/ }),
-
-/***/ "./src/api/ApiProxy.ts":
-/*!*****************************!*\
-  !*** ./src/api/ApiProxy.ts ***!
-  \*****************************/
-/*! exports provided: ApiProxy */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ApiProxy", function() { return ApiProxy; });
-/* harmony import */ var _ServerApiProxy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ServerApiProxy */ "./src/api/ServerApiProxy.ts");
-/* harmony import */ var _MockApiProxy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MockApiProxy */ "./src/api/MockApiProxy.ts");
-/* harmony import */ var _userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../userSettings/MockDataFlags */ "./src/userSettings/MockDataFlags.ts");
-
-
-
-const ApiProxy = (applicationContext) => {
-    const mockDataFlags = Object(_userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__["getMockDataFlags"])();
-    if (mockDataFlags) {
-        return new _MockApiProxy__WEBPACK_IMPORTED_MODULE_1__["MockApiProxy"](applicationContext, mockDataFlags);
-    }
-    else {
-        return new _ServerApiProxy__WEBPACK_IMPORTED_MODULE_0__["ServerApiProxy"](applicationContext);
-    }
-};
-
-
-/***/ }),
-
-/***/ "./src/api/ApiUrlBuilder.ts":
-/*!**********************************!*\
-  !*** ./src/api/ApiUrlBuilder.ts ***!
-  \**********************************/
-/*! exports provided: ApiUrlBuilder */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ApiUrlBuilder", function() { return ApiUrlBuilder; });
-class ApiUrlBuilder {
-    constructor(baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-    getStarWarsPeople() {
-        return `${this.baseUrl}/api/starwars/people`;
-    }
-}
-
-
-/***/ }),
-
-/***/ "./src/api/MockApiProxy.ts":
-/*!*********************************!*\
-  !*** ./src/api/MockApiProxy.ts ***!
-  \*********************************/
-/*! exports provided: MockApiProxy */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MockApiProxy", function() { return MockApiProxy; });
-/* harmony import */ var _ServerApiProxy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ServerApiProxy */ "./src/api/ServerApiProxy.ts");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
-
-
-class MockApiProxy {
-    constructor(applicationContext, mockDataFlags) {
-        this.mockDataFlags = mockDataFlags;
-        this.serverApiProxy = new _ServerApiProxy__WEBPACK_IMPORTED_MODULE_0__["ServerApiProxy"](applicationContext);
-        this.mockDataPath = _Environment__WEBPACK_IMPORTED_MODULE_1__["Environment"].isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`;
-        this.getStarWarsPeople = this.getStarWarsPeople.bind(this);
-    }
-    async getStarWarsPeople() {
-        if (this.mockDataFlags.starwarsPeople) {
-            return await this.serverApiProxy.getData(`${this.mockDataPath}/starwars-people`);
-        }
-        else {
-            return this.serverApiProxy.getStarWarsPeople();
-        }
-    }
-}
-
-
-/***/ }),
-
-/***/ "./src/api/ServerApiProxy.ts":
-/*!***********************************!*\
-  !*** ./src/api/ServerApiProxy.ts ***!
-  \***********************************/
-/*! exports provided: ServerApiProxy */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerApiProxy", function() { return ServerApiProxy; });
-/* harmony import */ var _ApiUrlBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApiUrlBuilder */ "./src/api/ApiUrlBuilder.ts");
-/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-node.js");
-/* harmony import */ var isomorphic_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(isomorphic_fetch__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Logger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Logger */ "./src/Logger.ts");
-
-
-
-const https = __webpack_require__(/*! https */ "https");
-const http = __webpack_require__(/*! http */ "http");
-class ServerApiProxy {
-    constructor(applicationContext) {
-        this.urlBuilder = new _ApiUrlBuilder__WEBPACK_IMPORTED_MODULE_0__["ApiUrlBuilder"](applicationContext.baseUrl);
-        this.applicationContext = applicationContext;
-        this.getStarWarsPeople = this.getStarWarsPeople.bind(this);
-    }
-    async getStarWarsPeople() {
-        return await this.getData(this.urlBuilder.getStarWarsPeople());
-    }
-    async getData(url) {
-        // Add agent option to prevent "unable to verify the first certificate" with self-signed request.
-        // RequestInit TypeScript type definition does not contain agent, so put it on in an untyped way.
-        const options = {};
-        options.agent = this.applicationContext.baseUrl.indexOf('https') > -1
-            ? new https.Agent({ rejectUnauthorized: false })
-            : new http.Agent();
-        let getDataPromise = new Promise((resolve, reject) => {
-            fetch(url, options)
-                .then(res => {
-                const json = res.json();
-                return json;
-            })
-                .then(res => {
-                resolve(res);
-            })
-                .catch(error => {
-                _Logger__WEBPACK_IMPORTED_MODULE_2__["Logger"].error(`API call GET '${url}' fails with code: ${error.statusCode}. Exception: ${error.toString()}`);
-                reject(error);
-            });
-        });
-        return getDataPromise;
-    }
 }
 
 
@@ -76250,21 +76272,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _sample_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../sample/Header */ "./src/sample/Header.tsx");
 /* harmony import */ var _sample_Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../sample/Footer */ "./src/sample/Footer.tsx");
+/* harmony import */ var _AnimalLatinName_useAnimalLatinName__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../AnimalLatinName/useAnimalLatinName */ "./src/AnimalLatinName/useAnimalLatinName.ts");
 
 
 
-const AnimalPage = props => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sample_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Animal page"),
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null,
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
-                "Name: ",
-                props.animal.name),
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
-                "Max age: ",
-                props.animal.maxAge))),
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sample_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+
+const AnimalPage = (props) => {
+    const { animalLatinName, animalLatinNameLoader } = Object(_AnimalLatinName_useAnimalLatinName__WEBPACK_IMPORTED_MODULE_3__["useAnimalLatinName"])();
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+        animalLatinNameLoader(props.animal.name || '');
+    }, [props.animal.name]); // eslint-disable-line react-hooks/exhaustive-deps
+    const latinName = animalLatinNameToString(animalLatinName);
+    return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sample_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Animal page"),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null,
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
+                    "Name: ",
+                    props.animal.name),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
+                    "Latin Name: ",
+                    latinName),
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
+                    "Max age: ",
+                    props.animal.maxAge))),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sample_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
+};
+const animalLatinNameToString = (animalLatinName) => {
+    if (!animalLatinName || !animalLatinName.data || !animalLatinName.data.latinName) {
+        return 'waiting for translation...';
+    }
+    if (animalLatinName.loading) {
+        return 'loading translation...';
+    }
+    if (animalLatinName.error) {
+        return `translation error: ${animalLatinName.error.toString()}`;
+    }
+    return animalLatinName.data.latinName;
+};
 /* harmony default export */ __webpack_exports__["default"] = (AnimalPage);
 
 
@@ -76367,6 +76413,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sample_Footer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../sample/Footer */ "./src/sample/Footer.tsx");
 /* harmony import */ var _sample_Sheep__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../sample/Sheep */ "./src/sample/Sheep.tsx");
 /* harmony import */ var _sample_LaterText__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../sample/LaterText */ "./src/sample/LaterText.tsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 
 
 
@@ -76383,10 +76431,18 @@ class HomePage extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Home page"),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Sheep__WEBPACK_IMPORTED_MODULE_5__["Sheep"], { name: "MeepMeep" })),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_LaterText__WEBPACK_IMPORTED_MODULE_6__["LaterText"], { message: "Initial text" })),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Sheep component"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Sheep__WEBPACK_IMPORTED_MODULE_5__["Sheep"], { name: "MeepMeep" }),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "LaterText component"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_LaterText__WEBPACK_IMPORTED_MODULE_6__["LaterText"], { message: "Initial text" }),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "ServerRoute pages - data retrieved from server"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null,
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Link"], { to: "/bear" }, "/bear")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Link"], { to: "/multipla" }, "/multipla")),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Link"], { to: "/ford/fiesta" }, "/ford/fiesta"))),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
     }
 }
@@ -76429,21 +76485,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const ServerRoutePageRenderer = (props) => {
-    const { serverRouteData } = Object(_ServerRouteData_useServerRouteData__WEBPACK_IMPORTED_MODULE_7__["useServerRouteData"])();
+    const serverRouteData = Object(_ServerRouteData_useServerRouteData__WEBPACK_IMPORTED_MODULE_7__["useServerRouteData"])();
     const pageTypeName = (serverRouteData && serverRouteData.data && serverRouteData.data.type) ? serverRouteData.data.type.name : '_unknown_';
     if (serverRouteData.loading) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "loading....");
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "loading....");
     }
     if (serverRouteData.error) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_404__WEBPACK_IMPORTED_MODULE_6__["Error404"], null);
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_404__WEBPACK_IMPORTED_MODULE_6__["Error404"], null);
     }
     switch (pageTypeName) {
         case 'animal':
-            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AnimalPage__WEBPACK_IMPORTED_MODULE_4__["default"], { animal: serverRouteData.data.animalData });
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_AnimalPage__WEBPACK_IMPORTED_MODULE_4__["default"], { animal: serverRouteData.data.animalData });
         case 'car':
-            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CarPage__WEBPACK_IMPORTED_MODULE_5__["default"], { car: serverRouteData.data.carData });
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_CarPage__WEBPACK_IMPORTED_MODULE_5__["default"], { car: serverRouteData.data.carData });
         default:
-            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_404__WEBPACK_IMPORTED_MODULE_6__["Error404"], null);
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_404__WEBPACK_IMPORTED_MODULE_6__["Error404"], null);
     }
 };
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(Object(_ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["withApplicationContext"])(ServerRoutePageRenderer)));
@@ -76844,6 +76900,67 @@ const later = (delay, doit) => {
 
 /***/ }),
 
+/***/ "./src/services/container.ts":
+/*!***********************************!*\
+  !*** ./src/services/container.ts ***!
+  \***********************************/
+/*! exports provided: container, TYPE, wire, resolve */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "container", function() { return container; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "wire", function() { return wire; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolve", function() { return resolve; });
+/* harmony import */ var _owja_ioc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @owja/ioc */ "./node_modules/@owja/ioc/dist/ioc.mjs");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./src/services/types.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TYPE", function() { return _types__WEBPACK_IMPORTED_MODULE_1__["TYPE"]; });
+
+/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
+// import { MockDataFlags } from '../userSettings/MockDataFlags';
+
+
+
+// import { MockStarWarsClient } from '../api/MockStarWarsClient';
+// import { AsyncTaskContext } from '../ApplicationContext';
+const getContainer = ( /*applicationContext: AsyncTaskContext, mockDataFlags: MockDataFlags*/) => {
+    const containerInstance = new _owja_ioc__WEBPACK_IMPORTED_MODULE_0__["Container"]();
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].ServerRouteDataClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["ServerRouteClient"]);
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].AnimalLatinNameClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["AnimalLatinNameClient"]);
+    // if (mockDataFlags.starwarsPeople) {
+    //     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).to(MockStarWarsClient);
+    // } else {
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["StarWarsClient"]);
+    // }
+    return containerInstance;
+};
+const container = getContainer();
+const wire = Object(_owja_ioc__WEBPACK_IMPORTED_MODULE_0__["createWire"])(container);
+const resolve = Object(_owja_ioc__WEBPACK_IMPORTED_MODULE_0__["createResolve"])(container);
+
+
+
+/***/ }),
+
+/***/ "./src/services/types.ts":
+/*!*******************************!*\
+  !*** ./src/services/types.ts ***!
+  \*******************************/
+/*! exports provided: TYPE */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TYPE", function() { return TYPE; });
+const TYPE = {
+    AnimalLatinNameClient: Symbol('AnimalLatinNameClient'),
+    ServerRouteDataClient: Symbol('ServerRouteDataClient'),
+    StarWarsClient: Symbol('StarWarsClient')
+};
+
+
+/***/ }),
+
 /***/ "./src/starwars/StarWars.tsx":
 /*!***********************************!*\
   !*** ./src/starwars/StarWars.tsx ***!
@@ -76860,16 +76977,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const StarWars = () => {
-    const { people, loadPeople } = Object(_useStarWars__WEBPACK_IMPORTED_MODULE_1__["useStarWars"])();
+    const { starWarsPeople, starWarsPeopleLoader } = Object(_useStarWars__WEBPACK_IMPORTED_MODULE_1__["useStarWars"])();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "StarWars list"),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { onClick: () => loadPeople('r2') }, "Filter data"),
-        people.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading"),
-        people.error && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { onClick: () => starWarsPeopleLoader() }, "Filter data"),
+        starWarsPeople.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading"),
+        starWarsPeople.error && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
             "Error!: ",
-            people.error.toString()),
-        people.data &&
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, people.data.map((person, index) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", { key: index }, person.name))))));
+            starWarsPeople.error.toString()),
+        starWarsPeople.data &&
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, starWarsPeople.data.map((person, index) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", { key: index }, person.name))))));
 };
 
 
@@ -76879,24 +76996,20 @@ const StarWars = () => {
 /*!*****************************************!*\
   !*** ./src/starwars/StarWarsActions.ts ***!
   \*****************************************/
-/*! exports provided: TypeKeys, setLoaderStarWarsAction, setErrorStarWarsAction, setStarWarsAction */
+/*! exports provided: TypeKeysBaseName, TypeKeys */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeysBaseName", function() { return TypeKeysBaseName; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeys", function() { return TypeKeys; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLoaderStarWarsAction", function() { return setLoaderStarWarsAction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setErrorStarWarsAction", function() { return setErrorStarWarsAction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setStarWarsAction", function() { return setStarWarsAction; });
+const TypeKeysBaseName = 'STARWARS';
 var TypeKeys;
 (function (TypeKeys) {
     TypeKeys["SET_LOADER"] = "SET_LOADER_STARWARS";
     TypeKeys["SET_ERROR"] = "SET_ERROR_STARWARS";
-    TypeKeys["SET_DATA"] = "SET_STARWARS";
+    TypeKeys["SET_DATA"] = "SET_DATA_STARWARS";
 })(TypeKeys || (TypeKeys = {}));
-const setLoaderStarWarsAction = () => ({ type: TypeKeys.SET_LOADER });
-const setErrorStarWarsAction = (error) => ({ type: TypeKeys.SET_ERROR, error });
-const setStarWarsAction = (data) => ({ type: TypeKeys.SET_DATA, data });
 
 
 /***/ }),
@@ -76944,9 +77057,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _StarWarsActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StarWarsActions */ "./src/starwars/StarWarsActions.ts");
-/* harmony import */ var _api_ApiProxy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiProxy */ "./src/api/ApiProxy.ts");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../BaseRedux/HookLessReduxDataLoader */ "./src/BaseRedux/HookLessReduxDataLoader.ts");
+/* harmony import */ var _services_container__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/container */ "./src/services/container.ts");
 
 // @ts-ignore Types are not up to date yet
 
@@ -76955,35 +77068,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useStarWars = () => {
-    const [searchQuery, setSearchQuery] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
-    const people = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])((state) => state.starWars.people);
-    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_4__["ApplicationContext"]);
-    const apiProxy = Object(_api_ApiProxy__WEBPACK_IMPORTED_MODULE_3__["ApiProxy"])(applicationContext.applicationContext);
-    let dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
-    const fetchData = async () => {
-        dispatch(Object(_StarWarsActions__WEBPACK_IMPORTED_MODULE_2__["setLoaderStarWarsAction"])());
-        return new Promise(async (resolve, reject) => {
-            try {
-                const data = await apiProxy.getStarWarsPeople();
-                dispatch(Object(_StarWarsActions__WEBPACK_IMPORTED_MODULE_2__["setStarWarsAction"])(data));
-                resolve();
-            }
-            catch (e) {
-                dispatch(Object(_StarWarsActions__WEBPACK_IMPORTED_MODULE_2__["setErrorStarWarsAction"])(e));
-                reject(e);
-            }
-        });
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_3__["ApplicationContext"]).applicationContext;
+    const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+    const starWarsClient = Object(_services_container__WEBPACK_IMPORTED_MODULE_5__["resolve"])(_services_container__WEBPACK_IMPORTED_MODULE_5__["TYPE"].StarWarsClient);
+    const starWarsPeople = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])((state) => state.starWars.people);
+    const starWarsPeopleFetch = async () => {
+        return starWarsClient().getPeople();
     };
-    if (_Environment__WEBPACK_IMPORTED_MODULE_5__["Environment"].isServer && applicationContext.applicationContext.firstRun) {
-        applicationContext.applicationContext.addTask(fetchData());
-    }
+    const starWarsPeopleLoader = async () => {
+        Object(_BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_4__["reduxDataLoader"])(starWarsPeopleFetch, applicationContext, dispatch, _StarWarsActions__WEBPACK_IMPORTED_MODULE_2__["TypeKeysBaseName"]);
+    };
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        fetchData();
+        starWarsPeopleLoader();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-    const loadPeople = (query) => {
-        setSearchQuery(query || '');
-    };
-    return { people, loadPeople };
+    return { starWarsPeople, starWarsPeopleLoader };
 };
 
 
@@ -77024,6 +77122,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _counter_CounterReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../counter/CounterReducer */ "./src/counter/CounterReducer.ts");
 /* harmony import */ var _starwars_StarWarsReducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../starwars/StarWarsReducer */ "./src/starwars/StarWarsReducer.ts");
 /* harmony import */ var _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ServerRouteData/ServerRouteDataReducer */ "./src/ServerRouteData/ServerRouteDataReducer.ts");
+/* harmony import */ var _AnimalLatinName_AnimalLatinNameReducer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../AnimalLatinName/AnimalLatinNameReducer */ "./src/AnimalLatinName/AnimalLatinNameReducer.ts");
+
 
 
 
@@ -77032,7 +77132,8 @@ __webpack_require__.r(__webpack_exports__);
 const reducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
     counter: _counter_CounterReducer__WEBPACK_IMPORTED_MODULE_2__["CounterReducer"],
     starWars: _starwars_StarWarsReducer__WEBPACK_IMPORTED_MODULE_3__["starWarsReducer"],
-    serverRouteData: _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_4__["ServerRoutePageReducer"]
+    serverRouteData: _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_4__["ServerRoutePageReducer"],
+    animalLatinName: _AnimalLatinName_AnimalLatinNameReducer__WEBPACK_IMPORTED_MODULE_5__["AnimalLatinNameReducer"]
 });
 function configureStore(initialReduxStoreState = undefined) {
     let store;

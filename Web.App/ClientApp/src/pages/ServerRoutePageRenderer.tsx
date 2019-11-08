@@ -1,7 +1,8 @@
+import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { withApplicationContext, ApplicationContextConsumerProps, ApplicationContext } from '../ApplicationContext';
+import { withApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
 import 'isomorphic-fetch';
-import { Animal, Car } from '../api/ApiClients';
+import { Car, Animal } from '../api/ApiClients';
 import AnimalPage from './AnimalPage';
 import CarPage from './CarPage';
 import { Error404 } from './404';
@@ -28,6 +29,6 @@ const ServerRoutePageRenderer: React.FC<ServerRoutePageRendererProps> = (props) 
         default:
             return <Error404 />;
     }
-}
+};
 
 export default withRouter(withApplicationContext(ServerRoutePageRenderer));

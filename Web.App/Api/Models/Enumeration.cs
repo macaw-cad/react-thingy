@@ -47,6 +47,44 @@ namespace Web.App.Api.Models
 
         public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
 
-        // Other utility methods ... 
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(Enumeration left, Enumeration right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Enumeration left, Enumeration right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(Enumeration left, Enumeration right)
+        {
+            return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(Enumeration left, Enumeration right)
+        {
+            return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(Enumeration left, Enumeration right)
+        {
+            return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(Enumeration left, Enumeration right)
+        {
+            return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
+        }
     }
 }

@@ -135,6 +135,15 @@ In front of the web application NGINX is used as a reverse proxy. NGINX handles 
 When working with a reverse proxy server in front of the ASP.NET Core web application we need to use forwarding headers as described in [Configure ASP.NET Core to work with proxy servers and load balancers](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2).
 
 
+## Code quality
+
+An import things in developing an application is code quality. To check the C# code for security, performance, and design issues, among others we use [Microsoft.CodeAnalysis.FxCopAnalyzers](https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers). It is referenced as a NuGet package instead of as a VSIX extension on Visual Studio so everyone uses the same chercks and the checks can be executed on the build server as well.
+
+
+## API error handling
+For error handling in the Web API calls we adopted the approach layed-out in [Consistent error responses in ASP.NET Core Web APIs](https://medium.com/@matteocontrini/consistent-error-responses-in-asp-net-core-web-apis-bb70b435d1f8). An ApiErrors class contains the methods for consistent error results.
+
+In `startup.cs` we also added middleware using `app.UseExceptionHandler()` to handle uncatched errors in the pipeline. This prevents us from wrapping the implementation of API methods into try-catch blocks.
 
 
 ## TODO

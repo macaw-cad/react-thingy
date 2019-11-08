@@ -4,11 +4,13 @@ import { RootState } from './RootState';
 import { CounterReducer } from '../counter/CounterReducer';
 import { starWarsReducer } from '../starwars/StarWarsReducer';
 import { ServerRoutePageReducer } from '../ServerRouteData/ServerRouteDataReducer';
+import { AnimalLatinNameReducer } from '../AnimalLatinName/AnimalLatinNameReducer';
 
 const reducer = combineReducers<RootState>({
     counter: CounterReducer,
     starWars: starWarsReducer,
-    serverRouteData: ServerRoutePageReducer
+    serverRouteData: ServerRoutePageReducer,
+    animalLatinName: AnimalLatinNameReducer
 });
 
 export function configureStore(initialReduxStoreState: RootState | undefined = undefined): Store<RootState> {

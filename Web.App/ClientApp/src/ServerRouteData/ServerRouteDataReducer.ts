@@ -1,5 +1,5 @@
 import { TypeKeys, ServerRouteDataActionTypes } from './ServerRouteDataActions';
-import { ServerRouteDataState } from './ServerRouteDataState';
+import { ServerRouteDataState, } from './ServerRouteDataState';
 import { asyncDataInitialState } from '../store/AsyncData';
 import { baseReducer } from '../BaseRedux/BaseReducer';
 

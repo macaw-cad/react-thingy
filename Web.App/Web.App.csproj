@@ -92,6 +92,12 @@
     <None Update="ClientApp\src\api\types\ApiAnimalLatinName.ts">
       <CustomToolNamespace>Api\Models\AnimalLatinName.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\src\api\types\ApiEnumeration.ts">
+      <CustomToolNamespace>Api\Models\Enumeration.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\api\types\ApiPageType.ts">
+      <CustomToolNamespace>Api\Models\PageType.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\src\api\types\ApiStarWarsPerson.ts">
       <CustomToolNamespace>Api\Models\StarWarsPerson.cs</CustomToolNamespace>
     </None>

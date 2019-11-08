@@ -23,13 +23,13 @@ namespace Web.App.Api
         /// Translate animal name to Latin.
         /// </summary>
         /// <param name="animalName">The English animal name.</param>
-        /// <returns>The Latin translation.</returns>
+        /// <returns>The Latin translation object <see cref="AnimalLatinName"/>.</returns>
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        public ActionResult<AnimalLatinName> Get(string animalName)
+        [ProducesResponseType(typeof(AnimalLatinName), StatusCodes.Status200OK)]
+        public ActionResult<AnimalLatinName> Get([FromQuery] string animalName)
         {
-            if (animalName == "bear")
+            if (animalName != null && animalName.ToUpperInvariant() == "BEAR")
             {
                 return Ok(new AnimalLatinName { OriginalName = animalName, LatinName = "ursa" });
             }

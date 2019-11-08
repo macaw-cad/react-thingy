@@ -1,4 +1,4 @@
-import { ApplicationContextProviderProps, ApplicationContext } from '../ApplicationContext';
+import { ApplicationContext } from '../ApplicationContext';
 import { Environment } from '../Environment';
 import { useDispatch } from 'react-redux';
 import { useContext } from 'react';
@@ -7,15 +7,15 @@ export const setLoaderTAction = <T>(postfix: string) => ({ type: 'SET_LOADER_' +
 export const setErrorTAction = <T>(postfix: string, error: string) => ({ type: 'SET_ERROR_' + postfix, error });
 export const setDataTAction = <T>(postfix: string, data: T | null) => ({ type: 'SET_DATA_' + postfix, data }); 
 
-export const useReduxDataLoader = <T>(dataLoader: () => Promise<T>, postfix: string): () => Promise<unknown> => {
+export const useReduxDataLoader = <T>(dataLoader: (...args: any[]) => Promise<T>, postfix: string, ...useArgs: any): () => Promise<void> => {
     const dispatch = useDispatch();
     const applicationContext = useContext(ApplicationContext);
     
-    const reduxDataLoader = (): Promise<unknown> => {
+    const reduxDataLoader = (...args: any[]): Promise<void> => {
         dispatch(setLoaderTAction<T>(postfix));
-        const dataLoaderPromise = new Promise(async (resolve, reject) => {
+        const dataLoaderPromise = new Promise<void>(async (resolve, reject) => {
             try {
-                const data: T = await dataLoader();
+                const data: T = await dataLoader(...args);
                 dispatch(setDataTAction<T>(postfix, data));
                 resolve();
             } catch (e) {
@@ -31,7 +31,7 @@ export const useReduxDataLoader = <T>(dataLoader: () => Promise<T>, postfix: str
     };
 
     if (Environment.isServer && applicationContext.applicationContext.firstRun) {
-        reduxDataLoader(); // execute once at server
+        reduxDataLoader(...useArgs); // execute once at server
     }
 
     return reduxDataLoader;

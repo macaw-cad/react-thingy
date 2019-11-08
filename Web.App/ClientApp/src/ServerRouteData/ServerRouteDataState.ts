@@ -1,6 +1,6 @@
 import { AsyncData } from '../store/AsyncData';
-import { ServerRouteDataExtended } from './ServerRouteDataExtended';
+import { ServerRouteData } from './ServerRouteData';
 
 export type ServerRouteDataState = {
-    serverRouteData: AsyncData<ServerRouteDataExtended>;
+    serverRouteData: AsyncData<ServerRouteData>;
 };

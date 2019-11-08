@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Web.App.Api.Models;
 using Web.App.Api.Transformers;
 
 namespace Web.App.Api
@@ -19,7 +21,7 @@ namespace Web.App.Api
 
         [Produces("application/json")]
         [HttpGet("people")]
-        public async Task<IActionResult> GetPeople()
+        public async Task<ActionResult<IEnumerable<StarWarsPerson>>> GetPeople()
         {
             var client = httpClientFactory.CreateClient();
 

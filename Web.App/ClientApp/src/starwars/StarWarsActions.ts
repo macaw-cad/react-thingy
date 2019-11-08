@@ -1,10 +1,11 @@
-import { ApiStarWarsPerson } from '../api/types/ApiStarWarsPerson';
+import { ApiStarWarsPerson } from '../api/types_old/ApiStarWarsPerson';
 import { SetLoaderAction, SetErrorAction, SetDataAction } from '../BaseRedux/BaseActions';
 
+export const TypeKeysBaseName = 'STARWARS';
 export enum TypeKeys {
     SET_LOADER = 'SET_LOADER_STARWARS',
     SET_ERROR = 'SET_ERROR_STARWARS',
-    SET_DATA = 'SET_STARWARS'
+    SET_DATA = 'SET_DATA_STARWARS'
 }
 
 export type setLoaderStarWarsAction = SetLoaderAction<TypeKeys.SET_LOADER>;
@@ -15,7 +16,3 @@ export type StarWarsActionTypes =
     | setLoaderStarWarsAction 
     | setErrorStarWarsAction
     | setStarWarsAction;
-
-export const setLoaderStarWarsAction = () => ({ type: TypeKeys.SET_LOADER });
-export const setErrorStarWarsAction = (error: string) => ({ type: TypeKeys.SET_ERROR, error });
-export const setStarWarsAction = (data: ApiStarWarsPerson[] | null) => ({ type: TypeKeys.SET_DATA, data });

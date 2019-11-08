@@ -129,7 +129,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/AnimalLatinName"
             }
           }
         }
@@ -177,12 +177,18 @@
           "StarWars"
         ],
         "operationId": "StarWars_GetPeople",
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StarWarsPerson"
+              }
             }
           }
         }
@@ -190,6 +196,17 @@
     }
   },
   "definitions": {
+    "AnimalLatinName": {
+      "type": "object",
+      "properties": {
+        "originalName": {
+          "type": "string"
+        },
+        "latinName": {
+          "type": "string"
+        }
+      }
+    },
     "ServerRouteData": {
       "type": "object",
       "properties": {
@@ -262,6 +279,24 @@
         "maxAge": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "StarWarsPerson": {
+      "type": "object",
+      "required": [
+        "weight"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairColor": {
+          "type": "string"
         }
       }
     }
