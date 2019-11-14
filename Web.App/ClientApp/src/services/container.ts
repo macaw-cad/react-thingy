@@ -13,8 +13,14 @@ import { isomorphicFetch } from '../api/ApiClientIsomorphicFetch';
 const getContainer = () => {
     const containerInstance = new Container();
     
-    containerInstance.bind<IServerRouteClient>(TYPE.ServerRouteDataClient).to(ServerRouteClient);
-    containerInstance.bind<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient).to(AnimalLatinNameClient);
+    containerInstance.bind<IServerRouteClient>(TYPE.ServerRouteDataClient).toFactory(() => {
+        return new ServerRouteClient(containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
+    });
+
+    containerInstance.bind<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient).toFactory(() => {
+        return new AnimalLatinNameClient(containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
+    });
+
     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).toFactory(() => {
         const mockDataFlags = getMockDataFlags();
         if (mockDataFlags && mockDataFlags.starwarsPeople) {

@@ -74787,12 +74787,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
-/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
-/* harmony import */ var _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AnimalLatinNameActions */ "./src/AnimalLatinName/AnimalLatinNameActions.ts");
-
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
+/* harmony import */ var _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AnimalLatinNameActions */ "./src/AnimalLatinName/AnimalLatinNameActions.ts");
+/* harmony import */ var _services_container__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/container */ "./src/services/container.ts");
 
 
 
@@ -74800,20 +74798,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useAnimalLatinName = () => {
-    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_4__["ApplicationContext"]).applicationContext;
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_2__["ApplicationContext"]).applicationContext;
     const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+    const animalLatinNameClient = Object(_services_container__WEBPACK_IMPORTED_MODULE_5__["resolve"])(_services_container__WEBPACK_IMPORTED_MODULE_5__["TYPE"].AnimalLatinNameClient);
     const animalLatinName = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])((state) => {
         return state.animalLatinName &&
             state.animalLatinName.animalLatinName;
     });
     const animalLatinNameFetch = async (name) => {
-        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__["AnimalLatinNameClient"](applicationContext.baseUrl, { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_3__["isomorphicFetch"] });
-        return client.get(name);
+        return animalLatinNameClient().get(name);
     };
-    const animalLatinNameLoader = (name) => {
-        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__["reduxDataLoader"])(animalLatinNameFetch, applicationContext, dispatch, _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__["TypeKeysBaseName"], name);
+    const loadAnimalLatinName = (name) => {
+        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_3__["reduxDataLoader"])(animalLatinNameFetch, applicationContext, dispatch, _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_4__["TypeKeysBaseName"], name);
     };
-    return { animalLatinName, animalLatinNameLoader };
+    return { animalLatinName, loadAnimalLatinName };
 };
 
 
@@ -75485,13 +75483,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
-/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
-/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
-/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
-/* harmony import */ var _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ServerRouteDataActions */ "./src/ServerRouteData/ServerRouteDataActions.ts");
-
+/* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
+/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
+/* harmony import */ var _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ServerRouteDataActions */ "./src/ServerRouteData/ServerRouteDataActions.ts");
+/* harmony import */ var _services_container__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../services/container */ "./src/services/container.ts");
 
 
 
@@ -75501,24 +75497,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useServerRouteData = () => {
-    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_5__["ApplicationContext"]).applicationContext;
+    const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_3__["ApplicationContext"]).applicationContext;
     const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
     const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
+    const serverRouteClient = Object(_services_container__WEBPACK_IMPORTED_MODULE_7__["resolve"])(_services_container__WEBPACK_IMPORTED_MODULE_7__["TYPE"].ServerRouteDataClient);
     const serverRouteData = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])((state) => state.serverRouteData.serverRouteData);
     const serverRouteDataFetch = async () => {
-        const client = new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"](applicationContext.baseUrl, { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_4__["isomorphicFetch"] });
         const path = location.pathname.substring(1); // no leading '/'
-        return client.getServerRoute(path);
+        return serverRouteClient().getServerRoute(path);
     };
-    const serverRouteReduxDataLoader = () => {
-        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__["reduxDataLoader"])(serverRouteDataFetch, applicationContext, dispatch, _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__["TypeKeysBaseName"]);
+    const loadServerRouteReduxData = () => {
+        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__["reduxDataLoader"])(serverRouteDataFetch, applicationContext, dispatch, _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_6__["TypeKeysBaseName"]);
     };
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        console.log(`useEffect - location.pathname=${location.pathname}, location.search=${location.search}`);
-        serverRouteReduxDataLoader();
+        if (!serverRouteData.data && !serverRouteData.loading) {
+            loadServerRouteReduxData();
+        }
     }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
-    if (_Environment__WEBPACK_IMPORTED_MODULE_6__["Environment"].isServer && applicationContext.firstRun) {
-        serverRouteReduxDataLoader();
+    if (_Environment__WEBPACK_IMPORTED_MODULE_4__["Environment"].isServer) {
+        loadServerRouteReduxData();
     }
     return serverRouteData;
 };
@@ -76370,9 +76367,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const AnimalPage = (props) => {
-    const { animalLatinName, animalLatinNameLoader } = Object(_AnimalLatinName_useAnimalLatinName__WEBPACK_IMPORTED_MODULE_3__["useAnimalLatinName"])();
+    const { animalLatinName, loadAnimalLatinName } = Object(_AnimalLatinName_useAnimalLatinName__WEBPACK_IMPORTED_MODULE_3__["useAnimalLatinName"])();
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        animalLatinNameLoader(props.animal.name || '');
+        loadAnimalLatinName(props.animal.name || '');
     }, [props.animal.name]); // eslint-disable-line react-hooks/exhaustive-deps
     const latinName = animalLatinNameToString(animalLatinName);
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null,
@@ -77018,8 +77015,12 @@ __webpack_require__.r(__webpack_exports__);
 
 const getContainer = () => {
     const containerInstance = new _owja_ioc__WEBPACK_IMPORTED_MODULE_0__["Container"]();
-    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].ServerRouteDataClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"]);
-    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].AnimalLatinNameClient).to(_api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["AnimalLatinNameClient"]);
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].ServerRouteDataClient).toFactory(() => {
+        return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+    });
+    containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].AnimalLatinNameClient).toFactory(() => {
+        return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["AnimalLatinNameClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+    });
     containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).toFactory(() => {
         const mockDataFlags = Object(_userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__["getMockDataFlags"])();
         if (mockDataFlags && mockDataFlags.starwarsPeople) {

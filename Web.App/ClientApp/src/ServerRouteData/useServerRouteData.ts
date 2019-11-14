@@ -3,40 +3,41 @@ import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/RootState';
 import { AsyncData } from '../store/AsyncData';
-import { ServerRouteClient } from '../api/ApiClients';
-import { isomorphicFetch } from '../api/ApiClientIsomorphicFetch';
+import { IServerRouteClient } from '../api/ApiClients';
 import { ServerRouteData } from './ServerRouteData';
 import { ApplicationContext } from '../ApplicationContext';
 import { Environment } from '../Environment';
 import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { TypeKeysBaseName } from './ServerRouteDataActions';
+import { resolve, TYPE } from '../services/container';
 
 export const useServerRouteData = (): AsyncData<ServerRouteData> => {
     const applicationContext = useContext(ApplicationContext).applicationContext;
     const dispatch = useDispatch();
     const location = useLocation();
 
+    const serverRouteClient = resolve<IServerRouteClient>(TYPE.ServerRouteDataClient);
+
     const serverRouteData: AsyncData<ServerRouteData> = useSelector((state: RootState) => state.serverRouteData.serverRouteData);
 
     const serverRouteDataFetch = async (): Promise<ServerRouteData> => {
-        const client = new ServerRouteClient(applicationContext.baseUrl, { fetch: isomorphicFetch });
         const path = location.pathname.substring(1); // no leading '/'
-        return client.getServerRoute(path);
+        return serverRouteClient().getServerRoute(path);
     };
 
-    const serverRouteReduxDataLoader = () => {
+    const loadServerRouteReduxData = () => {
         reduxDataLoader<ServerRouteData>(serverRouteDataFetch, applicationContext, dispatch, TypeKeysBaseName);
     };
 
     useEffect(() => {
-        console.log(`useEffect - location.pathname=${location.pathname}, location.search=${location.search}`);
+        if (!serverRouteData.data && !serverRouteData.loading) {
+            loadServerRouteReduxData();
+        }
+    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
-        serverRouteReduxDataLoader();
-    },        [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    if (Environment.isServer && applicationContext.firstRun) {
-        serverRouteReduxDataLoader();
+    if (Environment.isServer) {
+        loadServerRouteReduxData();
     }
- 
+
     return serverRouteData;
 };

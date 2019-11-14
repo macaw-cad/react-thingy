@@ -10,10 +10,10 @@ type AnimalPageProps = {
 };
 
 const AnimalPage: React.FC<AnimalPageProps> = (props: AnimalPageProps) => {
-    const { animalLatinName, animalLatinNameLoader } = useAnimalLatinName();
+    const { animalLatinName, loadAnimalLatinName } = useAnimalLatinName();
     
     useEffect(() => {
-        animalLatinNameLoader(props.animal.name || '');
+        loadAnimalLatinName(props.animal.name || '');
     },        [props.animal.name]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const latinName = animalLatinNameToString(animalLatinName);
