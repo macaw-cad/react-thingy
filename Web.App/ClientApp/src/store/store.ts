@@ -6,7 +6,7 @@ import { starWarsReducer } from '../starwars/StarWarsReducer';
 import { ServerRoutePageReducer } from '../ServerRouteData/ServerRouteDataReducer';
 import { AnimalLatinNameReducer } from '../AnimalLatinName/AnimalLatinNameReducer';
 
-const reducer = combineReducers<RootState>({
+export const reducer = combineReducers<RootState>({
     counter: CounterReducer,
     starWars: starWarsReducer,
     serverRouteData: ServerRoutePageReducer,

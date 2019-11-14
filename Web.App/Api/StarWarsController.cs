@@ -21,11 +21,12 @@ namespace Web.App.Api
 
         [Produces("application/json")]
         [HttpGet("people")]
-        public async Task<ActionResult<IEnumerable<StarWarsPerson>>> GetPeople()
+        public async Task<ActionResult<IEnumerable<StarWarsPerson>>> GetPeople([FromQuery] string query)
         {
             var client = httpClientFactory.CreateClient();
 
-            var requestUri = new Uri("http://swapi.co/api/people");
+			var filterPath = String.IsNullOrWhiteSpace(query) ? "" : $"?search={query}";
+            var requestUri = new Uri($"http://swapi.co/api/people{filterPath}");
             var response = await client.GetAsync(requestUri);
 
             var content = await response.Content.ReadAsStringAsync();

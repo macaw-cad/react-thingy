@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStarWars } from './useStarWars';
 
-type StarWarsProps = {
-};
+export const StarWars: React.FC = () => {
+    const [filter, setFilter] = useState('');
+    const { starWarsPeople, loadStarWarsPeople } = useStarWars();
 
-const StarWars: React.FC<StarWarsProps> = (props: StarWarsProps) => {
-    const { starWarsPeople, starWarsPeopleLoader } = useStarWars();
-    
-    starWarsPeopleLoader();
     return (
         <div>
             <h1>StarWars list</h1>
 
-            <button onClick={() => starWarsPeopleLoader()}>Filter data</button>
+            <input type="text" value={filter} onChange={e => setFilter(e.target.value)} />
+            <button onClick={() => loadStarWarsPeople(filter)}>Filter data</button>
 
             {starWarsPeople.loading && <div>Loading</div>}
             {starWarsPeople.error && <div>Error!: {starWarsPeople.error.toString()}</div>}
@@ -26,5 +24,3 @@ const StarWars: React.FC<StarWarsProps> = (props: StarWarsProps) => {
         </div>
     );
 };
-
-export default StarWars;

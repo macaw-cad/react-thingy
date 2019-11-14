@@ -1,17 +1,17 @@
-import { useEffect,  useContext } from 'react';
-// @ts-ignore Types are not up to date yet
+import { useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/RootState';
 import { TypeKeysBaseName } from './StarWarsActions';
 import { AsyncData } from '../store/AsyncData';
 import { ApplicationContext } from '../ApplicationContext';
-import { reduxDataLoader } from '../BaseRedux/HookLessReduxDataLoader';
+import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { IStarWarsClient, StarWarsPerson } from '../api/ApiClients';
 import { TYPE, resolve } from '../services/container';
+import { Environment } from '../Environment';
 
 type UseStarWarsProps = {
     starWarsPeople: AsyncData<StarWarsPerson[]>;
-    starWarsPeopleLoader: () => void;
+    loadStarWarsPeople: (query: string) => void;
 };
 
 export const useStarWars = (): UseStarWarsProps => {
@@ -22,17 +22,23 @@ export const useStarWars = (): UseStarWarsProps => {
 
     const starWarsPeople: AsyncData<StarWarsPerson[]> = useSelector((state: RootState) => state.starWars.people);
 
-    const starWarsPeopleFetch = async (): Promise<StarWarsPerson[]> => {
-        return starWarsClient().getPeople();
+    const starWarsPeopleFetch = async (query: string): Promise<StarWarsPerson[]> => {
+        return starWarsClient().getPeople(query);
     };
 
-    const starWarsPeopleLoader = async () => {
-        reduxDataLoader<StarWarsPerson[]>(starWarsPeopleFetch, applicationContext, dispatch, TypeKeysBaseName);
+    const loadStarWarsPeople = async (query: string = '') => {
+        reduxDataLoader<StarWarsPerson[]>(starWarsPeopleFetch, applicationContext, dispatch, TypeKeysBaseName, query);
     };
+
+    if (Environment.isServer) {
+        loadStarWarsPeople();
+    }
 
     useEffect(() => {
-        starWarsPeopleLoader();
-    },        []); // eslint-disable-line react-hooks/exhaustive-deps
+        if (!starWarsPeople.data && !starWarsPeople.loading) {
+            loadStarWarsPeople();
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    return { starWarsPeople, starWarsPeopleLoader };
+    return { starWarsPeople, loadStarWarsPeople };
 };

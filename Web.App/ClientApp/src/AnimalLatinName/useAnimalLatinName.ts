@@ -5,7 +5,7 @@ import { AsyncData } from '../store/AsyncData';
 import { AnimalLatinNameClient, AnimalLatinName } from '../api/ApiClients';
 import { isomorphicFetch } from '../api/ApiClientIsomorphicFetch';
 import { ApplicationContext } from '../ApplicationContext';
-import { reduxDataLoader } from '../BaseRedux/HookLessReduxDataLoader';
+import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { TypeKeysBaseName } from './AnimalLatinNameActions';
 
 type UseAnimalLatinNameProps = {

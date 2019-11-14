@@ -1,6 +1,6 @@
 import { Container, createWire, createResolve } from '@owja/ioc';
 import { TYPE } from './types';
-import { getMockDataFlags, MockDataFlags } from '../userSettings/MockDataFlags';
+import { getMockDataFlags } from '../userSettings/MockDataFlags';
 
 import { 
     IAnimalLatinNameClient, AnimalLatinNameClient,
@@ -8,6 +8,7 @@ import {
     IStarWarsClient, StarWarsClient
  } from '../api/ApiClients';
 import { MockStarWarsClient } from '../api/MockStarWarsClient';
+import { isomorphicFetch } from '../api/ApiClientIsomorphicFetch';
 
 const getContainer = () => {
     const containerInstance = new Container();
@@ -15,11 +16,11 @@ const getContainer = () => {
     containerInstance.bind<IServerRouteClient>(TYPE.ServerRouteDataClient).to(ServerRouteClient);
     containerInstance.bind<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient).to(AnimalLatinNameClient);
     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).toFactory(() => {
-        const mockDataFlags: MockDataFlags | null = getMockDataFlags();
+        const mockDataFlags = getMockDataFlags();
         if (mockDataFlags && mockDataFlags.starwarsPeople) {
-            return new MockStarWarsClient(containerInstance.get<string>(TYPE.BaseUrl));
+            return new MockStarWarsClient(containerInstance.get<string>(TYPE.MockUrl));
         } else {
-            return new StarWarsClient();
+            return new StarWarsClient(containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
         }
     })/*.inSingletonScope()*/;
 

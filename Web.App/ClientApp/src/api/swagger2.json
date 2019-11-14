@@ -180,6 +180,14 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "query",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
         "responses": {
           "200": {
             "x-nullable": false,

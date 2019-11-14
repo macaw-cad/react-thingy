@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../sample/Header';
 import Footer from '../sample/Footer';
-import StarWars from '../starwars/StarWars';
+import { StarWars } from '../starwars/StarWars';
 
 type StarWarsPageProps = {
 };

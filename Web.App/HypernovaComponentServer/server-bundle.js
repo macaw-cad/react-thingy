@@ -74790,7 +74790,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
 /* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../BaseRedux/HookLessReduxDataLoader */ "./src/BaseRedux/HookLessReduxDataLoader.ts");
+/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
 /* harmony import */ var _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AnimalLatinNameActions */ "./src/AnimalLatinName/AnimalLatinNameActions.ts");
 
 
@@ -74811,7 +74811,7 @@ const useAnimalLatinName = () => {
         return client.get(name);
     };
     const animalLatinNameLoader = (name) => {
-        Object(_BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__["reduxDataLoader"])(animalLatinNameFetch, applicationContext, dispatch, _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__["TypeKeysBaseName"], name);
+        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__["reduxDataLoader"])(animalLatinNameFetch, applicationContext, dispatch, _AnimalLatinNameActions__WEBPACK_IMPORTED_MODULE_6__["TypeKeysBaseName"], name);
     };
     return { animalLatinName, animalLatinNameLoader };
 };
@@ -74909,10 +74909,10 @@ const baseReducer = (props) => {
 
 /***/ }),
 
-/***/ "./src/BaseRedux/HookLessReduxDataLoader.ts":
-/*!**************************************************!*\
-  !*** ./src/BaseRedux/HookLessReduxDataLoader.ts ***!
-  \**************************************************/
+/***/ "./src/BaseRedux/ReduxDataLoader.ts":
+/*!******************************************!*\
+  !*** ./src/BaseRedux/ReduxDataLoader.ts ***!
+  \******************************************/
 /*! exports provided: setLoaderTAction, setErrorTAction, setDataTAction, reduxDataLoader */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -75336,10 +75336,16 @@ const PwaApp = (props) => {
     // We now know from the application context the baseUrl - we need check if already bound because 
     // server-side rendering executes this code twice, but no check available...
     try {
-        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].get(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].BaseUrl);
+        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].get(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].MockUrl);
     }
     catch (_a) {
-        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].bind(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].BaseUrl).toValue(_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`);
+        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].bind(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].MockUrl).toValue(_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`);
+    }
+    try {
+        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].get(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].BaseUrl);
+    }
+    catch (_b) {
+        _services_container__WEBPACK_IMPORTED_MODULE_4__["container"].bind(_services_container__WEBPACK_IMPORTED_MODULE_4__["TYPE"].BaseUrl).toValue(applicationContext.baseUrl);
     }
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
         if (!_Environment__WEBPACK_IMPORTED_MODULE_2__["Environment"].isServer) {
@@ -75483,7 +75489,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
 /* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
-/* harmony import */ var _BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../BaseRedux/HookLessReduxDataLoader */ "./src/BaseRedux/HookLessReduxDataLoader.ts");
+/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
 /* harmony import */ var _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ServerRouteDataActions */ "./src/ServerRouteData/ServerRouteDataActions.ts");
 
 
@@ -75505,7 +75511,7 @@ const useServerRouteData = () => {
         return client.getServerRoute(path);
     };
     const serverRouteReduxDataLoader = () => {
-        Object(_BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__["reduxDataLoader"])(serverRouteDataFetch, applicationContext, dispatch, _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__["TypeKeysBaseName"]);
+        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_7__["reduxDataLoader"])(serverRouteDataFetch, applicationContext, dispatch, _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_8__["TypeKeysBaseName"]);
     };
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
         console.log(`useEffect - location.pathname=${location.pathname}, location.search=${location.search}`);
@@ -75854,8 +75860,10 @@ class StarWarsClient {
         this.http = http ? http : window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
-    getPeople() {
-        let url_ = this.baseUrl + "/api/starwars/people";
+    getPeople(query) {
+        let url_ = this.baseUrl + "/api/starwars/people?";
+        if (query !== undefined)
+            url_ += "query=" + encodeURIComponent("" + query) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
@@ -76614,7 +76622,7 @@ const StarWarsPage = (props) => {
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "StarWars page"),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_starwars_StarWars__WEBPACK_IMPORTED_MODULE_3__["default"], null)),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_starwars_StarWars__WEBPACK_IMPORTED_MODULE_3__["StarWars"], null)),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_sample_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
 };
 /* harmony default export */ __webpack_exports__["default"] = (StarWarsPage);
@@ -77001,6 +77009,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../userSettings/MockDataFlags */ "./src/userSettings/MockDataFlags.ts");
 /* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
 /* harmony import */ var _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/MockStarWarsClient */ "./src/api/MockStarWarsClient.ts");
+/* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+
 
 
 
@@ -77013,10 +77023,10 @@ const getContainer = () => {
     containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).toFactory(() => {
         const mockDataFlags = Object(_userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__["getMockDataFlags"])();
         if (mockDataFlags && mockDataFlags.starwarsPeople) {
-            return new _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__["MockStarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl));
+            return new _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__["MockStarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].MockUrl));
         }
         else {
-            return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["StarWarsClient"]();
+            return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["StarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
         }
     }) /*.inSingletonScope()*/;
     return containerInstance;
@@ -77041,6 +77051,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TYPE", function() { return TYPE; });
 const TYPE = {
     BaseUrl: Symbol('BaseUrl'),
+    MockUrl: Symbol('MockUrl'),
     AnimalLatinNameClient: Symbol('AnimalLatinNameClient'),
     ServerRouteDataClient: Symbol('ServerRouteDataClient'),
     StarWarsClient: Symbol('StarWarsClient')
@@ -77053,22 +77064,24 @@ const TYPE = {
 /*!***********************************!*\
   !*** ./src/starwars/StarWars.tsx ***!
   \***********************************/
-/*! exports provided: default */
+/*! exports provided: StarWars */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StarWars", function() { return StarWars; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _useStarWars__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useStarWars */ "./src/starwars/useStarWars.ts");
 
 
-const StarWars = (props) => {
-    const { starWarsPeople, starWarsPeopleLoader } = Object(_useStarWars__WEBPACK_IMPORTED_MODULE_1__["useStarWars"])();
-    starWarsPeopleLoader();
+const StarWars = () => {
+    const [filter, setFilter] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
+    const { starWarsPeople, loadStarWarsPeople } = Object(_useStarWars__WEBPACK_IMPORTED_MODULE_1__["useStarWars"])();
     return (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "StarWars list"),
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { onClick: () => starWarsPeopleLoader() }, "Filter data"),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", { type: "text", value: filter, onChange: e => setFilter(e.target.value) }),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", { onClick: () => loadStarWarsPeople(filter) }, "Filter data"),
         starWarsPeople.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading"),
         starWarsPeople.error && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
             "Error!: ",
@@ -77076,7 +77089,6 @@ const StarWars = (props) => {
         starWarsPeople.data &&
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, starWarsPeople.data.map((person, index) => (react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", { key: index }, person.name))))));
 };
-/* harmony default export */ __webpack_exports__["default"] = (StarWars);
 
 
 /***/ }),
@@ -77107,11 +77119,12 @@ var TypeKeys;
 /*!*****************************************!*\
   !*** ./src/starwars/StarWarsReducer.ts ***!
   \*****************************************/
-/*! exports provided: starWarsReducer */
+/*! exports provided: initialState, starWarsReducer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "starWarsReducer", function() { return starWarsReducer; });
 /* harmony import */ var _StarWarsActions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StarWarsActions */ "./src/starwars/StarWarsActions.ts");
 /* harmony import */ var _store_AsyncData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/AsyncData */ "./src/store/AsyncData.ts");
@@ -77147,10 +77160,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _StarWarsActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StarWarsActions */ "./src/starwars/StarWarsActions.ts");
 /* harmony import */ var _ApplicationContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ApplicationContext */ "./src/ApplicationContext.tsx");
-/* harmony import */ var _BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../BaseRedux/HookLessReduxDataLoader */ "./src/BaseRedux/HookLessReduxDataLoader.ts");
+/* harmony import */ var _BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../BaseRedux/ReduxDataLoader */ "./src/BaseRedux/ReduxDataLoader.ts");
 /* harmony import */ var _services_container__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/container */ "./src/services/container.ts");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Environment */ "./src/Environment.ts");
 
-// @ts-ignore Types are not up to date yet
+
 
 
 
@@ -77161,16 +77175,21 @@ const useStarWars = () => {
     const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
     const starWarsClient = Object(_services_container__WEBPACK_IMPORTED_MODULE_5__["resolve"])(_services_container__WEBPACK_IMPORTED_MODULE_5__["TYPE"].StarWarsClient);
     const starWarsPeople = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])((state) => state.starWars.people);
-    const starWarsPeopleFetch = async () => {
-        return starWarsClient().getPeople();
+    const starWarsPeopleFetch = async (query) => {
+        return starWarsClient().getPeople(query);
     };
-    const starWarsPeopleLoader = async () => {
-        Object(_BaseRedux_HookLessReduxDataLoader__WEBPACK_IMPORTED_MODULE_4__["reduxDataLoader"])(starWarsPeopleFetch, applicationContext, dispatch, _StarWarsActions__WEBPACK_IMPORTED_MODULE_2__["TypeKeysBaseName"]);
+    const loadStarWarsPeople = async (query = '') => {
+        Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_4__["reduxDataLoader"])(starWarsPeopleFetch, applicationContext, dispatch, _StarWarsActions__WEBPACK_IMPORTED_MODULE_2__["TypeKeysBaseName"], query);
     };
+    if (_Environment__WEBPACK_IMPORTED_MODULE_6__["Environment"].isServer) {
+        loadStarWarsPeople();
+    }
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        starWarsPeopleLoader();
+        if (!starWarsPeople.data && !starWarsPeople.loading) {
+            loadStarWarsPeople();
+        }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-    return { starWarsPeople, starWarsPeopleLoader };
+    return { starWarsPeople, loadStarWarsPeople };
 };
 
 
@@ -77199,11 +77218,12 @@ const asyncDataInitialState = {
 /*!****************************!*\
   !*** ./src/store/store.ts ***!
   \****************************/
-/*! exports provided: configureStore */
+/*! exports provided: reducer, configureStore */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reducer", function() { return reducer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "configureStore", function() { return configureStore; });
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-devtools-extension */ "./node_modules/redux-devtools-extension/index.js");

@@ -3,7 +3,7 @@ import { StarWarsState } from './StarWarsState';
 import { asyncDataInitialState } from '../store/AsyncData';
 import { baseReducer } from '../BaseRedux/BaseReducer';
 
-const initialState: StarWarsState = {
+export const initialState: StarWarsState = {
     people: asyncDataInitialState
 };
 

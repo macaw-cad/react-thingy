@@ -10,13 +10,19 @@ const Offline = ({ online, children }: { online: boolean, children: JSX.Element 
 export const PwaApp: React.FC = (props) => {
     const [isOnline, setIsOnline] = useState((!Environment.isServer) ? window.navigator.onLine : true);
     const applicationContext = useContext(ApplicationContext).applicationContext;
-    
+
     // We now know from the application context the baseUrl - we need check if already bound because 
     // server-side rendering executes this code twice, but no check available...
     try {
+        container.get<string>(TYPE.MockUrl);
+    } catch {
+        container.bind<string>(TYPE.MockUrl).toValue(Environment.isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`);
+    }
+
+    try {
         container.get<string>(TYPE.BaseUrl);
     } catch {
-        container.bind<string>(TYPE.BaseUrl).toValue(Environment.isProduction ? `${applicationContext.baseUrl}/mockapi` : `http://localhost:3001`);
+        container.bind<string>(TYPE.BaseUrl).toValue(applicationContext.baseUrl);
     }
 
     useEffect(() => {
@@ -29,7 +35,7 @@ export const PwaApp: React.FC = (props) => {
                 setIsOnline(true);
             });
         }
-    },        []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>

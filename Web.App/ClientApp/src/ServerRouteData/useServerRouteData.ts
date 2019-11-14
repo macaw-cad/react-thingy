@@ -8,7 +8,7 @@ import { isomorphicFetch } from '../api/ApiClientIsomorphicFetch';
 import { ServerRouteData } from './ServerRouteData';
 import { ApplicationContext } from '../ApplicationContext';
 import { Environment } from '../Environment';
-import { reduxDataLoader } from '../BaseRedux/HookLessReduxDataLoader';
+import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { TypeKeysBaseName } from './ServerRouteDataActions';
 
 export const useServerRouteData = (): AsyncData<ServerRouteData> => {

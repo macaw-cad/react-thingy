@@ -290,7 +290,7 @@ export class ServerRouteClient implements IServerRouteClient {
 }
 
 export interface IStarWarsClient {
-    getPeople(): Promise<StarWarsPerson[]>;
+    getPeople(query?: string | null | undefined): Promise<StarWarsPerson[]>;
 }
 
 export class StarWarsClient implements IStarWarsClient {
@@ -303,8 +303,10 @@ export class StarWarsClient implements IStarWarsClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    getPeople(): Promise<StarWarsPerson[]> {
-        let url_ = this.baseUrl + "/api/starwars/people";
+    getPeople(query?: string | null | undefined): Promise<StarWarsPerson[]> {
+        let url_ = this.baseUrl + "/api/starwars/people?";
+        if (query !== undefined)
+            url_ += "query=" + encodeURIComponent("" + query) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
