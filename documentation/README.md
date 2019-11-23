@@ -101,8 +101,113 @@ Open the project at the root folder in Visual Studio Code, so NOT at the ```Web.
 The folder ```Web.App\ClientApp``` contains a ```package.json``` file containing scripts
 for developing and building the application. See [README development](./documentation/development.md) for more information on how to do development with the solution.
 
+### Enforce HTTPS in ASP.NET Core
+
+As described in the article [Enforce HTTPS in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl) we need to enforce HTTPS for both the web applications and the web api's. When we use HTTPS we can also enable [HTTP/2](https://www.upwork.com/hiring/development/the-http2-protocol-its-pros-cons-and-how-to-start-using-it/) which provides many advantages over HTTP like multiplexing and binary data transfer.
+
+Some key points:
+- app.UseHsts() should only be used on web sites, not on web api's
+- :
+
 ### Generating SSL certificate for development
 If you're getting SSL certificate issues in your browser, you might need to generate a self-signed certificate. Do that using ```dotnet dev-certs https --trust``` in the ```\Web.app``` folder. Read more about it [here](https://www.hanselman.com/blog/DevelopingLocallyWithASPNETCoreUnderHTTPSSSLAndSelfSignedCerts.aspx).
+
+## Global configuration in .editorconfig
+
+As described in the Microsoft article [Create portable, custom editor settings with EditorConfig](https://docs.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2019) the file `.editorconfig` can be used to manage global settings for the whole solution. We placed the global `.editorconfig` file next to the `Web.App.sln` file to it is applied to all projects.
+
+One of the useages of the `.errorconfig` file is to suppress warnings from the FXCop Analyzers as installed in the solution to improve code qualities.
+
+One of the given warnings is **CA2007: Do not directly await a Task** which is not applicable in .NET Core. We can suppress this error by adding the following lines to the `.editorconfig` file:
+
+```
+[*.cs]
+dotnet_diagnostic.CA2007.severity = none
+```
+
+## NSwag and Web API documentation
+
+NOTA BENE: For documentation to be shown in the Swagger UI make sure that XML documentation is generated on building the project. On the properties of the project enable **Output - XML documentation file**. Keep the default output path for the documentation.
+
+Documentation is available in two formats:
+
+- Swagger - at url `/swagger` - has a great "Try it out" option
+- ReDoc - at url `/redoc` - more modern layout
+
+The documentation is taken from the XML documentation above the C# API methods and from special attributes about the return values and error values. Although the documentation for C# is in XML format and supports formatting tags like `<list>...</list>`, these formatting tags are not used in the OpenAPI specification. For formatting only [CommonMark Markdown syntax](https://spec.commonmark.org/0.27/) is supported as described in the [OpenAPI Specification](https://swagger.io/specification/).
+
+An example of a Web API method with documentation and return value/error value attributes:
+
+```c#
+/// <summary>
+/// Minimal sample implementation of version 1 of the versioned service.
+/// </summary>
+/// <remarks>
+/// Supported arguments: 0..4, 0 is default value and the Ok case, 1..4 give errors.
+/// 
+/// * Ok result - returns array of two strings
+/// * 1: 400 - BadRequest
+/// * 2: 404 - NotFound
+/// * 3: 409 - Conflict (with error details of type `ConflictDetails`)
+/// * 4: An uncatched exception resulting in 500 - InternalServerErrror
+/// </remarks>
+/// <param name="value">A value 0..4 for different error conditions.</param>
+/// <returns>An array with two sample strings.</returns>
+[HttpGet("{value}")]
+[Produces("application/json")]
+[ProducesResponseType(typeof(ProblemDetailsExtended), StatusCodes.Status400BadRequest)]
+[ProducesResponseType(typeof(ProblemDetailsExtended), StatusCodes.Status404NotFound)]
+[ProducesResponseType(typeof(ProblemDetailsExtended<ConflictDetails>), StatusCodes.Status409Conflict)]
+[ProducesResponseType(typeof(ProblemDetailsExtended<ErrorDetailsException>), StatusCodes.Status500InternalServerError)]
+public async Task<ActionResult<string[]>> Get(int value = 0)
+{
+    :
+}
+```
+
+Microsoft introduced a special return type for errors for Web API methods in ASP.NET Core 2.1: [ProblemDetails](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails). We adopted this approach, and extended the ProblemDetails type with one mandatory, and one optional field:
+
+```c#
+public abstract class ProblemDetailsExtended : ProblemDetails
+```
+{
+    public string TraceIdentifier { get; set; }
+}
+
+public abstract class ProblemDetailsExtended<T> : ProblemDetailsExtended
+{
+    public T ErrorDetails { get; set; }
+}
+```
+
+The `TraceIdentifier` will always be set based on `HttpContext.TraceIdentifier`. ErrorDetails can be additionally specifiedby using the generic type `ProblemDetailsExtended<T>` as shown is the example Web API method above.
+
+All Web API controllers must inherit from `ApiControllerBase` which contains special versions of functions like `BadRequest`, `NotFound` etc which will produce error return values of type `ProblemDetailsExtended` or `ProblemDetailsExtended <>T>`.
+
+## NSwag and client generation
+
+
+
+
+
+
+
+## Starting the Visual Studio solution
+
+When working in Visual Studio you want to be able to start the solution for debugging. The solution consists of two front-end projects:
+
+- `Web.App`
+- `Web.Api.Versioned`
+
+To start both projects when hitting the `Start button`, right-click on the solution `Web.App` and select `Set Startup Projects...`:
+
+![Multiple startup projects](Multiple-startup-projects-VisualStudio.png)
+
+The Visual Studio bar now shows `<Multiple Startup Projects>`. The `Start` link now stats both projects.
+
+![Multiple startup projects selected](Multiple-startup-projects-selected-VisualStudio.png)
+
+
 
 ## Deploying the solution
 

@@ -28,12 +28,13 @@ namespace Web.App
 
         public StoryController(ILogger<StoryController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
-            _logger = logger;
-            _env = env;
-            _httpClientFactory = httpClientFactory;
-            _options = options;
-            _cache = cache;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _env = env ?? throw new ArgumentNullException(nameof(logger));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(logger));
+            _options = options ?? throw new ArgumentNullException(nameof(logger));
             _settings = options.Value;
+            _cache = cache;
+
             _contentRoot = env.ContentRootPath;
         }
 

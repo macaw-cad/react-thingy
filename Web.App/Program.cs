@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Net;
 
 namespace Web.App
 {
@@ -21,14 +23,26 @@ namespace Web.App
             // - enables IIS integration (how about Linux? - no IIS)
             // - enables the ability for frameworks to bind their options to their default configuration sections
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                //.ConfigureKestrel(options =>
-                //{
-                //    options.ListenLocalhost(5000, listenOption =>
-                //    {
-                //        listenOptions.Protocols = HttpProtocols.
-                //    })
-                //})
-                ;
+#if XDEBUG
+                .UseUrls("http://localhost:5000", "https://localhost:5001")
+#endif
+
+#if false
+                .UseKestrel(options =>
+                {
+                   
+                    options.Listen(IPAddress.Loopback, 5000, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
+                    options.Listen(IPAddress.Loopback, 5001, listenOptions =>
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                        listenOptions.UseHttps();
+                    });
+                }
+                )
+#endif
+                .UseStartup<Startup>();
     }
 }

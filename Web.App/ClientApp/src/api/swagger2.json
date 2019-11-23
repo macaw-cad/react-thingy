@@ -1,9 +1,9 @@
 ﻿{
-  "x-generator": "NSwag v13.1.0.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v12.0.0.0))",
+  "x-generator": "NSwag v13.1.5.0 (NJsonSchema v10.0.27.0 (Newtonsoft.Json v12.0.0.0))",
   "swagger": "2.0",
   "info": {
-    "title": "B4F API's",
-    "description": "The B4F API's.<br/></br>For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.",
+    "title": "Web.App B4F Web API",
+    "description": "For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.<br/>Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>",
     "version": "v1"
   },
   "paths": {
@@ -232,14 +232,14 @@
     "PageType": {
       "allOf": [
         {
-          "$ref": "#/definitions/Enumeration"
+          "$ref": "#/definitions/EnumByEnumeration"
         },
         {
           "type": "object"
         }
       ]
     },
-    "Enumeration": {
+    "EnumByEnumeration": {
       "type": "object",
       "x-abstract": true,
       "required": [

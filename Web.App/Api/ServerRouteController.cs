@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using Web.App.Api.Models;
 
 namespace Web.App.Api
@@ -21,10 +22,15 @@ namespace Web.App.Api
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<ServerRouteData> GetServerRoute([FromQuery] string route)
         {
-            route = route.ToLower();
+            if (string.IsNullOrWhiteSpace(route))
+            {
+
+            }
+
+            route = route.ToUpperInvariant();
             try
             {
-                if (route == "multipla")
+                if (route == "MULTIPLA")
                 {
                     return Ok(
                         new ServerRouteData
@@ -39,7 +45,7 @@ namespace Web.App.Api
                         }
                     );
                 }
-                else if (route == "ford/fiesta")
+                else if (route == "FORD/FIESTA")
                 {
                     return Ok(
                         new ServerRouteData
@@ -54,7 +60,7 @@ namespace Web.App.Api
                         }
                     );
                 }
-                else if (route == "bear")
+                else if (route == "BEAR")
                 {
                     return Ok(
                         new ServerRouteData

@@ -47,32 +47,38 @@ namespace Web.App.JsonServer
             }
             var client = _httpClientFactory.CreateClient();
             // TODO: this fails! var clonedRequest = this.Request.ToHttpRequestMessage();
-            var clonedRequest = new HttpRequestMessage(new HttpMethod(Request.Method), "{jsonServerUrl}/{jsonServerRequest}");
-            clonedRequest.RequestUri = new Uri($"{jsonServerUrl}/{jsonServerRequest}");
-            clonedRequest.Content = new StreamContent(Request.Body);
 
-            HttpResponseMessage result;
-            try
+            using (var clonedRequest = new HttpRequestMessage(new HttpMethod(Request.Method), "{jsonServerUrl}/{jsonServerRequest}")
             {
+                RequestUri = new Uri($"{jsonServerUrl}/{jsonServerRequest}"),
+                Content = new StreamContent(Request.Body)
+            })
+            {
+                HttpResponseMessage result;
+                try
+                {
 
-                result = await client.SendAsync(clonedRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            } catch(HttpRequestException ex)
-            {
-                return new BadRequestObjectResult(new { status = false, message = "Is JsonServer running? " + ex.ToString() });
-            }
-            var content = await result.Content.ReadAsStringAsync();
-            if (jsonServerRequest == "main.js") {
-                content = content.Replace("fetch(\"db\")", "fetch(\"/mockapi/db\")");
-            }
-            if (String.IsNullOrEmpty(jsonServerRequest))
-            {
-                // root is html page - current replacements is for default implementation
-                content = content.Replace("\"main.css\"", "\"/mockapi/main.css\"");
-                content = content.Replace("\"favicon.ico\"", "\"/mockapi/favicon.ico\"");
-                content = content.Replace("\"main.js\"", "\"/mockapi/main.js\"");
-                content = content.Replace("<head>", "<head><base href=\"/mockapi/\" />");
-            }
-            return Content(content, result.Content.Headers.ContentType.ToString());
+                    result = await client.SendAsync(clonedRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                }
+                catch (HttpRequestException ex)
+                {
+                    return new BadRequestObjectResult(new { status = false, message = "Is JsonServer running? " + ex.ToString() });
+                }
+                var content = await result.Content.ReadAsStringAsync();
+                if (jsonServerRequest == "main.js")
+                {
+                    content = content.Replace("fetch(\"db\")", "fetch(\"/mockapi/db\")", System.StringComparison.InvariantCulture);
+                }
+                if (String.IsNullOrEmpty(jsonServerRequest))
+                {
+                    // root is html page - current replacements is for default implementation
+                    content = content.Replace("\"main.css\"", "\"/mockapi/main.css\"", System.StringComparison.InvariantCulture);
+                    content = content.Replace("\"favicon.ico\"", "\"/mockapi/favicon.ico\"", System.StringComparison.InvariantCulture);
+                    content = content.Replace("\"main.js\"", "\"/mockapi/main.js\"", System.StringComparison.InvariantCulture);
+                    content = content.Replace("<head>", "<head><base href=\"/mockapi/\" />", System.StringComparison.InvariantCulture);
+                }
+                return Content(content, result.Content.Headers.ContentType.ToString());
+            }        
         }
     }
 }

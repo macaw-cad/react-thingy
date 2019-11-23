@@ -1,0 +1,9 @@
+[*.cs]
+# "CA2007: Do not directly await a Task" - not applicable in .NET Core
+dotnet_diagnostic.CA2007.severity = none
+# "CA1056 Change the type of property url from string to System.Uri" - we want to use url as string!
+dotnet_diagnostic.CA1056.severity = none
+# "CA1707 Remove the underscore from member name aaa_bbb" - we want to be able to use _ in members when used to conform to required json format
+dotnet_diagnostic.CA1707.severity = none
+# "CA1305 The behavior of 'string.Format(string, object)' could vary based on the current user's locale settings." - we don't want to use locale
+dotnet_diagnostic.CA1305.severity = none

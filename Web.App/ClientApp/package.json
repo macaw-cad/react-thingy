@@ -52,8 +52,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:dotnet": "npm run build:dotnet-core && run-p start:web.app start:web.api.versioned",
     "start:jsonserver": "pushd ..\\JsonServer && npx nodemon --watch . jsonserver.js",
-    "start:dotnet-core": "npm run build:dotnet-core && pushd .. && npx cross-env ASPNETCORE_ENVIRONMENT=Development dotnet run",
+    "start:web.app": "pushd .. && npx cross-env ASPNETCORE_ENVIRONMENT=Development dotnet run",
+    "start:web.api.versioned": "pushd ..\\..\\Web.Api.Versioned && npx cross-env ASPNETCORE_ENVIRONMENT=Development dotnet run",
     "start:hypernovacomponentserver": "pushd ..\\HypernovaComponentServer && npx nodemon --watch server-bundle.js componentserver.js",
     "start:server-bundle": "npm run build:server-bundle:development && npx chokidar-cli src/** -c \"npm run build:server-bundle:development\"",
     "start:storybook": "start-storybook -p 9001 -c .storybook -s ./public",
@@ -63,6 +65,7 @@
     "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
     "gen:apiclients": "nswag run /runtime:NetCore22 /input:nswag.json",
+    "gen:WebApiVersionedClients": "nswag run /runtime:NetCore22 /input:nswag-Web.Api.Versioned.json",
     "test": "react-scripts test",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache --env=jsdom",
     "plop": "plop"
@@ -84,6 +87,7 @@
     "@types/storybook__addon-options": "^4.0.1",
     "@types/storybook__react": "^4.0.1",
     "node-sass": "^4.12.0",
+    "npm-run-all": "^4.1.5",
     "plop": "^2.3.0",
     "raw-loader": "^2.0.0",
     "react-scripts": "^3.0.1",

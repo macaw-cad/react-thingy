@@ -11,6 +11,10 @@
     <UserSecretsId>5dcbcca9-2566-4dfc-bb3d-a614ea47bd7f</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\P\react-thingy\Web.App\Web.App.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -22,7 +26,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.1.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +75,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Web.Api.Core\Web.Api.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Web.Mvc">
       <HintPath>..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET MVC 2\Assemblies\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -100,6 +108,12 @@
     </None>
     <None Update="ClientApp\src\api\types\ApiStarWarsPerson.ts">
       <CustomToolNamespace>Api\Models\StarWarsPerson.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\api\types_old\ApiEnumByEnumeration.ts">
+      <CustomToolNamespace>Api\Models\EnumByEnumeration.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\api\types_old\ApiPageType.ts">
+      <CustomToolNamespace>Api\Models\PageType.cs</CustomToolNamespace>
     </None>
     <None Update="LinuxConfigurationFiles\init.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

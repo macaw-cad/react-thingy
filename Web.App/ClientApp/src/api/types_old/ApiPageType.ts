@@ -1,5 +1,5 @@
-﻿ import { ApiEnumeration } from './ApiEnumeration';
+﻿ import { ApiEnumByEnumeration } from './ApiEnumByEnumeration';
 
-export class ApiPageType  extends ApiEnumeration { 
+export class ApiPageType  extends ApiEnumByEnumeration { 
 }
  

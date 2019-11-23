@@ -428,11 +428,11 @@ export interface IServerRouteData {
     animalData?: Animal | undefined;
 }
 
-export abstract class Enumeration implements IEnumeration {
+export abstract class EnumByEnumeration implements IEnumByEnumeration {
     name?: string | undefined;
     id!: number;
 
-    constructor(data?: IEnumeration) {
+    constructor(data?: IEnumByEnumeration) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -448,9 +448,9 @@ export abstract class Enumeration implements IEnumeration {
         }
     }
 
-    static fromJS(data: any): Enumeration {
+    static fromJS(data: any): EnumByEnumeration {
         data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'Enumeration' cannot be instantiated.");
+        throw new Error("The abstract class 'EnumByEnumeration' cannot be instantiated.");
     }
 
     toJSON(data?: any) {
@@ -461,12 +461,12 @@ export abstract class Enumeration implements IEnumeration {
     }
 }
 
-export interface IEnumeration {
+export interface IEnumByEnumeration {
     name?: string | undefined;
     id: number;
 }
 
-export class PageType extends Enumeration implements IPageType {
+export class PageType extends EnumByEnumeration implements IPageType {
 
     constructor(data?: IPageType) {
         super(data);
@@ -490,7 +490,7 @@ export class PageType extends Enumeration implements IPageType {
     }
 }
 
-export interface IPageType extends IEnumeration {
+export interface IPageType extends IEnumByEnumeration {
 }
 
 export class Car implements ICar {

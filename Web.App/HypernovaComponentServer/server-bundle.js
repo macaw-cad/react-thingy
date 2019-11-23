@@ -75569,7 +75569,7 @@ const isomorphicFetch = (url, init) => {
 /*!*******************************!*\
   !*** ./src/api/ApiClients.ts ***!
   \*******************************/
-/*! exports provided: JsonServerClient, HypernovaComponentServerClient, AnimalLatinNameClient, ServerRouteClient, StarWarsClient, AnimalLatinName, ServerRouteData, Enumeration, PageType, Car, Animal, StarWarsPerson, ApiException */
+/*! exports provided: JsonServerClient, HypernovaComponentServerClient, AnimalLatinNameClient, ServerRouteClient, StarWarsClient, AnimalLatinName, ServerRouteData, EnumByEnumeration, PageType, Car, Animal, StarWarsPerson, ApiException */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75581,7 +75581,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StarWarsClient", function() { return StarWarsClient; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimalLatinName", function() { return AnimalLatinName; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerRouteData", function() { return ServerRouteData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Enumeration", function() { return Enumeration; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnumByEnumeration", function() { return EnumByEnumeration; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageType", function() { return PageType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Car", function() { return Car; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Animal", function() { return Animal; });
@@ -75957,7 +75957,7 @@ class ServerRouteData {
         return data;
     }
 }
-class Enumeration {
+class EnumByEnumeration {
     constructor(data) {
         if (data) {
             for (var property in data) {
@@ -75974,7 +75974,7 @@ class Enumeration {
     }
     static fromJS(data) {
         data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'Enumeration' cannot be instantiated.");
+        throw new Error("The abstract class 'EnumByEnumeration' cannot be instantiated.");
     }
     toJSON(data) {
         data = typeof data === 'object' ? data : {};
@@ -75983,7 +75983,7 @@ class Enumeration {
         return data;
     }
 }
-class PageType extends Enumeration {
+class PageType extends EnumByEnumeration {
     constructor(data) {
         super(data);
     }

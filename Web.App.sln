@@ -36,6 +36,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TODO.md = TODO.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Api.Core", "Web.Api.Core\Web.Api.Core.csproj", "{91BA501C-BA8B-4789-A248-9666424B7BFB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Api.Versioned", "Web.Api.Versioned\Web.Api.Versioned.csproj", "{0DBE4F5A-C93B-43AD-971D-23AE3069B80D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{C1F6C11E-7504-4F00-9FE6-DE77FB9A2111}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1F6C11E-7504-4F00-9FE6-DE77FB9A2111}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1F6C11E-7504-4F00-9FE6-DE77FB9A2111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91BA501C-BA8B-4789-A248-9666424B7BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91BA501C-BA8B-4789-A248-9666424B7BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91BA501C-BA8B-4789-A248-9666424B7BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91BA501C-BA8B-4789-A248-9666424B7BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DBE4F5A-C93B-43AD-971D-23AE3069B80D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DBE4F5A-C93B-43AD-971D-23AE3069B80D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DBE4F5A-C93B-43AD-971D-23AE3069B80D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DBE4F5A-C93B-43AD-971D-23AE3069B80D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

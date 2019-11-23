@@ -9,13 +9,13 @@ namespace Web.App.Api.Models
     /// <summary>
     /// Enumeration base class as described in <see cref="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types"/>
     /// </summary>
-    public abstract class Enumeration : IComparable
+    public abstract class EnumByEnumeration : IComparable
     {
         public string Name { get; private set; }
 
         public int Id { get; private set; }
 
-        protected Enumeration(int id, string name)
+        protected EnumByEnumeration(int id, string name)
         {
             Id = id;
             Name = name;
@@ -23,7 +23,7 @@ namespace Web.App.Api.Models
 
         public override string ToString() => Name;
 
-        public static IEnumerable<T> GetAll<T>() where T : Enumeration
+        public static IEnumerable<T> GetAll<T>() where T : EnumByEnumeration
         {
             var fields = typeof(T).GetFields(BindingFlags.Public |
                                              BindingFlags.Static |
@@ -34,7 +34,7 @@ namespace Web.App.Api.Models
 
         public override bool Equals(object obj)
         {
-            var otherValue = obj as Enumeration;
+            var otherValue = obj as EnumByEnumeration;
 
             if (otherValue == null)
                 return false;
@@ -45,14 +45,22 @@ namespace Web.App.Api.Models
             return typeMatches && valueMatches;
         }
 
-        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
+        public int CompareTo(object other)
+        {
+            if (other is null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            return Id.CompareTo(((EnumByEnumeration)other).Id);
+        }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return Name.GetHashCode(System.StringComparison.InvariantCulture);
         }
 
-        public static bool operator ==(Enumeration left, Enumeration right)
+        public static bool operator ==(EnumByEnumeration left, EnumByEnumeration right)
         {
             if (ReferenceEquals(left, null))
             {
@@ -62,27 +70,27 @@ namespace Web.App.Api.Models
             return left.Equals(right);
         }
 
-        public static bool operator !=(Enumeration left, Enumeration right)
+        public static bool operator !=(EnumByEnumeration left, EnumByEnumeration right)
         {
             return !(left == right);
         }
 
-        public static bool operator <(Enumeration left, Enumeration right)
+        public static bool operator <(EnumByEnumeration left, EnumByEnumeration right)
         {
             return ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
         }
 
-        public static bool operator <=(Enumeration left, Enumeration right)
+        public static bool operator <=(EnumByEnumeration left, EnumByEnumeration right)
         {
             return ReferenceEquals(left, null) || left.CompareTo(right) <= 0;
         }
 
-        public static bool operator >(Enumeration left, Enumeration right)
+        public static bool operator >(EnumByEnumeration left, EnumByEnumeration right)
         {
             return !ReferenceEquals(left, null) && left.CompareTo(right) > 0;
         }
 
-        public static bool operator >=(Enumeration left, Enumeration right)
+        public static bool operator >=(EnumByEnumeration left, EnumByEnumeration right)
         {
             return ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
         }
