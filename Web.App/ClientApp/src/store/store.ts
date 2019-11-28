@@ -1,12 +1,14 @@
 import { createStore, combineReducers, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { RootState } from './RootState';
+import { PageReducer } from './page/PageReducer';
 import { CounterReducer } from '../counter/CounterReducer';
 import { starWarsReducer } from '../starwars/StarWarsReducer';
 import { ServerRoutePageReducer } from '../ServerRouteData/ServerRouteDataReducer';
 import { AnimalLatinNameReducer } from '../AnimalLatinName/AnimalLatinNameReducer';
 
 export const reducer = combineReducers<RootState>({
+    page: PageReducer,
     counter: CounterReducer,
     starWars: starWarsReducer,
     serverRouteData: ServerRoutePageReducer,

@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/RootState';
@@ -13,8 +13,14 @@ import { resolve, TYPE } from '../services/container';
 
 export const useServerRouteData = (): AsyncData<ServerRouteData> => {
     const applicationContext = useContext(ApplicationContext).applicationContext;
+    
+    // for managing correct rerendering both server-side and client-side
+    const firstClientSideRenderWithData = useRef(true);
+    const isHydrated = useSelector((state: RootState) => state.page.isHydrated);
+    
     const dispatch = useDispatch();
     const location = useLocation();
+    
 
     const serverRouteClient = resolve<IServerRouteClient>(TYPE.ServerRouteDataClient);
 
@@ -22,22 +28,28 @@ export const useServerRouteData = (): AsyncData<ServerRouteData> => {
 
     const serverRouteDataFetch = async (): Promise<ServerRouteData> => {
         const path = location.pathname.substring(1); // no leading '/'
-        return serverRouteClient().getServerRoute(path);
+        var serverRouteDataPromise = serverRouteClient().getServerRoute(path);
+        if (process.env.NODE_ENV !== 'production') {
+            console.log(`useServerRouteData with path '${path}'`);
+        }
+        return serverRouteDataPromise;
     };
 
     const loadServerRouteReduxData = () => {
         reduxDataLoader<ServerRouteData>(serverRouteDataFetch, applicationContext, dispatch, TypeKeysBaseName);
     };
 
-    useEffect(() => {
-        if (!serverRouteData.data && !serverRouteData.loading) {
-            loadServerRouteReduxData();
-        }
-    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
-
     if (Environment.isServer) {
         loadServerRouteReduxData();
     }
+
+    useEffect(() => {
+        if ((!firstClientSideRenderWithData.current || !serverRouteData.data) || !isHydrated) {
+            loadServerRouteReduxData();
+        } else {
+            firstClientSideRenderWithData.current = false;
+        }
+    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return serverRouteData;
 };

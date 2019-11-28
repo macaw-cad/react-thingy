@@ -74931,10 +74931,16 @@ const reduxDataLoader = (dataLoader, applicationContext, dispatch, postfix, ...u
         return new Promise(async (resolve, reject) => {
             try {
                 const data = await dataLoader(...args);
+                if (true) {
+                    console.log(`reduxDataLoader for '${postfix}' - data:`, data);
+                }
                 dispatch(setDataTAction(postfix, data));
                 resolve();
             }
             catch (e) {
+                if (true) {
+                    console.log(`reduxDataLoader for '${postfix}' - exception:`, e);
+                }
                 dispatch(setErrorTAction(postfix, e));
                 reject();
             }
@@ -75498,25 +75504,35 @@ __webpack_require__.r(__webpack_exports__);
 
 const useServerRouteData = () => {
     const applicationContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_ApplicationContext__WEBPACK_IMPORTED_MODULE_3__["ApplicationContext"]).applicationContext;
+    // for managing correct rerendering both server-side and client-side
+    const firstClientSideRenderWithData = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
+    const isHydrated = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])((state) => state.page.isHydrated);
     const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
     const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
     const serverRouteClient = Object(_services_container__WEBPACK_IMPORTED_MODULE_7__["resolve"])(_services_container__WEBPACK_IMPORTED_MODULE_7__["TYPE"].ServerRouteDataClient);
     const serverRouteData = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])((state) => state.serverRouteData.serverRouteData);
     const serverRouteDataFetch = async () => {
         const path = location.pathname.substring(1); // no leading '/'
-        return serverRouteClient().getServerRoute(path);
+        var serverRouteDataPromise = serverRouteClient().getServerRoute(path);
+        if (true) {
+            console.log(`useServerRouteData with path '${path}'`);
+        }
+        return serverRouteDataPromise;
     };
     const loadServerRouteReduxData = () => {
         Object(_BaseRedux_ReduxDataLoader__WEBPACK_IMPORTED_MODULE_5__["reduxDataLoader"])(serverRouteDataFetch, applicationContext, dispatch, _ServerRouteDataActions__WEBPACK_IMPORTED_MODULE_6__["TypeKeysBaseName"]);
     };
-    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-        if (!serverRouteData.data && !serverRouteData.loading) {
-            loadServerRouteReduxData();
-        }
-    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
     if (_Environment__WEBPACK_IMPORTED_MODULE_4__["Environment"].isServer) {
         loadServerRouteReduxData();
     }
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+        if ((!firstClientSideRenderWithData.current || !serverRouteData.data) || !isHydrated) {
+            loadServerRouteReduxData();
+        }
+        else {
+            firstClientSideRenderWithData.current = false;
+        }
+    }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
     return serverRouteData;
 };
 
@@ -77215,6 +77231,56 @@ const asyncDataInitialState = {
 
 /***/ }),
 
+/***/ "./src/store/page/PageActions.ts":
+/*!***************************************!*\
+  !*** ./src/store/page/PageActions.ts ***!
+  \***************************************/
+/*! exports provided: TypeKeys, setIsHydrated */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TypeKeys", function() { return TypeKeys; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setIsHydrated", function() { return setIsHydrated; });
+var TypeKeys;
+(function (TypeKeys) {
+    TypeKeys["SET_IS_HYDRATED"] = "SET_IS_HYDRATED";
+})(TypeKeys || (TypeKeys = {}));
+const setIsHydrated = (payload) => ({ type: TypeKeys.SET_IS_HYDRATED, payload });
+
+
+/***/ }),
+
+/***/ "./src/store/page/PageReducer.ts":
+/*!***************************************!*\
+  !*** ./src/store/page/PageReducer.ts ***!
+  \***************************************/
+/*! exports provided: initialState, PageReducer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageReducer", function() { return PageReducer; });
+/* harmony import */ var _PageActions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PageActions */ "./src/store/page/PageActions.ts");
+/* harmony import */ var _Environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Environment */ "./src/Environment.ts");
+
+
+let initialState = {
+    isHydrated: _Environment__WEBPACK_IMPORTED_MODULE_1__["Environment"].isServer
+};
+const PageReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case _PageActions__WEBPACK_IMPORTED_MODULE_0__["TypeKeys"].SET_IS_HYDRATED:
+            return { ...state, isHydrated: action.payload === undefined ? true : action.payload };
+        default:
+            return state;
+    }
+};
+
+
+/***/ }),
+
 /***/ "./src/store/store.ts":
 /*!****************************!*\
   !*** ./src/store/store.ts ***!
@@ -77229,10 +77295,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-devtools-extension */ "./node_modules/redux-devtools-extension/index.js");
 /* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _counter_CounterReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../counter/CounterReducer */ "./src/counter/CounterReducer.ts");
-/* harmony import */ var _starwars_StarWarsReducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../starwars/StarWarsReducer */ "./src/starwars/StarWarsReducer.ts");
-/* harmony import */ var _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ServerRouteData/ServerRouteDataReducer */ "./src/ServerRouteData/ServerRouteDataReducer.ts");
-/* harmony import */ var _AnimalLatinName_AnimalLatinNameReducer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../AnimalLatinName/AnimalLatinNameReducer */ "./src/AnimalLatinName/AnimalLatinNameReducer.ts");
+/* harmony import */ var _page_PageReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./page/PageReducer */ "./src/store/page/PageReducer.ts");
+/* harmony import */ var _counter_CounterReducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../counter/CounterReducer */ "./src/counter/CounterReducer.ts");
+/* harmony import */ var _starwars_StarWarsReducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../starwars/StarWarsReducer */ "./src/starwars/StarWarsReducer.ts");
+/* harmony import */ var _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ServerRouteData/ServerRouteDataReducer */ "./src/ServerRouteData/ServerRouteDataReducer.ts");
+/* harmony import */ var _AnimalLatinName_AnimalLatinNameReducer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AnimalLatinName/AnimalLatinNameReducer */ "./src/AnimalLatinName/AnimalLatinNameReducer.ts");
+
 
 
 
@@ -77240,10 +77308,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const reducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
-    counter: _counter_CounterReducer__WEBPACK_IMPORTED_MODULE_2__["CounterReducer"],
-    starWars: _starwars_StarWarsReducer__WEBPACK_IMPORTED_MODULE_3__["starWarsReducer"],
-    serverRouteData: _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_4__["ServerRoutePageReducer"],
-    animalLatinName: _AnimalLatinName_AnimalLatinNameReducer__WEBPACK_IMPORTED_MODULE_5__["AnimalLatinNameReducer"]
+    page: _page_PageReducer__WEBPACK_IMPORTED_MODULE_2__["PageReducer"],
+    counter: _counter_CounterReducer__WEBPACK_IMPORTED_MODULE_3__["CounterReducer"],
+    starWars: _starwars_StarWarsReducer__WEBPACK_IMPORTED_MODULE_4__["starWarsReducer"],
+    serverRouteData: _ServerRouteData_ServerRouteDataReducer__WEBPACK_IMPORTED_MODULE_5__["ServerRoutePageReducer"],
+    animalLatinName: _AnimalLatinName_AnimalLatinNameReducer__WEBPACK_IMPORTED_MODULE_6__["AnimalLatinNameReducer"]
 });
 function configureStore(initialReduxStoreState = undefined) {
     let store;

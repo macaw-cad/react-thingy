@@ -24,7 +24,7 @@ namespace Web.App
             // - enables the ability for frameworks to bind their options to their default configuration sections
             WebHost.CreateDefaultBuilder(args)
 #if XDEBUG
-                .UseUrls("http://localhost:5000", "https://localhost:5001")
+                .UseUrls("https://localhost:5001", "http://localhost:5000")
 #endif
 
 #if false

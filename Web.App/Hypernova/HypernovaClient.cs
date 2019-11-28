@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +8,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Web.App.Hypernova
 {
@@ -158,22 +161,51 @@ namespace Web.App.Hypernova
 			} catch(Exception e) {
 				throw new HypernovaException($"Post to Hypernova Component Server at '{hypernovaServerUrl}/batch' failed. Error: {e.Message}");
 			}
-			
-			var hypernovaResult = JsonConvert.DeserializeObject<HypernovaResult>(responseString);
-			
-            if (hypernovaResult.Succes == false && hypernovaResult.Error != null)
+
+            List<string> errors = new List<string>();
+            var hypernovaResult = JsonConvert.DeserializeObject<HypernovaResult>(responseString,
+                new JsonSerializerSettings
+                {
+                    Error = delegate (object sender, ErrorEventArgs args)
+                    {
+                        errors.Add(args.ErrorContext.Error.Message);
+                        args.ErrorContext.Handled = true;
+                    }
+                });
+            if (errors.Count > 0)
             {
-                throw new HypernovaException($"Call to Hypernova Component Server at '{hypernovaServerUrl}' failed. Error: {hypernovaResult.Error.Message}");
+                throw new HypernovaException("Failed to parse JSon returned by call to Hypernova Component Server. The following errors were found:\n" + string.Join("\n", errors));
             }
 
-            var componentResult = hypernovaResult.Results[componentName];
-
-            if (componentResult.StatusCode != 200)
+            string html = "ERROR";
+            try
             {
-                throw new HypernovaException($"Failed to render component '{componentName}' using the Hypernova Component Server at '{hypernovaServerUrl}'. Error: {componentResult.Error?.Message}, Stacktrace: {(componentResult.Error != null ? string.Join("\r\n", componentResult.Error.Stack) : "")}");
+                var a = JToken.Parse(responseString);
+                var b = a["results"].Value<JObject>();
+                var c = b[componentName].Value<JObject>();
+                string name = c["name"].Value<string>();
+                var d = c["html"].Value<string>();
+                html = d.ToString();
+            } 
+            catch (Exception ex)
+            {
+                throw new HypernovaException($"Failed to parse JSon returned by call to Hypernova Component Server. Error: ${ex.Message}");
             }
 
-            return new HtmlString(hypernovaResult.Results[componentName].Html);
+            //    if (hypernovaResult.Success == false && hypernovaResult.Error != null)
+            //    {
+            //        throw new HypernovaException($"Call to Hypernova Component Server at '{hypernovaServerUrl}' failed. Error: {hypernovaResult.Error.Message}");
+            //    }
+
+            //    var componentResult = hypernovaResult.Results[componentName];
+
+            //    if (componentResult.StatusCode != 200)
+            //    {
+            //        throw new HypernovaException($"Failed to render component '{componentName}' using the Hypernova Component Server at '{hypernovaServerUrl}'. Error: {componentResult.Error?.Message}, Stacktrace: {(componentResult.Error != null ? string.Join("\r\n", componentResult.Error.Stack) : "")}");
+            //    }
+
+            //    return new HtmlString(hypernovaResult.Results[componentName].Html);
+            return new HtmlString(html);
         }
 
         // https://stackoverflow.com/questions/6803073/get-local-ip-address (rodcesar.santos)

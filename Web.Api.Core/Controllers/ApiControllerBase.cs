@@ -64,11 +64,38 @@ namespace Web.Api.Core.Controllers
             return base.Conflict(problemDetails);
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
         public ConflictObjectResult Conflict<T>(T value) where T : ErrorDetails
         {
             var problemDetails = ProblemDetailsHelper.CreateProblemDetails<T>(StatusCodes.Status409Conflict, "The object conflicts.", HttpContext.TraceIdentifier, value);
             return base.Conflict(problemDetails);
+        }
+
+        public override UnauthorizedResult Unauthorized()
+        {
+            throw new BadRequestException("Unauthorized - reported using Unauthorized(), but use Unauthorized<ErrorDetailsVoid>() instead");
+        }
+
+        public override UnauthorizedObjectResult Unauthorized(object value = null)
+        {
+            ProblemDetails problemDetails;
+            if (value == null)
+            {
+                problemDetails = ProblemDetailsHelper.CreateProblemDetails(StatusCodes.Status401Unauthorized, "Unauthorized.", HttpContext.TraceIdentifier);
+            }
+            else { problemDetails = ProblemDetailsHelper.CreateProblemDetails<ErrorDetailsObject>(StatusCodes.Status401Unauthorized, "Unauthorized.", HttpContext.TraceIdentifier, new ErrorDetailsObject { Value = JsonConvert.SerializeObject(value) }); }
+            return base.Unauthorized(problemDetails);
+        }
+
+        public UnauthorizedObjectResult Unauthorized(string error)
+        {
+            var problemDetails = ProblemDetailsHelper.CreateProblemDetails(StatusCodes.Status401Unauthorized, error, HttpContext.TraceIdentifier);
+            return base.Unauthorized(problemDetails);
+        }
+
+        public UnauthorizedObjectResult Unauthorized<T>(T value) where T : ErrorDetails
+        {
+            var problemDetails = ProblemDetailsHelper.CreateProblemDetails<T>(StatusCodes.Status401Unauthorized, "Unauthorized.", HttpContext.TraceIdentifier, value);
+            return base.Unauthorized(problemDetails);
         }
     }
 }
