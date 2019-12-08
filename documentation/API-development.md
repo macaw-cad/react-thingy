@@ -165,3 +165,11 @@ Swagger
 ASP.NET API Versioning 
 ProblemDetails Class 
 Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content 
+
+## Debugging Swagger configurations
+
+When something is wrong with the Swagger configuration you will get a generic error like:
+
+![Generic Swagger error](./Swagger&#32;UI&#32;error.png)
+
+To get more detailed error information go to the url: `https://yourserver/swagger/v1/swagger.json`.

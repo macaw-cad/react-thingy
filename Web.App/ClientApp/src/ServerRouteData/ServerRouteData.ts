@@ -1,4 +1,4 @@
-import { IAnimal, ICar, PageType } from '../api/ApiClients';
+import { IAnimal, ICar, PageType } from '../api/WebAppClients';
 import { AsyncData } from '../store/AsyncData';
 
 export type ServerRouteData = {

@@ -64,8 +64,8 @@
     "build:server-bundle:development": "cross-env NODE_ENV=development cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:server-bundle:production": "cross-env NODE_ENV=production cross-env PUBLIC_URL=$npm_package_appdir cross-env SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER=../HypernovaComponentServer webpack --config webpack.server-bundle.config.js",
     "build:storybook": "build-storybook -c .storybook -o storybookbuild -s ./public",
-    "gen:apiclients": "nswag run /runtime:NetCore22 /input:nswag.json",
-    "gen:WebApiVersionedClients": "nswag run /runtime:NetCore22 /input:nswag-Web.Api.Versioned.json",
+    "gen:WebAppClients": "npm run gen:WebAppClients && npm run gen:WebApiVersionedClients",
+    "gen:WebApiVersionedClients": "nswag run /runtime:NetCore22 /input:nswag.json /variables:Project=../../Web.Api.Versioned/Web.Api.Versioned.csproj,Output=src/api/WebApiVersionedClients.ts",
     "test": "react-scripts test",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache --env=jsdom",
     "plop": "plop"

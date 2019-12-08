@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { StarWars } from '../StarWars';
 import { Provider } from 'react-redux';
 import { container, TYPE } from '../../services/container';
-import { IStarWarsClient, StarWarsPerson } from '../../api/ApiClients';
+import { IStarWarsClient, StarWarsPerson } from '../../api/WebAppClients';
 import { createStore } from 'redux';
 import { reducer } from '../../store/store';
 

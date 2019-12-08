@@ -5,7 +5,7 @@ import { TypeKeysBaseName } from './StarWarsActions';
 import { AsyncData } from '../store/AsyncData';
 import { ApplicationContext } from '../ApplicationContext';
 import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
-import { IStarWarsClient, StarWarsPerson } from '../api/ApiClients';
+import { IStarWarsClient, StarWarsPerson } from '../api/WebAppClients';
 import { TYPE, resolve } from '../services/container';
 import { Environment } from '../Environment';
 

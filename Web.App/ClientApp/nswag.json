@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
-      "project": "../Web.App.csproj",
+      "project": "$(Project)",
       "msBuildProjectExtensionsPath": null,
       "configuration": null,
       "runtime": null,
@@ -103,13 +103,13 @@
       "queryNullValue": "",
       "inlineNamedDictionaries": false,
       "inlineNamedAny": false,
-      "templateDirectory": null,
+      "templateDirectory": null,  
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "src/api/ApiClients.ts"
+      "output": "$(Output)"
     }
   }
 }

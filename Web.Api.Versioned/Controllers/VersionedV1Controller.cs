@@ -8,6 +8,10 @@ using Web.Api.Core.Helpers;
 
 namespace Web.Api.Versioned.Controllers
 {
+    public class GetBodyInput
+    {
+        public string Name { get; set; }
+    }
     /// <summary>
     /// Example versioned api - version 1
     /// </summary>
@@ -78,6 +82,18 @@ namespace Web.Api.Versioned.Controllers
         public ActionResult<string> ReturnBadRequestWithString()
         {
             return BadRequest("my BadRequest error");
+        }
+
+        /// <summary>
+        /// WithBody - call with GET body. Note: on Swagger use POST.
+        /// </summary>
+        [HttpGet("WithBody")]
+        [HttpPost("WithBody")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(ProblemDetailsExtended), StatusCodes.Status500InternalServerError)]
+        public ActionResult<GetBodyInput> WithBody([FromBody]GetBodyInput input)
+        {
+            return Ok(input);
         }
     }
 }

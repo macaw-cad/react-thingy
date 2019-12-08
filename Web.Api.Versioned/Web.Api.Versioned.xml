@@ -35,6 +35,11 @@
             ReturnBadRequestWithString - should override ProblemDetails detail
             </summary>
         </member>
+        <member name="M:Web.Api.Versioned.Controllers.VersionedV1Controller.WithBody(Web.Api.Versioned.Controllers.GetBodyInput)">
+            <summary>
+            WithBody - call with GET body. Note: on Swagger use POST.
+            </summary>
+        </member>
         <member name="T:Web.Api.Versioned.Controllers.VersionedV2Controller">
             <summary>
             Example versioned api - version 2

@@ -75581,10 +75581,47 @@ const isomorphicFetch = (url, init) => {
 
 /***/ }),
 
-/***/ "./src/api/ApiClients.ts":
-/*!*******************************!*\
-  !*** ./src/api/ApiClients.ts ***!
-  \*******************************/
+/***/ "./src/api/MockStarWarsClient.ts":
+/*!***************************************!*\
+  !*** ./src/api/MockStarWarsClient.ts ***!
+  \***************************************/
+/*! exports provided: MockStarWarsClient */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MockStarWarsClient", function() { return MockStarWarsClient; });
+/* harmony import */ var _ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
+/* harmony import */ var _Logger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Logger */ "./src/Logger.ts");
+
+
+class MockStarWarsClient {
+    constructor(baseUrl) {
+        this.mockApiBaseUrl = baseUrl;
+    }
+    getPeople() {
+        const getPeoplePromise = new Promise(async (resolve, reject) => {
+            const url = `${this.mockApiBaseUrl}/starwars-people`;
+            try {
+                const response = await Object(_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_0__["isomorphicFetch"])(url);
+                resolve(response.json());
+            }
+            catch (e) {
+                _Logger__WEBPACK_IMPORTED_MODULE_1__["Logger"].error(`API call GET '${url}' fails with code: ${e.statusCode}. Exception: ${e.toString()}`);
+                reject(e);
+            }
+        });
+        return getPeoplePromise;
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/api/WebAppClients.ts":
+/*!**********************************!*\
+  !*** ./src/api/WebAppClients.ts ***!
+  \**********************************/
 /*! exports provided: JsonServerClient, HypernovaComponentServerClient, AnimalLatinNameClient, ServerRouteClient, StarWarsClient, AnimalLatinName, ServerRouteData, EnumByEnumeration, PageType, Car, Animal, StarWarsPerson, ApiException */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -75617,6 +75654,10 @@ class JsonServerClient {
         this.http = http ? http : window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * Execute an JsonServer query.
+     * @return The response from jsonserver.
+     */
     jsonServer(jsonServerRequest) {
         let url_ = this.baseUrl + "/mockapi/{jsonServerRequest}";
         if (jsonServerRequest === undefined || jsonServerRequest === null)
@@ -75653,6 +75694,10 @@ class JsonServerClient {
         }
         return Promise.resolve(null);
     }
+    /**
+     * Execute an JsonServer query.
+     * @return The response from jsonserver.
+     */
     jsonServer2(jsonServerRequest) {
         let url_ = this.baseUrl + "/mockapi/{jsonServerRequest}";
         if (jsonServerRequest === undefined || jsonServerRequest === null)
@@ -75696,6 +75741,10 @@ class HypernovaComponentServerClient {
         this.http = http ? http : window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * Execute a HypernovaComponentServer action.
+     * @return The response from HypernovaComponentServer.
+     */
     hypernova(hypernovaComponentServerRequest) {
         let url_ = this.baseUrl + "/componentserver/{hypernovaComponentServerRequest}";
         if (hypernovaComponentServerRequest === undefined || hypernovaComponentServerRequest === null)
@@ -75732,6 +75781,10 @@ class HypernovaComponentServerClient {
         }
         return Promise.resolve(null);
     }
+    /**
+     * Execute a HypernovaComponentServer action.
+     * @return The response from HypernovaComponentServer.
+     */
     hypernova2(hypernovaComponentServerRequest) {
         let url_ = this.baseUrl + "/componentserver/{hypernovaComponentServerRequest}";
         if (hypernovaComponentServerRequest === undefined || hypernovaComponentServerRequest === null)
@@ -75775,6 +75828,11 @@ class AnimalLatinNameClient {
         this.http = http ? http : window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * Translate animal name to Latin.
+     * @param animalName (optional) The English animal name.
+     * @return The Latin translation object AnimalLatinName.
+     */
     get(animalName) {
         let url_ = this.baseUrl + "/api/animallatinname?";
         if (animalName !== undefined)
@@ -75819,6 +75877,11 @@ class ServerRouteClient {
         this.http = http ? http : window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * Get routing information based on the Uri.
+     * @param route (optional) The route path to resolve.
+     * @return The server determined routing information of type ServerRouteData.
+     */
     getServerRoute(route) {
         let url_ = this.baseUrl + "/api/serverroute?";
         if (route !== undefined)
@@ -75973,6 +76036,7 @@ class ServerRouteData {
         return data;
     }
 }
+/** Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types */
 class EnumByEnumeration {
     constructor(data) {
         if (data) {
@@ -76125,43 +76189,6 @@ function throwException(message, status, response, headers, result) {
         throw result;
     else
         throw new ApiException(message, status, response, headers, null);
-}
-
-
-/***/ }),
-
-/***/ "./src/api/MockStarWarsClient.ts":
-/*!***************************************!*\
-  !*** ./src/api/MockStarWarsClient.ts ***!
-  \***************************************/
-/*! exports provided: MockStarWarsClient */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MockStarWarsClient", function() { return MockStarWarsClient; });
-/* harmony import */ var _ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
-/* harmony import */ var _Logger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Logger */ "./src/Logger.ts");
-
-
-class MockStarWarsClient {
-    constructor(baseUrl) {
-        this.mockApiBaseUrl = baseUrl;
-    }
-    getPeople() {
-        const getPeoplePromise = new Promise(async (resolve, reject) => {
-            const url = `${this.mockApiBaseUrl}/starwars-people`;
-            try {
-                const response = await Object(_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_0__["isomorphicFetch"])(url);
-                resolve(response.json());
-            }
-            catch (e) {
-                _Logger__WEBPACK_IMPORTED_MODULE_1__["Logger"].error(`API call GET '${url}' fails with code: ${e.statusCode}. Exception: ${e.toString()}`);
-                reject(e);
-            }
-        });
-        return getPeoplePromise;
-    }
 }
 
 
@@ -77020,7 +77047,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TYPE", function() { return _types__WEBPACK_IMPORTED_MODULE_1__["TYPE"]; });
 
 /* harmony import */ var _userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../userSettings/MockDataFlags */ "./src/userSettings/MockDataFlags.ts");
-/* harmony import */ var _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/ApiClients */ "./src/api/ApiClients.ts");
+/* harmony import */ var _api_WebAppClients__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/WebAppClients */ "./src/api/WebAppClients.ts");
 /* harmony import */ var _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api/MockStarWarsClient */ "./src/api/MockStarWarsClient.ts");
 /* harmony import */ var _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../api/ApiClientIsomorphicFetch */ "./src/api/ApiClientIsomorphicFetch.ts");
 
@@ -77032,10 +77059,10 @@ __webpack_require__.r(__webpack_exports__);
 const getContainer = () => {
     const containerInstance = new _owja_ioc__WEBPACK_IMPORTED_MODULE_0__["Container"]();
     containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].ServerRouteDataClient).toFactory(() => {
-        return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+        return new _api_WebAppClients__WEBPACK_IMPORTED_MODULE_3__["ServerRouteClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
     });
     containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].AnimalLatinNameClient).toFactory(() => {
-        return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["AnimalLatinNameClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+        return new _api_WebAppClients__WEBPACK_IMPORTED_MODULE_3__["AnimalLatinNameClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
     });
     containerInstance.bind(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].StarWarsClient).toFactory(() => {
         const mockDataFlags = Object(_userSettings_MockDataFlags__WEBPACK_IMPORTED_MODULE_2__["getMockDataFlags"])();
@@ -77043,7 +77070,7 @@ const getContainer = () => {
             return new _api_MockStarWarsClient__WEBPACK_IMPORTED_MODULE_4__["MockStarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].MockUrl));
         }
         else {
-            return new _api_ApiClients__WEBPACK_IMPORTED_MODULE_3__["StarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
+            return new _api_WebAppClients__WEBPACK_IMPORTED_MODULE_3__["StarWarsClient"](containerInstance.get(_types__WEBPACK_IMPORTED_MODULE_1__["TYPE"].BaseUrl), { fetch: _api_ApiClientIsomorphicFetch__WEBPACK_IMPORTED_MODULE_5__["isomorphicFetch"] });
         }
     }) /*.inSingletonScope()*/;
     return containerInstance;

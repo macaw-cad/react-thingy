@@ -17,18 +17,30 @@ namespace Web.Api.Versioned
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly ILogger _logger;
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _env;
 
-        public IConfiguration Configuration { get; }
+        public Startup(ILogger<Startup> logger, IConfiguration configuration, IHostingEnvironment env)
+        {
+            _logger = logger;
+            _configuration = configuration;
+            _env = env;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.ConfigureApiVersioning();
+
+            services.AddLogging();
+
+            services.AddHealthChecks()
+                .ApplicationInfoHealthCheck("api", _env)
+                .AddSqlConnectionStringHealthCheck("connectionstrings", _configuration.GetSection("ConnectionStrings"))
+                .AddUrisHealthCheck("healthCheckUris", _configuration.GetSection("HealthCheckUris"));
+
             services.ConfigureSwaggerDoc("Web.Api.Versioned Web API", "Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>");
         }
 
@@ -38,13 +50,14 @@ namespace Web.Api.Versioned
             app.UseMiddleware<ResponseTimeMiddleware>(); // must be the first in the pipeline
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
-            app.UseSwaggerWithOptionalApiVersioning(apiVersionDescriptionProvider);
-
-            if (!env.IsDevelopment())
+            app.UseHealthCheckEndPoints();
+            if (!env.IsProduction())
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseSwaggerWithOptionalApiVersioning(apiVersionDescriptionProvider);
             }
+
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
 
             app.UseHttpsRedirection();
             app.UseMvc();

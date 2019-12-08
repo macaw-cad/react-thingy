@@ -6,7 +6,7 @@ import {
     IAnimalLatinNameClient, AnimalLatinNameClient,
     IServerRouteClient, ServerRouteClient, 
     IStarWarsClient, StarWarsClient
- } from '../api/ApiClients';
+ } from '../api/WebAppClients';
 import { MockStarWarsClient } from '../api/MockStarWarsClient';
 import { isomorphicFetch } from '../api/ApiClientIsomorphicFetch';
 

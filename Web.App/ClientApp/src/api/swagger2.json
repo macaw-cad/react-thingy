@@ -1,312 +1,390 @@
 ﻿{
-  "x-generator": "NSwag v13.1.5.0 (NJsonSchema v10.0.27.0 (Newtonsoft.Json v12.0.0.0))",
+  "x-generator": "NSwag v13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))",
   "swagger": "2.0",
   "info": {
-    "title": "Web.App B4F Web API",
-    "description": "For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.<br/>Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>",
+    "title": "Web.Api.Versioned Web API",
+    "description": "Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>",
     "version": "v1"
   },
+  "produces": [
+    "application/json"
+  ],
   "paths": {
-    "/mockapi/{jsonServerRequest}": {
-      "post": {
-        "tags": [
-          "JsonServer"
-        ],
-        "operationId": "JsonServer_JsonServer",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "jsonServerRequest",
-            "in": "path",
-            "required": true,
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
-          }
-        }
-      },
+    "/api/v1/versioned/{value}": {
       "get": {
         "tags": [
-          "JsonServer"
+          "VersionedV1"
         ],
-        "operationId": "JsonServer_JsonServer2",
+        "summary": "Minimal sample implementation of version 1 of the versioned service.",
+        "description": "Supported arguments: 0..4, 0 is default value and the Ok case, 1..4 give errors.\n\n* Ok result - returns array of two strings\n* 1: 400 - BadRequest\n* 2: 404 - NotFound\n* 3: 409 - Conflict (with error details of type `ConflictDetails`)\n* 4: An uncatched exception resulting in 500 - InternalServerErrror",
+        "operationId": "VersionedV1_Get",
         "parameters": [
           {
-            "type": "string",
-            "name": "jsonServerRequest",
+            "type": "integer",
+            "name": "value",
             "in": "path",
             "required": true,
-            "x-nullable": true
+            "description": "A value 0..4 for different error conditions.",
+            "format": "int32",
+            "default": 0,
+            "x-nullable": false
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
-          }
-        }
-      }
-    },
-    "/componentserver/{hypernovaComponentServerRequest}": {
-      "post": {
-        "tags": [
-          "HypernovaComponentServer"
-        ],
-        "operationId": "HypernovaComponentServer_Hypernova",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "hypernovaComponentServerRequest",
-            "in": "path",
-            "required": true,
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "HypernovaComponentServer"
-        ],
-        "operationId": "HypernovaComponentServer_Hypernova2",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "hypernovaComponentServerRequest",
-            "in": "path",
-            "required": true,
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
-          }
-        }
-      }
-    },
-    "/api/animallatinname": {
-      "get": {
-        "tags": [
-          "AnimalLatinName"
-        ],
-        "operationId": "AnimalLatinName_Get",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "name": "animalName",
-            "in": "query",
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
+          "400": {
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/AnimalLatinName"
+              "$ref": "#/definitions/ProblemDetailsExtended"
             }
-          }
-        }
-      }
-    },
-    "/api/serverroute": {
-      "get": {
-        "tags": [
-          "ServerRoute"
-        ],
-        "operationId": "ServerRoute_GetServerRoute",
-        "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "name": "route",
-            "in": "query",
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
+          },
+          "404": {
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/ServerRouteData"
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "409": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfConflictDetails"
             }
           },
           "500": {
-            "description": ""
-          },
-          "404": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/starwars/people": {
-      "get": {
-        "tags": [
-          "StarWars"
-        ],
-        "operationId": "StarWars_GetPeople",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "name": "query",
-            "in": "query",
-            "x-nullable": true
-          }
-        ],
-        "responses": {
-          "200": {
             "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StarWarsPerson"
-              }
+              "$ref": "#/definitions/ProblemDetailsExtendedOfErrorDetailsException"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/versioned/ReturnBadRequest": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "ReturnBadRequest - should throw exception",
+        "operationId": "VersionedV1_ReturnBadRequest",
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfErrorDetailsException"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/versioned/ReturnBadRequestWithString": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "ReturnBadRequestWithString - should override ProblemDetails detail",
+        "operationId": "VersionedV1_ReturnBadRequestWithString",
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/versioned/WithBody": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "WithBody - call with GET body. Note: on Swagger use POST.",
+        "operationId": "VersionedV1_WithBody",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetBodyInput"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "WithBody - call with GET body. Note: on Swagger use POST.",
+        "operationId": "VersionedV1_WithBody2",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetBodyInput"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v2/versioned/{value}": {
+      "get": {
+        "tags": [
+          "VersionedV2"
+        ],
+        "summary": "Minimal sample implementation of version 2 of the versioned service.",
+        "description": "Supported arguments: 0..4, 0 is default value and the Ok case, 1..4 give errors.\n\n* Ok result - returns array of two strings\n* 1: 400 - BadRequest\n* 2: 404 - NotFound\n* 3: 409 - Conflict (with error details of type ConflictDetails)\n* 4: An uncatched exception resulting in 500 - InternalServerErrror",
+        "operationId": "VersionedV2_Get",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "description": "A value 0..4 for different error conditions.",
+            "format": "int32",
+            "default": 0,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "409": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfConflictDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfErrorDetailsException"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       }
     }
   },
   "definitions": {
-    "AnimalLatinName": {
-      "type": "object",
-      "properties": {
-        "originalName": {
-          "type": "string"
-        },
-        "latinName": {
-          "type": "string"
-        }
-      }
-    },
-    "ServerRouteData": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/PageType"
-        },
-        "carData": {
-          "$ref": "#/definitions/Car"
-        },
-        "animalData": {
-          "$ref": "#/definitions/Animal"
-        }
-      }
-    },
-    "PageType": {
+    "ProblemDetailsExtended": {
       "allOf": [
         {
-          "$ref": "#/definitions/EnumByEnumeration"
+          "$ref": "#/definitions/ProblemDetails"
         },
         {
-          "type": "object"
+          "type": "object",
+          "x-abstract": true,
+          "additionalProperties": {},
+          "properties": {
+            "traceIdentifier": {
+              "type": "string"
+            }
+          }
         }
       ]
     },
-    "EnumByEnumeration": {
+    "ProblemDetails": {
       "type": "object",
-      "x-abstract": true,
-      "required": [
-        "id"
-      ],
+      "additionalProperties": {},
       "properties": {
-        "name": {
+        "type": {
           "type": "string"
         },
-        "id": {
+        "title": {
+          "type": "string"
+        },
+        "status": {
           "type": "integer",
           "format": "int32"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
         }
       }
     },
-    "Car": {
-      "type": "object",
-      "required": [
-        "year",
-        "speed"
-      ],
-      "properties": {
-        "year": {
-          "type": "integer",
-          "format": "int32"
+    "ProblemDetailsExtendedOfConflictDetails": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemDetailsExtended"
         },
-        "make": {
-          "type": "string"
-        },
-        "speed": {
-          "type": "integer",
-          "format": "int32"
+        {
+          "type": "object",
+          "x-abstract": true,
+          "additionalProperties": {},
+          "properties": {
+            "errorDetails": {
+              "$ref": "#/definitions/ConflictDetails"
+            }
+          }
         }
-      }
+      ]
     },
-    "Animal": {
+    "ConflictDetails": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ErrorDetails"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ErrorDetails": {
+      "type": "object"
+    },
+    "ProblemDetailsExtendedOfErrorDetailsException": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemDetailsExtended"
+        },
+        {
+          "type": "object",
+          "x-abstract": true,
+          "additionalProperties": {},
+          "properties": {
+            "errorDetails": {
+              "$ref": "#/definitions/ErrorDetailsException"
+            }
+          }
+        }
+      ]
+    },
+    "ErrorDetailsException": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ErrorDetails"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "stackTrace": {
+              "type": "string"
+            },
+            "innerExceptionMessage": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "GetBodyInput": {
       "type": "object",
-      "required": [
-        "maxAge"
-      ],
       "properties": {
         "name": {
-          "type": "string"
-        },
-        "maxAge": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "StarWarsPerson": {
-      "type": "object",
-      "required": [
-        "weight"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "weight": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "hairColor": {
           "type": "string"
         }
       }
     }
-  }
+  },
+  "securityDefinitions": {
+    "JWT token": {
+      "type": "apiKey",
+      "description": "Copy this into  the value field: \nBearer {my long token}",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "JWT token": []
+    }
+  ]
 }

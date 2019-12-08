@@ -51,10 +51,10 @@ namespace Web.Api.Core.Extensions
             {
                 configuration.Path = "/swagger";
             });
-            builder.UseReDoc(configuration =>
-            {
-                configuration.Path = "/redoc";
-            });
+            //builder.UseReDoc(configuration =>
+            //{
+            //    configuration.Path = "/redoc";
+            //});
 
             return builder;
         }

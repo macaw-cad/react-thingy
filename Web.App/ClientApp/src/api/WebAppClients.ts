@@ -8,7 +8,15 @@
 // ReSharper disable InconsistentNaming
 
 export interface IJsonServerClient {
+    /**
+     * Execute an JsonServer query.
+     * @return The response from jsonserver.
+     */
     jsonServer(jsonServerRequest: string | null): Promise<FileResponse | null>;
+    /**
+     * Execute an JsonServer query.
+     * @return The response from jsonserver.
+     */
     jsonServer2(jsonServerRequest: string | null): Promise<FileResponse | null>;
 }
 
@@ -22,6 +30,10 @@ export class JsonServerClient implements IJsonServerClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
+    /**
+     * Execute an JsonServer query.
+     * @return The response from jsonserver.
+     */
     jsonServer(jsonServerRequest: string | null): Promise<FileResponse | null> {
         let url_ = this.baseUrl + "/mockapi/{jsonServerRequest}";
         if (jsonServerRequest === undefined || jsonServerRequest === null)
@@ -57,6 +69,10 @@ export class JsonServerClient implements IJsonServerClient {
         return Promise.resolve<FileResponse | null>(<any>null);
     }
 
+    /**
+     * Execute an JsonServer query.
+     * @return The response from jsonserver.
+     */
     jsonServer2(jsonServerRequest: string | null): Promise<FileResponse | null> {
         let url_ = this.baseUrl + "/mockapi/{jsonServerRequest}";
         if (jsonServerRequest === undefined || jsonServerRequest === null)
@@ -94,7 +110,15 @@ export class JsonServerClient implements IJsonServerClient {
 }
 
 export interface IHypernovaComponentServerClient {
+    /**
+     * Execute a HypernovaComponentServer action.
+     * @return The response from HypernovaComponentServer.
+     */
     hypernova(hypernovaComponentServerRequest: string | null): Promise<FileResponse | null>;
+    /**
+     * Execute a HypernovaComponentServer action.
+     * @return The response from HypernovaComponentServer.
+     */
     hypernova2(hypernovaComponentServerRequest: string | null): Promise<FileResponse | null>;
 }
 
@@ -108,6 +132,10 @@ export class HypernovaComponentServerClient implements IHypernovaComponentServer
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
+    /**
+     * Execute a HypernovaComponentServer action.
+     * @return The response from HypernovaComponentServer.
+     */
     hypernova(hypernovaComponentServerRequest: string | null): Promise<FileResponse | null> {
         let url_ = this.baseUrl + "/componentserver/{hypernovaComponentServerRequest}";
         if (hypernovaComponentServerRequest === undefined || hypernovaComponentServerRequest === null)
@@ -143,6 +171,10 @@ export class HypernovaComponentServerClient implements IHypernovaComponentServer
         return Promise.resolve<FileResponse | null>(<any>null);
     }
 
+    /**
+     * Execute a HypernovaComponentServer action.
+     * @return The response from HypernovaComponentServer.
+     */
     hypernova2(hypernovaComponentServerRequest: string | null): Promise<FileResponse | null> {
         let url_ = this.baseUrl + "/componentserver/{hypernovaComponentServerRequest}";
         if (hypernovaComponentServerRequest === undefined || hypernovaComponentServerRequest === null)
@@ -180,6 +212,11 @@ export class HypernovaComponentServerClient implements IHypernovaComponentServer
 }
 
 export interface IAnimalLatinNameClient {
+    /**
+     * Translate animal name to Latin.
+     * @param animalName (optional) The English animal name.
+     * @return The Latin translation object AnimalLatinName.
+     */
     get(animalName?: string | null | undefined): Promise<AnimalLatinName>;
 }
 
@@ -193,6 +230,11 @@ export class AnimalLatinNameClient implements IAnimalLatinNameClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
+    /**
+     * Translate animal name to Latin.
+     * @param animalName (optional) The English animal name.
+     * @return The Latin translation object AnimalLatinName.
+     */
     get(animalName?: string | null | undefined): Promise<AnimalLatinName> {
         let url_ = this.baseUrl + "/api/animallatinname?";
         if (animalName !== undefined)
@@ -231,6 +273,11 @@ export class AnimalLatinNameClient implements IAnimalLatinNameClient {
 }
 
 export interface IServerRouteClient {
+    /**
+     * Get routing information based on the Uri.
+     * @param route (optional) The route path to resolve.
+     * @return The server determined routing information of type ServerRouteData.
+     */
     getServerRoute(route?: string | null | undefined): Promise<ServerRouteData>;
 }
 
@@ -244,6 +291,11 @@ export class ServerRouteClient implements IServerRouteClient {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
+    /**
+     * Get routing information based on the Uri.
+     * @param route (optional) The route path to resolve.
+     * @return The server determined routing information of type ServerRouteData.
+     */
     getServerRoute(route?: string | null | undefined): Promise<ServerRouteData> {
         let url_ = this.baseUrl + "/api/serverroute?";
         if (route !== undefined)
@@ -428,6 +480,7 @@ export interface IServerRouteData {
     animalData?: Animal | undefined;
 }
 
+/** Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types */
 export abstract class EnumByEnumeration implements IEnumByEnumeration {
     name?: string | undefined;
     id!: number;
@@ -461,6 +514,7 @@ export abstract class EnumByEnumeration implements IEnumByEnumeration {
     }
 }
 
+/** Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types */
 export interface IEnumByEnumeration {
     name?: string | undefined;
     id: number;

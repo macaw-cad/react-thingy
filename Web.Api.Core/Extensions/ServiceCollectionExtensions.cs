@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using NSwag.AspNetCore;
+using NSwag.Generation.Processors.Security;
+using NSwag;
+using System.Net;
 
 namespace Web.Api.Core.Extensions
 {
@@ -40,6 +43,18 @@ namespace Web.Api.Core.Extensions
         {
             services.AddSwaggerDocument(settings =>
             {
+                // Add an authenticate button to Swagger for JWT tokens
+                settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT token"));
+                settings.AddSecurity("JWT token", Enumerable.Empty<string>(),
+                    new OpenApiSecurityScheme()
+                    {
+                        Type = OpenApiSecuritySchemeType.ApiKey,
+                        Name = nameof(Authorization),
+                        In = OpenApiSecurityApiKeyLocation.Header,
+                        Description = "Copy this into  the value field: \nBearer {my long token}"
+                    }
+                );
+
                 settings.PostProcess = document =>
                 {
                     document.Info.Version = "v1";

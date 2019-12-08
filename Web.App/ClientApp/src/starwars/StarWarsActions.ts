@@ -1,5 +1,5 @@
 import { SetLoaderAction, SetErrorAction, SetDataAction } from '../BaseRedux/BaseActions';
-import { StarWarsPerson } from '../api/ApiClients';
+import { StarWarsPerson } from '../api/WebAppClients';
 
 export const TypeKeysBaseName = 'STARWARS';
 export enum TypeKeys {

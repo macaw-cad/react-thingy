@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/RootState';
 import { AsyncData } from '../store/AsyncData';
-import { AnimalLatinName, IAnimalLatinNameClient } from '../api/ApiClients';
+import { AnimalLatinName, IAnimalLatinNameClient } from '../api/WebAppClients';
 import { ApplicationContext } from '../ApplicationContext';
 import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { TypeKeysBaseName } from './AnimalLatinNameActions';

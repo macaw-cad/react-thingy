@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../sample/Header';
 import Footer from '../sample/Footer';
-import { Car } from '../api/ApiClients';
+import { Car } from '../api/WebAppClients';
 import { Link } from 'react-router-dom';
 
 type CarPageProps = {

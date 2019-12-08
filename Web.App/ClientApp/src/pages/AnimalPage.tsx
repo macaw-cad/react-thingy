@@ -3,7 +3,7 @@ import Header from '../sample/Header';
 import Footer from '../sample/Footer';
 import { useAnimalLatinName } from '../AnimalLatinName/useAnimalLatinName';
 import { AsyncData } from '../store/AsyncData';
-import { IAnimal, AnimalLatinName } from '../api/ApiClients';
+import { IAnimal, AnimalLatinName } from '../api/WebAppClients';
 
 type AnimalPageProps = {
     animal: IAnimal;

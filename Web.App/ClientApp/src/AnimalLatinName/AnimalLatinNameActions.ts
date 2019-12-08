@@ -1,5 +1,5 @@
 import { SetLoaderAction, SetErrorAction, SetDataAction } from '../BaseRedux/BaseActions';
-import { AnimalLatinName } from '../api/ApiClients';
+import { AnimalLatinName } from '../api/WebAppClients';
 
 export const TypeKeysBaseName = 'ANIMALLATINNAME';
 export enum TypeKeys {

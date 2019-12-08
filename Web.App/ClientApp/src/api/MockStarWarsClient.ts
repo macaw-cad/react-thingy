@@ -1,4 +1,4 @@
-import { StarWarsPerson, IStarWarsClient } from './ApiClients';
+import { StarWarsPerson, IStarWarsClient } from './WebAppClients';
 import { isomorphicFetch } from './ApiClientIsomorphicFetch';
 import { Logger } from '../Logger';
 

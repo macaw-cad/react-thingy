@@ -27,7 +27,7 @@ The following scripts are relevant while developing:
 
 - **Storybook**: `npm run storybook` - Start the Storybook server on port 9001.
 
-- **Generate API clients**: `npm run gen:apiclients` - Generate the TypeScript API clients for all available services. The API clients including all required TypeScript types are generate in the file `Web.App\ClientApp\src\api\ApiClients.ts`. During development this command must be re-executed after changes to C# Web API or used types. On the build server this npm command should be executed to ensure that the C# code and TypeScript code are aligned. 
+- **Generate API clients**: `npm run gen:WebAppClients` - Generate the TypeScript API clients for all available services. The API clients including all required TypeScript types are generate in the file `Web.App\ClientApp\src\api\WebAppClients.ts`. During development this command must be re-executed after changes to C# Web API or used types. On the build server this npm command should be executed to ensure that the C# code and TypeScript code are aligned. 
   
 Although it is possible to combine two or more of the above scripts into one script and run them in parallel, there are a few downsides to this approach:
 
