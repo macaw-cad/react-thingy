@@ -2,7 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const LoadablePlugin = require('@loadable/webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = x => {
     if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'production') {
@@ -11,9 +12,8 @@ module.exports = x => {
 
     console.log(`Generating ${process.env.NODE_ENV} server bundle at location: ${process.env.SERVER_BUNDLE_RELATIVE_OUTPUT_FOLDER}`);
 
-    const isProduction = process.env.NODE_ENV === 'production';
-
     let plugins = [];
+    plugins.push(new CleanWebpackPlugin());
     plugins.push(new webpack.NormalModuleReplacementPlugin(
         /\/iconv-loader$/, 'node-noop'
     ));
@@ -24,6 +24,7 @@ module.exports = x => {
         }
     }));
     plugins.push(new CheckerPlugin());
+    plugins.push(new LoadablePlugin());
 
     return {
         devtool: 'source-map',
@@ -57,7 +58,9 @@ module.exports = x => {
                                 instance: 'at-server',
                                 reportFiles: [
                                     'src/**/*.{ts,tsx}'
-                                ]
+                                ],
+                                useBabel: true,
+                                babelCore: '@babel/core'
                             }
                         }
                     ]

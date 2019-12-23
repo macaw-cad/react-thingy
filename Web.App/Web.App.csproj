@@ -64,9 +64,6 @@
     <Content Include="HypernovaComponentServer\creationinfo.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="HypernovaComponentServer\server-bundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="JsonServer\db.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

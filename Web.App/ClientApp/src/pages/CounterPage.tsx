@@ -1,8 +1,13 @@
 import * as React from 'react';
+import loadable from '@loadable/component';
 import Header from '../sample/Header';
 import Footer from '../sample/Footer';
-import Counter from '../counter/Counter';
-import { defaultApplicationContext } from '../ApplicationContext';
+// import Counter from '../counter/Counter';
+
+const Counter = loadable(() => import('../counter/Counter'), { 
+    ssr: true,
+    fallback: <div>Loading counter...</div>
+});
 
 export default class CounterPage extends React.Component {
     public render(): JSX.Element {
@@ -17,7 +22,7 @@ export default class CounterPage extends React.Component {
                 </p>
 
                 <div>
-                    <Counter applicationContext={defaultApplicationContext}/>
+                    <Counter />
                 </div>
                 <Footer />
             </>

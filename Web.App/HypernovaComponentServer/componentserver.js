@@ -70,14 +70,14 @@ const noTimeout = process.env.NODE_ENV === 'production' ? false : true; // set t
 // Sensible override if not specified: use the local server-bundle.js
 if (process.env.ComponentServerBundles === undefined) {
     process.env.ComponentServerBundles = JSON.stringify({
-        pwa: './server-bundle.js'
+        pwa: './bundles/server-bundle.js'
     });
     console.log(`Variable 'ComponentServerBundles' not defined - using default value ${JSON.stringify(process.env.ComponentServerBundles)}`);
 }
 
 let bundle_to_debug = undefined;
 if (debugUseLocalServerBundle) {
-    bundle_to_debug = require('./server-bundle');
+    bundle_to_debug = require('./bundles/server-bundle');
 }
 
 // hypernova server configuration
