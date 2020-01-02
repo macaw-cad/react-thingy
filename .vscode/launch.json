@@ -25,7 +25,7 @@
         // "-r", "source-map-support/register"
       ],
       "env": {
-        "ComponentServerBundles": "{\"pwa\":\"./server-bundle.js\"}"
+        "ComponentServerBundles": "{\"pwa\":\"./bundles/server-bundle.js\"}"
       },
       "runtimeExecutable": "${workspaceRoot}/Web.App/ClientApp/node_modules/.bin/nodemon",
       "restart": true,

@@ -1,92 +1,59 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import React, { useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/RootState';
 import { later } from '../sample/later';
-import { ApplicationContextConsumerProps, ApplicationContextConsumerType, AsyncTaskContext, withApplicationContext, defaultApplicationContext } from '../ApplicationContext';
+import { ApplicationContext } from '../ApplicationContext';
 import { Environment } from '../Environment';
 import { increment, decrement } from './CounterActions';
-import { Dispatch, Action } from 'redux';
 
-interface CounterStoreProps {
-  value: number;
-}
+export const Counter = () => {
+    const applicationContext = useContext(ApplicationContext).applicationContext;
+    const dispatch = useDispatch();
+    const value = useSelector((state: RootState) => state.counter.value);
+    const isHydrated = useSelector((state: RootState) => state.page.isHydrated);
 
-interface CounterStoreActions {
-  onIncrement: () => void;
-  onDecrement: () => void;
-}
+    const onIncrement = () => dispatch(increment(1));
+    const onDecrement = () => dispatch(decrement(1));
 
-interface CounterProps {
-}
+    // componentDidRenderServerSide() is registered in the constructor when the component is rendered at server-side.
+    // Registered functions are invoked by Hypernova server-side rendering immediately after the render() of the
+    // toplevel Hypernova component is finished and the whole component tree is ready.
+    // If this function does async calls, register them using addTask from applicationContext so the final rendering of
+    // the toplevel Hypernova component does execute after the async calls initiated from this function are completed.
+    const componentDidRenderServerSide = (): void => {
+        doIncrement();
+    };
 
-type CounterAllProps = CounterProps & CounterStoreProps & CounterStoreActions & ApplicationContextConsumerProps;
-
-class Counter extends React.Component<CounterAllProps> {
-  public static defaultProps = {
-    applicationContext: defaultApplicationContext
-  };
-
-  private asyncTaskContext: AsyncTaskContext;
-
-  constructor(props: CounterAllProps) {
-    super(props);
-
-    this.asyncTaskContext = this.props.applicationContext as AsyncTaskContext;
+    const doIncrement = (): void => {
+        const laterContext = later(1000, onIncrement);
+        applicationContext.addTask(laterContext.promise);
+    };
 
     if (Environment.isServer) {
-      props.applicationContext.addComponentDidRenderServerSideFunc(this.componentDidRenderServerSide.bind(this));
-    } else {
-      this.doIncrement(this.asyncTaskContext);
+        applicationContext.addComponentDidRenderServerSideFunc(componentDidRenderServerSide);
     }
-  }
-  
-  // componentDidRenderServerSide() is registered in the constructor when the component is rendered at server-side.
-  // Registered functions are invoked by Hypernova server-side rendering immediately after the render() of the
-  // toplevel Hypernova component is finished and the whole component tree is ready.
-  // If this function does async calls, register them using addTask from applicationContext so the final rendering of
-  // the toplevel Hypernova component does execute after the async calls initiated from this function are completed.
-  public componentDidRenderServerSide(applicationContext: ApplicationContextConsumerType): void {
-    this.doIncrement(applicationContext as AsyncTaskContext);
-  }
 
-  private doIncrement(asyncTaskContext: AsyncTaskContext): void {
-    if (!!this.props.onIncrement) {
-      const laterContext = later(1000, this.props.onIncrement);
-      asyncTaskContext.addTask(laterContext.promise);
-    }
-  }
+    useEffect(() => {
+        if (!isHydrated) {
+            doIncrement();
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  public render(): React.ReactNode {
-    const { value, onIncrement, onDecrement } = this.props;
     return (
-      <div>
-        <p>
-          Clicked: {value} times
+        <div>
+            <p>
+                Clicked: {value} times
         {' '}
-          <button onClick={onIncrement}>
-            +
+                <button onClick={onIncrement}>
+                    +
         </button>
-          {' '}
-          <button onClick={onDecrement}>
-            -
+                {' '}
+                <button onClick={onDecrement}>
+                    -
         </button>
-        </p>
-      </div>
+            </p>
+        </div>
     );
-  }
-}
-
-const mapStateToProps = (state: RootState) => {
-  return {
-      value: state.counter.value
-  };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
-  return {
-      onIncrement: () => dispatch(increment(1)),
-      onDecrement: () => dispatch(decrement(1))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withApplicationContext<CounterAllProps>(Counter));
+export default Counter;
