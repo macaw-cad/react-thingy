@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Web.App.HypernovaComponentServer
 {
@@ -19,6 +20,7 @@ namespace Web.App.HypernovaComponentServer
         /// <param name="config">The Configuration the Startup class was constructed with. Must not be null.</param>
         public static void AddHypernovaComponentServerSettings(this IServiceCollection services, IConfiguration config)
         {
+            if (config == null) throw new ArgumentNullException(nameof(config));
             services
                 .AddOptions()
                 .Configure<HypernovaComponentServerSettings>(config.GetSection(HypernovaComponentServerSettings.SettingsName));

@@ -9,7 +9,7 @@
             Example versioned api - version 1
             </summary>
         </member>
-        <member name="M:Web.Api.Versioned.Controllers.VersionedV1Controller.Get(System.Int32)">
+        <member name="M:Web.Api.Versioned.Controllers.VersionedV1Controller.Get(Web.Api.Versioned.Controllers.ResponseTrigger)">
             <summary>
             Minimal sample implementation of version 1 of the versioned service.
             </summary>

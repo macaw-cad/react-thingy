@@ -22,16 +22,16 @@ namespace Web.App.HypernovaComponentServer
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _options = options;
+            _options = options ?? throw new ArgumentNullException(nameof(options));
             _settings = options.Value;
         }
 
         /// <summary>
         /// Execute a HypernovaComponentServer action.
         /// </summary>
+        /// <param name="hypernovaComponentServerRequest"></param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The response from HypernovaComponentServer.</returns>
- 
         [HttpPost]
         [HttpGet]
         [Route("componentserver/{**hypernovaComponentServerRequest}")]
@@ -43,19 +43,22 @@ namespace Web.App.HypernovaComponentServer
             {
                 throw new HypernovaComponentServerException($"HypernovaComponentServer url '{hypernovaComponentServerUrl}' as specified in appsetting 'HypernovaComponentServer' is not an absolute url");
             }
-            var client = _httpClientFactory.CreateClient();
-            var clonedRequest = this.Request.ToHttpRequestMessage();
-            clonedRequest.RequestUri = new Uri($"{hypernovaComponentServerUrl}/{hypernovaComponentServerRequest}");
-            HttpResponseMessage result;
-            try
+            using (var client = _httpClientFactory.CreateClient())
             {
-                result = await client.SendAsync(clonedRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            } catch(HttpRequestException ex)
-            {
-                return new BadRequestObjectResult(new { status = false, message = "Is HypernovaComponentServer running? " + ex.ToString() });
+                var clonedRequest = this.Request.ToHttpRequestMessage();
+                clonedRequest.RequestUri = new Uri($"{hypernovaComponentServerUrl}/{hypernovaComponentServerRequest}");
+                HttpResponseMessage result;
+                try
+                {
+                    result = await client.SendAsync(clonedRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                }
+                catch (HttpRequestException ex)
+                {
+                    return new BadRequestObjectResult(new { status = false, message = "Is HypernovaComponentServer running? " + ex.ToString() });
+                }
+                var content = await result.Content.ReadAsStringAsync();
+                return Content(content);
             }
-            var content = await result.Content.ReadAsStringAsync();
-            return Content(content);
         }
     }
 }

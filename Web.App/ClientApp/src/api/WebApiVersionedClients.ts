@@ -7,12 +7,27 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+export class ApiConfiguration {
+    public getBearerToken?: () => string;
+}
+
+export class NSwagGeneratedApiBase {
+    constructor(private configuration: ApiConfiguration) {}
+
+    protected transformOptions(options: RequestInit): Promise<RequestInit> {
+        if (options && options.headers && this.configuration.getBearerToken) {
+            options.headers['Authorization'] = `Bearer ${this.configuration.getBearerToken()}`;
+        }
+        return Promise.resolve(options);
+    }
+}
+
 export interface IVersionedV1Client {
     /**
      * Minimal sample implementation of version 1 of the versioned service.
      * @param value A value 0..4 for different error conditions.
      */
-    get(value: number): Promise<void>;
+    get(value: ResponseTrigger): Promise<void>;
     /**
      * ReturnBadRequest - should throw exception
      */
@@ -31,12 +46,13 @@ export interface IVersionedV1Client {
     withBody2(input: GetBodyInput): Promise<void>;
 }
 
-export class VersionedV1Client implements IVersionedV1Client {
+export class VersionedV1Client extends NSwagGeneratedApiBase implements IVersionedV1Client {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -45,7 +61,7 @@ export class VersionedV1Client implements IVersionedV1Client {
      * Minimal sample implementation of version 1 of the versioned service.
      * @param value A value 0..4 for different error conditions.
      */
-    get(value: number): Promise<void> {
+    get(value: ResponseTrigger): Promise<void> {
         let url_ = this.baseUrl + "/api/v1/versioned/{value}";
         if (value === undefined || value === null)
             throw new Error("The parameter 'value' must be defined.");
@@ -58,7 +74,9 @@ export class VersionedV1Client implements IVersionedV1Client {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGet(_response);
         });
     }
@@ -69,29 +87,25 @@ export class VersionedV1Client implements IVersionedV1Client {
         if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetailsExtended.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
-            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = ProblemDetailsExtended.fromJS(resultData404);
+            result404 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status === 409) {
             return response.text().then((_responseText) => {
             let result409: any = null;
-            let resultData409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result409 = ProblemDetailsExtendedOfConflictDetails.fromJS(resultData409);
+            result409 = _responseText === "" ? null : <ProblemDetailsExtendedOfConflictDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result409);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetailsExtendedOfErrorDetailsException.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetailsExtendedOfErrorDetailsException>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -115,7 +129,9 @@ export class VersionedV1Client implements IVersionedV1Client {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processReturnBadRequest(_response);
         });
     }
@@ -126,8 +142,7 @@ export class VersionedV1Client implements IVersionedV1Client {
         if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetailsExtendedOfErrorDetailsException.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetailsExtendedOfErrorDetailsException>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -151,7 +166,9 @@ export class VersionedV1Client implements IVersionedV1Client {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processReturnBadRequestWithString(_response);
         });
     }
@@ -162,8 +179,7 @@ export class VersionedV1Client implements IVersionedV1Client {
         if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetailsExtended.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -191,7 +207,9 @@ export class VersionedV1Client implements IVersionedV1Client {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processWithBody(_response);
         });
     }
@@ -202,8 +220,7 @@ export class VersionedV1Client implements IVersionedV1Client {
         if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetailsExtended.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -231,7 +248,9 @@ export class VersionedV1Client implements IVersionedV1Client {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processWithBody2(_response);
         });
     }
@@ -242,8 +261,7 @@ export class VersionedV1Client implements IVersionedV1Client {
         if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetailsExtended.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -263,12 +281,13 @@ export interface IVersionedV2Client {
     get(value: number): Promise<void>;
 }
 
-export class VersionedV2Client implements IVersionedV2Client {
+export class VersionedV2Client extends NSwagGeneratedApiBase implements IVersionedV2Client {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -290,7 +309,9 @@ export class VersionedV2Client implements IVersionedV2Client {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGet(_response);
         });
     }
@@ -301,29 +322,25 @@ export class VersionedV2Client implements IVersionedV2Client {
         if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetailsExtended.fromJS(resultData400);
+            result400 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
-            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = ProblemDetailsExtended.fromJS(resultData404);
+            result404 = _responseText === "" ? null : <ProblemDetailsExtended>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status === 409) {
             return response.text().then((_responseText) => {
             let result409: any = null;
-            let resultData409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result409 = ProblemDetailsExtendedOfConflictDetails.fromJS(resultData409);
+            result409 = _responseText === "" ? null : <ProblemDetailsExtendedOfConflictDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result409);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = ProblemDetailsExtendedOfErrorDetailsException.fromJS(resultData500);
+            result500 = _responseText === "" ? null : <ProblemDetailsExtendedOfErrorDetailsException>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -335,293 +352,50 @@ export class VersionedV2Client implements IVersionedV2Client {
     }
 }
 
-export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-
-    constructor(data?: IProblemDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.type = data["type"];
-            this.title = data["title"];
-            this.status = data["status"];
-            this.detail = data["detail"];
-            this.instance = data["instance"];
-        }
-    }
-
-    static fromJS(data: any): ProblemDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProblemDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["title"] = this.title;
-        data["status"] = this.status;
-        data["detail"] = this.detail;
-        data["instance"] = this.instance;
-        return data; 
-    }
+export interface ProblemDetails {
+    type: string | undefined;
+    title: string | undefined;
+    status: number | undefined;
+    detail: string | undefined;
+    instance: string | undefined;
 }
 
-export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
+export interface ProblemDetailsExtended extends ProblemDetails {
+    traceIdentifier: string | undefined;
 }
 
-export abstract class ProblemDetailsExtended extends ProblemDetails implements IProblemDetailsExtended {
-    traceIdentifier?: string | undefined;
-
-    constructor(data?: IProblemDetailsExtended) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.traceIdentifier = data["traceIdentifier"];
-        }
-    }
-
-    static fromJS(data: any): ProblemDetailsExtended {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'ProblemDetailsExtended' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["traceIdentifier"] = this.traceIdentifier;
-        super.toJSON(data);
-        return data; 
-    }
+export interface ProblemDetailsExtendedOfConflictDetails extends ProblemDetailsExtended {
+    errorDetails: ConflictDetails | undefined;
 }
 
-export interface IProblemDetailsExtended extends IProblemDetails {
-    traceIdentifier?: string | undefined;
+export interface ErrorDetails {
 }
 
-export abstract class ProblemDetailsExtendedOfConflictDetails extends ProblemDetailsExtended implements IProblemDetailsExtendedOfConflictDetails {
-    errorDetails?: ConflictDetails | undefined;
-
-    constructor(data?: IProblemDetailsExtendedOfConflictDetails) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.errorDetails = data["errorDetails"] ? ConflictDetails.fromJS(data["errorDetails"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ProblemDetailsExtendedOfConflictDetails {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'ProblemDetailsExtendedOfConflictDetails' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["errorDetails"] = this.errorDetails ? this.errorDetails.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
+export interface ConflictDetails extends ErrorDetails {
+    name: string | undefined;
+    url: string | undefined;
 }
 
-export interface IProblemDetailsExtendedOfConflictDetails extends IProblemDetailsExtended {
-    errorDetails?: ConflictDetails | undefined;
+export interface ProblemDetailsExtendedOfErrorDetailsException extends ProblemDetailsExtended {
+    errorDetails: ErrorDetailsException | undefined;
 }
 
-export class ErrorDetails implements IErrorDetails {
-
-    constructor(data?: IErrorDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-    }
-
-    static fromJS(data: any): ErrorDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ErrorDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
+export interface ErrorDetailsException extends ErrorDetails {
+    message: string | undefined;
+    stackTrace: string | undefined;
+    innerExceptionMessage: string | undefined;
 }
 
-export interface IErrorDetails {
+export enum ResponseTrigger {
+    Ok = 0,
+    BadRequest = 1,
+    NotFound = 2,
+    Conflict = 3,
+    Exception = 4,
 }
 
-export class ConflictDetails extends ErrorDetails implements IConflictDetails {
-    name?: string | undefined;
-    url?: string | undefined;
-
-    constructor(data?: IConflictDetails) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.name = data["name"];
-            this.url = data["url"];
-        }
-    }
-
-    static fromJS(data: any): ConflictDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ConflictDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["url"] = this.url;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IConflictDetails extends IErrorDetails {
-    name?: string | undefined;
-    url?: string | undefined;
-}
-
-export abstract class ProblemDetailsExtendedOfErrorDetailsException extends ProblemDetailsExtended implements IProblemDetailsExtendedOfErrorDetailsException {
-    errorDetails?: ErrorDetailsException | undefined;
-
-    constructor(data?: IProblemDetailsExtendedOfErrorDetailsException) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.errorDetails = data["errorDetails"] ? ErrorDetailsException.fromJS(data["errorDetails"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ProblemDetailsExtendedOfErrorDetailsException {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'ProblemDetailsExtendedOfErrorDetailsException' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["errorDetails"] = this.errorDetails ? this.errorDetails.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IProblemDetailsExtendedOfErrorDetailsException extends IProblemDetailsExtended {
-    errorDetails?: ErrorDetailsException | undefined;
-}
-
-export class ErrorDetailsException extends ErrorDetails implements IErrorDetailsException {
-    message?: string | undefined;
-    stackTrace?: string | undefined;
-    innerExceptionMessage?: string | undefined;
-
-    constructor(data?: IErrorDetailsException) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.message = data["message"];
-            this.stackTrace = data["stackTrace"];
-            this.innerExceptionMessage = data["innerExceptionMessage"];
-        }
-    }
-
-    static fromJS(data: any): ErrorDetailsException {
-        data = typeof data === 'object' ? data : {};
-        let result = new ErrorDetailsException();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["message"] = this.message;
-        data["stackTrace"] = this.stackTrace;
-        data["innerExceptionMessage"] = this.innerExceptionMessage;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IErrorDetailsException extends IErrorDetails {
-    message?: string | undefined;
-    stackTrace?: string | undefined;
-    innerExceptionMessage?: string | undefined;
-}
-
-export class GetBodyInput implements IGetBodyInput {
-    name?: string | undefined;
-
-    constructor(data?: IGetBodyInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-        }
-    }
-
-    static fromJS(data: any): GetBodyInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetBodyInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        return data; 
-    }
-}
-
-export interface IGetBodyInput {
-    name?: string | undefined;
+export interface GetBodyInput {
+    name: string | undefined;
 }
 
 export class ApiException extends Error {
@@ -654,3 +428,5 @@ function throwException(message: string, status: number, response: string, heade
     else
         throw new ApiException(message, status, response, headers, null);
 }
+
+// This code is included "as is" at the top of NSwag generated API clients

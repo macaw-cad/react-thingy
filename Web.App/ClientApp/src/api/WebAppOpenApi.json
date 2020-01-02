@@ -1,9 +1,9 @@
-﻿{
-  "x-generator": "NSwag v13.1.0.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v12.0.0.0))",
+{
+  "x-generator": "NSwag v13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v12.0.0.0))",
   "swagger": "2.0",
   "info": {
-    "title": "B4F API's",
-    "description": "The B4F API's.<br/></br>For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.",
+    "title": "Web.App B4F Web API",
+    "description": "For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.<br/>Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>",
     "version": "v1"
   },
   "paths": {
@@ -12,6 +12,7 @@
         "tags": [
           "JsonServer"
         ],
+        "summary": "Execute an JsonServer query.",
         "operationId": "JsonServer_JsonServer",
         "parameters": [
           {
@@ -25,17 +26,23 @@
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "",
+            "description": "The response from jsonserver.",
             "schema": {
               "type": "file"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       },
       "get": {
         "tags": [
           "JsonServer"
         ],
+        "summary": "Execute an JsonServer query.",
         "operationId": "JsonServer_JsonServer2",
         "parameters": [
           {
@@ -49,12 +56,17 @@
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "",
+            "description": "The response from jsonserver.",
             "schema": {
               "type": "file"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       }
     },
     "/componentserver/{hypernovaComponentServerRequest}": {
@@ -62,6 +74,7 @@
         "tags": [
           "HypernovaComponentServer"
         ],
+        "summary": "Execute a HypernovaComponentServer action.",
         "operationId": "HypernovaComponentServer_Hypernova",
         "parameters": [
           {
@@ -75,17 +88,23 @@
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "",
+            "description": "The response from HypernovaComponentServer.",
             "schema": {
               "type": "file"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       },
       "get": {
         "tags": [
           "HypernovaComponentServer"
         ],
+        "summary": "Execute a HypernovaComponentServer action.",
         "operationId": "HypernovaComponentServer_Hypernova2",
         "parameters": [
           {
@@ -99,19 +118,61 @@
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "",
+            "description": "The response from HypernovaComponentServer.",
             "schema": {
               "type": "file"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       }
     },
-    "/api/serverroute/{route}": {
+    "/api/animallatinname": {
+      "get": {
+        "tags": [
+          "AnimalLatinName"
+        ],
+        "summary": "Translate animal name to Latin.",
+        "operationId": "AnimalLatinName_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "animalName",
+            "in": "query",
+            "description": "The English animal name.",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "The Latin translation object AnimalLatinName.",
+            "schema": {
+              "$ref": "#/definitions/AnimalLatinName"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/serverroute": {
       "get": {
         "tags": [
           "ServerRoute"
         ],
+        "summary": "Get routing information based on the Uri.",
+        "description": "Determine at server-side what routing should be executed at client-side.",
         "operationId": "ServerRoute_GetServerRoute",
         "produces": [
           "text/plain",
@@ -122,15 +183,15 @@
           {
             "type": "string",
             "name": "route",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "description": "The route path to resolve.",
             "x-nullable": true
           }
         ],
         "responses": {
           "200": {
             "x-nullable": false,
-            "description": "",
+            "description": "The server determined routing information of type ServerRouteData.",
             "schema": {
               "$ref": "#/definitions/ServerRouteData"
             }
@@ -141,7 +202,12 @@
           "404": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       }
     },
     "/api/starwars/people": {
@@ -150,19 +216,49 @@
           "StarWars"
         ],
         "operationId": "StarWars_GetPeople",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "query",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
         "responses": {
           "200": {
-            "x-nullable": true,
+            "x-nullable": false,
             "description": "",
             "schema": {
-              "type": "file"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StarWarsPerson"
+              }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
       }
     }
   },
   "definitions": {
+    "AnimalLatinName": {
+      "type": "object",
+      "properties": {
+        "originalName": {
+          "type": "string"
+        },
+        "latinName": {
+          "type": "string"
+        }
+      }
+    },
     "ServerRouteData": {
       "type": "object",
       "properties": {
@@ -180,15 +276,16 @@
     "PageType": {
       "allOf": [
         {
-          "$ref": "#/definitions/Enumeration"
+          "$ref": "#/definitions/EnumByEnumeration"
         },
         {
           "type": "object"
         }
       ]
     },
-    "Enumeration": {
+    "EnumByEnumeration": {
       "type": "object",
+      "description": "Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types",
       "x-abstract": true,
       "required": [
         "id"
@@ -237,6 +334,37 @@
           "format": "int32"
         }
       }
+    },
+    "StarWarsPerson": {
+      "type": "object",
+      "required": [
+        "weight"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairColor": {
+          "type": "string"
+        }
+      }
     }
-  }
+  },
+  "securityDefinitions": {
+    "JWT token": {
+      "type": "apiKey",
+      "description": "Copy this into  the value field: \nBearer {my long token}",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "JWT token": []
+    }
+  ]
 }

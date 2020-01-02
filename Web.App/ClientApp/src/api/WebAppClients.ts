@@ -7,6 +7,21 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+export class ApiConfiguration {
+    public getBearerToken?: () => string;
+}
+
+export class NSwagGeneratedApiBase {
+    constructor(private configuration: ApiConfiguration) {}
+
+    protected transformOptions(options: RequestInit): Promise<RequestInit> {
+        if (options && options.headers && this.configuration.getBearerToken) {
+            options.headers['Authorization'] = `Bearer ${this.configuration.getBearerToken()}`;
+        }
+        return Promise.resolve(options);
+    }
+}
+
 export interface IJsonServerClient {
     /**
      * Execute an JsonServer query.
@@ -20,12 +35,13 @@ export interface IJsonServerClient {
     jsonServer2(jsonServerRequest: string | null): Promise<FileResponse | null>;
 }
 
-export class JsonServerClient implements IJsonServerClient {
+export class JsonServerClient extends NSwagGeneratedApiBase implements IJsonServerClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -48,7 +64,9 @@ export class JsonServerClient implements IJsonServerClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processJsonServer(_response);
         });
     }
@@ -87,7 +105,9 @@ export class JsonServerClient implements IJsonServerClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processJsonServer2(_response);
         });
     }
@@ -122,12 +142,13 @@ export interface IHypernovaComponentServerClient {
     hypernova2(hypernovaComponentServerRequest: string | null): Promise<FileResponse | null>;
 }
 
-export class HypernovaComponentServerClient implements IHypernovaComponentServerClient {
+export class HypernovaComponentServerClient extends NSwagGeneratedApiBase implements IHypernovaComponentServerClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -150,7 +171,9 @@ export class HypernovaComponentServerClient implements IHypernovaComponentServer
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processHypernova(_response);
         });
     }
@@ -189,7 +212,9 @@ export class HypernovaComponentServerClient implements IHypernovaComponentServer
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processHypernova2(_response);
         });
     }
@@ -220,12 +245,13 @@ export interface IAnimalLatinNameClient {
     get(animalName?: string | null | undefined): Promise<AnimalLatinName>;
 }
 
-export class AnimalLatinNameClient implements IAnimalLatinNameClient {
+export class AnimalLatinNameClient extends NSwagGeneratedApiBase implements IAnimalLatinNameClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -248,7 +274,9 @@ export class AnimalLatinNameClient implements IAnimalLatinNameClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGet(_response);
         });
     }
@@ -259,8 +287,7 @@ export class AnimalLatinNameClient implements IAnimalLatinNameClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AnimalLatinName.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <AnimalLatinName>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -281,12 +308,13 @@ export interface IServerRouteClient {
     getServerRoute(route?: string | null | undefined): Promise<ServerRouteData>;
 }
 
-export class ServerRouteClient implements IServerRouteClient {
+export class ServerRouteClient extends NSwagGeneratedApiBase implements IServerRouteClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -309,7 +337,9 @@ export class ServerRouteClient implements IServerRouteClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetServerRoute(_response);
         });
     }
@@ -320,8 +350,7 @@ export class ServerRouteClient implements IServerRouteClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ServerRouteData.fromJS(resultData200);
+            result200 = _responseText === "" ? null : <ServerRouteData>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 500) {
@@ -345,12 +374,13 @@ export interface IStarWarsClient {
     getPeople(query?: string | null | undefined): Promise<StarWarsPerson[]>;
 }
 
-export class StarWarsClient implements IStarWarsClient {
+export class StarWarsClient extends NSwagGeneratedApiBase implements IStarWarsClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+    constructor(configuration: ApiConfiguration, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
         this.http = http ? http : <any>window;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -368,7 +398,9 @@ export class StarWarsClient implements IStarWarsClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetPeople(_response);
         });
     }
@@ -379,12 +411,7 @@ export class StarWarsClient implements IStarWarsClient {
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(StarWarsPerson.fromJS(item));
-            }
+            result200 = _responseText === "" ? null : <StarWarsPerson[]>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -396,283 +423,41 @@ export class StarWarsClient implements IStarWarsClient {
     }
 }
 
-export class AnimalLatinName implements IAnimalLatinName {
-    originalName?: string | undefined;
-    latinName?: string | undefined;
-
-    constructor(data?: IAnimalLatinName) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.originalName = data["originalName"];
-            this.latinName = data["latinName"];
-        }
-    }
-
-    static fromJS(data: any): AnimalLatinName {
-        data = typeof data === 'object' ? data : {};
-        let result = new AnimalLatinName();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["originalName"] = this.originalName;
-        data["latinName"] = this.latinName;
-        return data; 
-    }
+export interface AnimalLatinName {
+    originalName: string | undefined;
+    latinName: string | undefined;
 }
 
-export interface IAnimalLatinName {
-    originalName?: string | undefined;
-    latinName?: string | undefined;
-}
-
-export class ServerRouteData implements IServerRouteData {
-    type?: PageType | undefined;
-    carData?: Car | undefined;
-    animalData?: Animal | undefined;
-
-    constructor(data?: IServerRouteData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.type = data["type"] ? PageType.fromJS(data["type"]) : <any>undefined;
-            this.carData = data["carData"] ? Car.fromJS(data["carData"]) : <any>undefined;
-            this.animalData = data["animalData"] ? Animal.fromJS(data["animalData"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ServerRouteData {
-        data = typeof data === 'object' ? data : {};
-        let result = new ServerRouteData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type ? this.type.toJSON() : <any>undefined;
-        data["carData"] = this.carData ? this.carData.toJSON() : <any>undefined;
-        data["animalData"] = this.animalData ? this.animalData.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IServerRouteData {
-    type?: PageType | undefined;
-    carData?: Car | undefined;
-    animalData?: Animal | undefined;
+export interface ServerRouteData {
+    type: PageType | undefined;
+    carData: Car | undefined;
+    animalData: Animal | undefined;
 }
 
 /** Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types */
-export abstract class EnumByEnumeration implements IEnumByEnumeration {
-    name?: string | undefined;
-    id!: number;
-
-    constructor(data?: IEnumByEnumeration) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): EnumByEnumeration {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'EnumByEnumeration' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-/** Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types */
-export interface IEnumByEnumeration {
-    name?: string | undefined;
+export interface EnumByEnumeration {
+    name: string | undefined;
     id: number;
 }
 
-export class PageType extends EnumByEnumeration implements IPageType {
-
-    constructor(data?: IPageType) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-    }
-
-    static fromJS(data: any): PageType {
-        data = typeof data === 'object' ? data : {};
-        let result = new PageType();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        super.toJSON(data);
-        return data; 
-    }
+export interface PageType extends EnumByEnumeration {
 }
 
-export interface IPageType extends IEnumByEnumeration {
-}
-
-export class Car implements ICar {
-    year!: number;
-    make?: string | undefined;
-    speed!: number;
-
-    constructor(data?: ICar) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.year = data["year"];
-            this.make = data["make"];
-            this.speed = data["speed"];
-        }
-    }
-
-    static fromJS(data: any): Car {
-        data = typeof data === 'object' ? data : {};
-        let result = new Car();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["year"] = this.year;
-        data["make"] = this.make;
-        data["speed"] = this.speed;
-        return data; 
-    }
-}
-
-export interface ICar {
+export interface Car {
     year: number;
-    make?: string | undefined;
+    make: string | undefined;
     speed: number;
 }
 
-export class Animal implements IAnimal {
-    name?: string | undefined;
-    maxAge!: number;
-
-    constructor(data?: IAnimal) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.maxAge = data["maxAge"];
-        }
-    }
-
-    static fromJS(data: any): Animal {
-        data = typeof data === 'object' ? data : {};
-        let result = new Animal();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["maxAge"] = this.maxAge;
-        return data; 
-    }
-}
-
-export interface IAnimal {
-    name?: string | undefined;
+export interface Animal {
+    name: string | undefined;
     maxAge: number;
 }
 
-export class StarWarsPerson implements IStarWarsPerson {
-    name?: string | undefined;
-    weight!: number;
-    hairColor?: string | undefined;
-
-    constructor(data?: IStarWarsPerson) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.weight = data["weight"];
-            this.hairColor = data["hairColor"];
-        }
-    }
-
-    static fromJS(data: any): StarWarsPerson {
-        data = typeof data === 'object' ? data : {};
-        let result = new StarWarsPerson();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["weight"] = this.weight;
-        data["hairColor"] = this.hairColor;
-        return data; 
-    }
-}
-
-export interface IStarWarsPerson {
-    name?: string | undefined;
+export interface StarWarsPerson {
+    name: string | undefined;
     weight: number;
-    hairColor?: string | undefined;
+    hairColor: string | undefined;
 }
 
 export interface FileResponse {
@@ -712,3 +497,5 @@ function throwException(message: string, status: number, response: string, heade
     else
         throw new ApiException(message, status, response, headers, null);
 }
+
+// This code is included "as is" at the top of NSwag generated API clients

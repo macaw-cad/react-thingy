@@ -9,40 +9,40 @@ namespace Web.Api.Core.Controllers
 {
     public abstract class ApiControllerBase : ControllerBase
     {
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public override BadRequestResult BadRequest()
         {
             throw new BadRequestException("BadRequest - reported using BadRequest(), but use BadRequest<ErrorDetailsVoid>() instead");
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public override BadRequestObjectResult BadRequest(object error)
         {
             throw new BadRequestException("BadRequest - reported using BadRequest(object error), but use BadRequest<ErrorDetailsObject>(object error) instead");
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public BadRequestObjectResult BadRequest(string error)
         {
             var problemDetails = ProblemDetailsHelper.CreateProblemDetails(StatusCodes.Status400BadRequest, error, HttpContext.TraceIdentifier);
             return base.BadRequest(problemDetails);
         }
 
-        //[SwaggerIgnore]
+        //[OpenApiIgnore]
         //new public BadRequestObjectResult BadRequest()
         //{
         //    var problemDetails = ProblemDetailsHelper.CreateProblemDetails(StatusCodes.Status400BadRequest, "Something went wrong while processing your request.", HttpContext.TraceIdentifier);
         //    return base.BadRequest(problemDetails);
         //}
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public BadRequestObjectResult BadRequest<T>(T error) where T : ErrorDetails
         {
             var problemDetails = ProblemDetailsHelper.CreateProblemDetails<T>(StatusCodes.Status400BadRequest, "Something went wrong while processing your request.", HttpContext.TraceIdentifier, error);
             return base.BadRequest(problemDetails);
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public override NotFoundObjectResult NotFound(object value = null)
         {
             ProblemDetails problemDetails;
@@ -58,7 +58,7 @@ namespace Web.Api.Core.Controllers
             return base.NotFound(problemDetails);
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public override ConflictObjectResult Conflict(object value = null)
         {
             ProblemDetails problemDetails;
@@ -70,20 +70,20 @@ namespace Web.Api.Core.Controllers
             return base.Conflict(problemDetails);
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public ConflictObjectResult Conflict<T>(T value) where T : ErrorDetails
         {
             var problemDetails = ProblemDetailsHelper.CreateProblemDetails<T>(StatusCodes.Status409Conflict, "The object conflicts.", HttpContext.TraceIdentifier, value);
             return base.Conflict(problemDetails);
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public override UnauthorizedResult Unauthorized()
         {
             throw new BadRequestException("Unauthorized - reported using Unauthorized(), but use Unauthorized<ErrorDetailsVoid>() instead");
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public override UnauthorizedObjectResult Unauthorized(object value = null)
         {
             ProblemDetails problemDetails;
@@ -95,14 +95,14 @@ namespace Web.Api.Core.Controllers
             return base.Unauthorized(problemDetails);
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public UnauthorizedObjectResult Unauthorized(string error)
         {
             var problemDetails = ProblemDetailsHelper.CreateProblemDetails(StatusCodes.Status401Unauthorized, error, HttpContext.TraceIdentifier);
             return base.Unauthorized(problemDetails);
         }
 
-        [SwaggerIgnore]
+        [OpenApiIgnore]
         public UnauthorizedObjectResult Unauthorized<T>(T value) where T : ErrorDetails
         {
             var problemDetails = ProblemDetailsHelper.CreateProblemDetails<T>(StatusCodes.Status401Unauthorized, "Unauthorized.", HttpContext.TraceIdentifier, value);

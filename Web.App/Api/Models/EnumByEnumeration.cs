@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Web.App.Api.Models
 {
     /// <summary>
-    /// Enumeration base class as described in <see cref="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types"/>
+    /// Enumeration base class as described in https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types.
     /// </summary>
     public abstract class EnumByEnumeration : IComparable
     {

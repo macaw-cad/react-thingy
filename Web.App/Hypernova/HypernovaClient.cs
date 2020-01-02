@@ -130,9 +130,9 @@ namespace Web.App.Hypernova
                 if (!string.IsNullOrWhiteSpace(_settings.ComponentServerBaseUrlOverride))
                 {
                     baseUrl = _settings.ComponentServerBaseUrlOverride;
-                    if (baseUrl.Contains("[local-ip]"))
+                    if (baseUrl.Contains("[local-ip]", StringComparison.InvariantCulture))
                     {
-                        baseUrl = baseUrl.Replace("[local-ip]", GetLocalIpAddress());
+                        baseUrl = baseUrl.Replace("[local-ip]", GetLocalIpAddress(), StringComparison.InvariantCulture);
                     }
                 }
             }
@@ -155,9 +155,13 @@ namespace Web.App.Hypernova
 			try
 			{
                 _logger.LogInformation($"URL: {hypernovaServerUrl}/batch, POSTBODY: {postBody}");
-				var client = _httpClientFactory.CreateClient();
-				var response = await client.PostAsync($"{hypernovaServerUrl}/batch", new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"));
-				responseString = await response.Content.ReadAsStringAsync();
+                using (var client = _httpClientFactory.CreateClient())
+                using (var stringContent = new StringContent(postBody, System.Text.Encoding.UTF8, "application/json"))
+                {
+
+                    var response = await client.PostAsync($"{hypernovaServerUrl}/batch", stringContent);
+                    responseString = await response.Content.ReadAsStringAsync();
+                }
 			} catch(Exception e) {
 				throw new HypernovaException($"Post to Hypernova Component Server at '{hypernovaServerUrl}/batch' failed. Error: {e.Message}");
 			}

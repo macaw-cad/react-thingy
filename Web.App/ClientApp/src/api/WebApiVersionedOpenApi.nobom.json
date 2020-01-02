@@ -1,4 +1,4 @@
-﻿{
+{
   "x-generator": "NSwag v13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))",
   "swagger": "2.0",
   "info": {
@@ -25,9 +25,18 @@
             "in": "path",
             "required": true,
             "description": "A value 0..4 for different error conditions.",
-            "format": "int32",
+            "x-schema": {
+              "$ref": "#/definitions/ResponseTrigger"
+            },
             "default": 0,
-            "x-nullable": false
+            "x-nullable": false,
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
           }
         ],
         "responses": {
@@ -363,6 +372,24 @@
             }
           }
         }
+      ]
+    },
+    "ResponseTrigger": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Ok",
+        "BadRequest",
+        "NotFound",
+        "Conflict",
+        "Exception"
+      ],
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4
       ]
     },
     "GetBodyInput": {

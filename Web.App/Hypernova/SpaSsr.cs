@@ -35,7 +35,7 @@ namespace Web.App.Hypernova
         private static string[] _cssUrlsCache;
         private static string[] _jsUrlsCache;
 
-        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl, IConfiguration configuration, HttpContext httpContext)
+        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl)
         {
             _logger = logger;
             _env = env;
@@ -45,7 +45,6 @@ namespace Web.App.Hypernova
             _siteUrl = siteUrl;
 
 			_hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options, siteUrl);
-
         }
 
         /// <summary>
@@ -163,7 +162,7 @@ namespace Web.App.Hypernova
             // Only rewrite url on the client if we have a baseAppUrl
             if (baseAppUrl != null && baseAppUrl != "/")
             {
-                if (baseAppUrl.EndsWith("/"))
+                if (baseAppUrl.EndsWith("/", StringComparison.InvariantCulture))
                 {
                     baseAppUrl = baseAppUrl.Remove(baseAppUrl.Length - 1);
                 }
@@ -190,8 +189,8 @@ namespace Web.App.Hypernova
 
             startHeadReplacement.Append("<!DOCTYPE html><html");
 
-            appHtml = appHtml.Replace("</head>", endHeadReplacement.ToString());
-            appHtml = appHtml.Replace("<html", startHeadReplacement.ToString());
+            appHtml = appHtml.Replace("</head>", endHeadReplacement.ToString(), StringComparison.InvariantCulture);
+            appHtml = appHtml.Replace("<html", startHeadReplacement.ToString(), StringComparison.InvariantCulture);
 
             return appHtml;
         }
@@ -296,7 +295,7 @@ namespace Web.App.Hypernova
 		/// <returns>An HttpStatusCode or null if no status is found</returns>
 		private HttpStatusCode? getStatusCodeFromHtml(string html)
 		{
-			if (html.Contains("{\"httpStatus\":404}"))
+			if (html.Contains("{\"httpStatus\":404}", StringComparison.InvariantCulture))
 			{
 				return HttpStatusCode.NotFound;
 			}

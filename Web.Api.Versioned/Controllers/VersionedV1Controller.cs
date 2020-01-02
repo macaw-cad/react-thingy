@@ -8,6 +8,15 @@ using Web.Api.Core.Helpers;
 
 namespace Web.Api.Versioned.Controllers
 {
+    public enum ResponseTrigger
+    {
+        Ok = 0,
+        BadRequest = 1,
+        NotFound = 2,
+        Conflict = 3,
+        Exception = 4
+    }
+
     public class GetBodyInput
     {
         public string Name { get; set; }
@@ -40,17 +49,17 @@ namespace Web.Api.Versioned.Controllers
         [ProducesResponseType(typeof(ProblemDetailsExtended), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetailsExtended<ConflictDetails>), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ProblemDetailsExtended<ErrorDetailsException>), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string[]>> Get(int value = 0)
+        public async Task<ActionResult<string[]>> Get(ResponseTrigger value = 0)
         {
             switch (value)
             {
-                case 1:
+                case ResponseTrigger.BadRequest:
                     return BadRequest();
-                case 2:
+                case ResponseTrigger.NotFound:
                     return NotFound($"Value: {value} not found");
-                case 3:
+                case ResponseTrigger.Conflict:
                     return Conflict<ConflictDetails>(new ConflictDetails { Name = "MyConflict", Url = "https://www.disney.com" });
-                case 4:
+                case ResponseTrigger.Exception:
                     throw new Exception($"A value {value} exception", new Exception("An inner exception"));
             }
 

@@ -4,9 +4,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Web.App.Api.Transformers
 {
-    public class StarWarsTransformer
+    public static class StarWarsTransformer
     {
-        public IEnumerable<StarWarsPerson> TransformPeopleToPersons(string input)
+        public static IEnumerable<StarWarsPerson> TransformPeopleToPersons(string input)
         {
             var result = JObject.Parse(input);
 

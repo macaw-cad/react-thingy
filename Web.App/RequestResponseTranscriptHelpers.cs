@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿#pragma warning disable CA1062 // Validate arguments of public methods
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.IO;

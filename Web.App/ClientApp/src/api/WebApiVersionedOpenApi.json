@@ -1,0 +1,417 @@
+﻿{
+  "x-generator": "NSwag v13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "Web.Api.Versioned Web API",
+    "description": "Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>",
+    "version": "v1"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/versioned/{value}": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "Minimal sample implementation of version 1 of the versioned service.",
+        "description": "Supported arguments: 0..4, 0 is default value and the Ok case, 1..4 give errors.\n\n* Ok result - returns array of two strings\n* 1: 400 - BadRequest\n* 2: 404 - NotFound\n* 3: 409 - Conflict (with error details of type `ConflictDetails`)\n* 4: An uncatched exception resulting in 500 - InternalServerErrror",
+        "operationId": "VersionedV1_Get",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "description": "A value 0..4 for different error conditions.",
+            "x-schema": {
+              "$ref": "#/definitions/ResponseTrigger"
+            },
+            "default": 0,
+            "x-nullable": false,
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          }
+        ],
+        "responses": {
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "409": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfConflictDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfErrorDetailsException"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/versioned/ReturnBadRequest": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "ReturnBadRequest - should throw exception",
+        "operationId": "VersionedV1_ReturnBadRequest",
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfErrorDetailsException"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/versioned/ReturnBadRequestWithString": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "ReturnBadRequestWithString - should override ProblemDetails detail",
+        "operationId": "VersionedV1_ReturnBadRequestWithString",
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/versioned/WithBody": {
+      "get": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "WithBody - call with GET body. Note: on Swagger use POST.",
+        "operationId": "VersionedV1_WithBody",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetBodyInput"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "VersionedV1"
+        ],
+        "summary": "WithBody - call with GET body. Note: on Swagger use POST.",
+        "operationId": "VersionedV1_WithBody2",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetBodyInput"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    },
+    "/api/v2/versioned/{value}": {
+      "get": {
+        "tags": [
+          "VersionedV2"
+        ],
+        "summary": "Minimal sample implementation of version 2 of the versioned service.",
+        "description": "Supported arguments: 0..4, 0 is default value and the Ok case, 1..4 give errors.\n\n* Ok result - returns array of two strings\n* 1: 400 - BadRequest\n* 2: 404 - NotFound\n* 3: 409 - Conflict (with error details of type ConflictDetails)\n* 4: An uncatched exception resulting in 500 - InternalServerErrror",
+        "operationId": "VersionedV2_Get",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "description": "A value 0..4 for different error conditions.",
+            "format": "int32",
+            "default": 0,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtended"
+            }
+          },
+          "409": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfConflictDetails"
+            }
+          },
+          "500": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ProblemDetailsExtendedOfErrorDetailsException"
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT token": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ProblemDetailsExtended": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemDetails"
+        },
+        {
+          "type": "object",
+          "x-abstract": true,
+          "additionalProperties": {},
+          "properties": {
+            "traceIdentifier": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ProblemDetails": {
+      "type": "object",
+      "additionalProperties": {},
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        }
+      }
+    },
+    "ProblemDetailsExtendedOfConflictDetails": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemDetailsExtended"
+        },
+        {
+          "type": "object",
+          "x-abstract": true,
+          "additionalProperties": {},
+          "properties": {
+            "errorDetails": {
+              "$ref": "#/definitions/ConflictDetails"
+            }
+          }
+        }
+      ]
+    },
+    "ConflictDetails": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ErrorDetails"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ErrorDetails": {
+      "type": "object"
+    },
+    "ProblemDetailsExtendedOfErrorDetailsException": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemDetailsExtended"
+        },
+        {
+          "type": "object",
+          "x-abstract": true,
+          "additionalProperties": {},
+          "properties": {
+            "errorDetails": {
+              "$ref": "#/definitions/ErrorDetailsException"
+            }
+          }
+        }
+      ]
+    },
+    "ErrorDetailsException": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ErrorDetails"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "stackTrace": {
+              "type": "string"
+            },
+            "innerExceptionMessage": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ResponseTrigger": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Ok",
+        "BadRequest",
+        "NotFound",
+        "Conflict",
+        "Exception"
+      ],
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "GetBodyInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWT token": {
+      "type": "apiKey",
+      "description": "Copy this into  the value field: \nBearer {my long token}",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "JWT token": []
+    }
+  ]
+}

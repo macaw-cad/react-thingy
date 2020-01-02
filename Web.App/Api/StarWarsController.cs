@@ -23,17 +23,18 @@ namespace Web.App.Api
         [HttpGet("people")]
         public async Task<ActionResult<IEnumerable<StarWarsPerson>>> GetPeople([FromQuery] string query)
         {
-            var client = httpClientFactory.CreateClient();
+            using (var client = httpClientFactory.CreateClient())
+            {
+                var filterPath = String.IsNullOrWhiteSpace(query) ? "" : $"?search={query}";
+                var requestUri = new Uri($"http://swapi.co/api/people{filterPath}");
+                var response = await client.GetAsync(requestUri);
 
-			var filterPath = String.IsNullOrWhiteSpace(query) ? "" : $"?search={query}";
-            var requestUri = new Uri($"http://swapi.co/api/people{filterPath}");
-            var response = await client.GetAsync(requestUri);
+                var content = await response.Content.ReadAsStringAsync();
 
-            var content = await response.Content.ReadAsStringAsync();
+                var result = StarWarsTransformer.TransformPeopleToPersons(content);
 
-            var result = new StarWarsTransformer().TransformPeopleToPersons(content);
-
-            return Ok(result);
+                return Ok(result);
+            }
         }
     }
 }

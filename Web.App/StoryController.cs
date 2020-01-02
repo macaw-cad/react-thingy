@@ -21,7 +21,6 @@ namespace Web.App
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IOptions<HypernovaSettings> _options;
         private readonly IDistributedCache _cache;
-        private readonly HypernovaClient _hypernovaClient;
         private readonly HypernovaSettings _settings;
         private readonly string _contentRoot;
 
@@ -98,14 +97,14 @@ namespace Web.App
                 components.Add(new AmpStoryBookendComponent
                 {
                     type = "landscape",
-                    title = artistJson.Property("cover_artistname").Value.ToString(),
+                    title = artistJson.Property("cover_artistname", StringComparison.InvariantCulture).Value.ToString(),
                     image = $"{baseUrl}/artists/{id}/cover.jpg",
                     url = $"{baseUrl}/Story/ArtistStory?artistId={id}"
                 });
             }
 
             var curArtistJson = FindArtist(artistId);
-            var curArtistName = curArtistJson.Property("cover_artistname").Value.ToString();
+            var curArtistName = curArtistJson.Property("cover_artistname", StringComparison.InvariantCulture).Value.ToString();
 
             var ampStoryBookend = new AmpStoryBookend
             {
