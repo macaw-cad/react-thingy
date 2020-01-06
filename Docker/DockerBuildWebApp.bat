@@ -10,7 +10,7 @@ set /a starttime=(%starthour%*60*60*100)+(%startmins%*60*100)+(%startsecs%*100)+
 :TimeThis
 call SetUserEnvironment.bat
 docker kill %SOLUTIONNAME%-webapp
-docker build -f Dockerfile -t %SOLUTIONNAME%/webapp:latest ..
+docker build -f Dockerfile -t %SOLUTIONNAME%-webapp:latest ..
 
 set endtime=%time%
 set endcsec=%endTIME:~9,2%

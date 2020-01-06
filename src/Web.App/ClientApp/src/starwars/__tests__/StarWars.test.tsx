@@ -13,11 +13,11 @@ const mockStarWarsClient = (): IStarWarsClient => {
     return {
         getPeople: () => {
             return Promise.resolve<StarWarsPerson[]>([
-                new StarWarsPerson({
+                {
                     name: 'Obi-Wan Jacobi',
                     weight: 77,
                     hairColor: 'auburn, white'
-                })
+                }
             ]);
         }
     };

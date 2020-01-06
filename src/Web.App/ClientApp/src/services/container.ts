@@ -14,11 +14,11 @@ const getContainer = () => {
     const containerInstance = new Container();
     
     containerInstance.bind<IServerRouteClient>(TYPE.ServerRouteDataClient).toFactory(() => {
-        return new ServerRouteClient(containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
+        return new ServerRouteClient({}, containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
     });
 
     containerInstance.bind<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient).toFactory(() => {
-        return new AnimalLatinNameClient(containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
+        return new AnimalLatinNameClient({}, containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
     });
 
     containerInstance.bind<IStarWarsClient>(TYPE.StarWarsClient).toFactory(() => {
@@ -26,7 +26,7 @@ const getContainer = () => {
         if (mockDataFlags && mockDataFlags.starwarsPeople) {
             return new MockStarWarsClient(containerInstance.get<string>(TYPE.MockUrl));
         } else {
-            return new StarWarsClient(containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
+            return new StarWarsClient({}, containerInstance.get<string>(TYPE.BaseUrl), { fetch: isomorphicFetch });
         }
     })/*.inSingletonScope()*/;
 

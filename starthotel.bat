@@ -19,7 +19,7 @@ FOR /F "tokens=5 delims= " %%P IN ('netstat -a -n -o ^| findstr :9001') DO IF NO
 call hotel stop
 call rmdir /s /q %userprofile%\.hotel
 call hotel start
-pushd Web.App\ClientApp
+pushd src\Web.App\ClientApp
 call hotel add "npm run start:dotnet" --name "1. Web.App Web Server & API's" --port 5000
 call hotel add "npm run start" --name "2. Web.App React client" --port 3000
 call hotel add "npm run start:server-bundle" --name "3. Web.App React server-bundle" --port 8080

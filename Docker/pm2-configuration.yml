@@ -3,10 +3,24 @@
     name     : 'Component server'
     exec_mode: 'cluster_mode'
     cwd      : '/app/HypernovaComponentServer'
+    env      :
+      NODE_ENV: development
+      PORT    : 8080
+      HypernovaAsyncComponentTimeoutMilliseconds: 30000
     instances: 'max'
   - script   : 'jsonserver.js'
     name     : 'Json server'
     cwd      : '/app/JsonServer'
+    env      :
+      NODE_ENV: development
+      PORT    : 3001
   - script   : 'dotnet Web.App.dll'
     name     : '.NET Core Web.App'
-    cwd      : '/app' 
+    cwd      : '/app/Web.App'
+    env      :
+      ASPNETCORE_URLS: http://localhost:5000
+  - script   : 'dotnet Web.Api.Versioned.dll'
+    name     : '.NET Core Web.Api.Versioned'
+    cwd      : '/app/Web.Api.Versioned' 
+    env      :
+      ASPNETCORE_URLS: http://localhost:5100

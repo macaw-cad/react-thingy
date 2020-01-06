@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Web.App</name>
+    </assembly>
+    <members>
+        <member name="T:Web.App.AmpStoryBookendShareProvider">
+            <summary>
+            See https://www.ampproject.org/docs/reference/components/amp-social-share for different settings
+            </summary>
+        </member>
+        <member name="T:Web.App.Api.AnimalLatinNameController">
+            <summary>
+            Web API to translate animal names to their Latin name.
+            </summary>
+        </member>
+        <member name="M:Web.App.Api.AnimalLatinNameController.Get(System.String)">
+            <summary>
+            Translate animal name to Latin.
+            </summary>
+            <param name="animalName">The English animal name.</param>
+            <returns>The Latin translation object <see cref="T:Web.App.Api.Models.AnimalLatinName"/>.</returns>
+        </member>
+        <member name="T:Web.App.Api.ApiError">
+            <summary>
+            Based on https://medium.com/@matteocontrini/consistent-error-responses-in-asp-net-core-web-apis-bb70b435d1f8
+            </summary>
+        </member>
+        <member name="T:Web.App.Api.Models.EnumByEnumeration">
+            <summary>
+            Enumeration base class as described in https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types.
+            </summary>
+        </member>
+        <member name="M:Web.App.Api.ServerRouteController.GetServerRoute(System.String)">
+            <summary>
+            Get routing information based on the Uri.
+            </summary>
+            <remarks>
+            Determine at server-side what routing should be executed at client-side.
+            </remarks>
+            <param name="route">The route path to resolve.</param>
+            <returns>The server determined routing information of type <see cref="T:Web.App.Api.Models.ServerRouteData"/>.</returns>
+        </member>
+        <member name="M:Web.App.HypernovaComponentServer.HypernovaComponentServerController.Hypernova(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Execute a HypernovaComponentServer action.
+            </summary>
+            <param name="hypernovaComponentServerRequest"></param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The response from HypernovaComponentServer.</returns>
+        </member>
+        <member name="M:Web.App.HypernovaComponentServer.HypernovaComponentServerExtensions.AddHypernovaComponentServerSettings(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup config extension method.
+            </summary>
+            <param name="services">this/services. Must not be null.</param>
+            <param name="config">The Configuration the Startup class was constructed with. Must not be null.</param>
+        </member>
+        <member name="T:Web.App.Hypernova.HypernovaClient">
+            <summary>
+            Hypernova client.
+            </summary>
+        </member>
+        <member name="M:Web.App.Hypernova.HypernovaClient.React(System.String,System.String)">
+            <summary>
+            Render a React component server-side given the props serialized in <paramref name="jsonSerializedProps"/>.
+            </summary>
+            <param name="componentName">The name of the React component.</param>
+            <param name="jsonSerializedProps">Serialized component props.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.App.Hypernova.HypernovaClient.ReactAsyncRedux(System.String,System.String,System.String,System.String)">
+            <summary>
+            Render a React component server-side with an initial Redux state and support for async calls using the Hypernova Component Server.
+            </summary>
+            <param name="componentName">The name of the React component.</param>
+            <param name="relativeUrl">The relative url, useful in case of rendering a React component with routing.</param>
+            <param name="jsonSerializedReduxState">The initial Redux state to start with.</param>
+            <param name="baseUrl">The base url of the website for prefixing relative ajax calls. If not
+            explicitly specified it can be configured with the <c>ComponentServerBaseUrlOverride</c> appsetting.</param>
+            <returns>The resulting server-side rendered HTML.</returns>
+        </member>
+        <member name="M:Web.App.Hypernova.HypernovaClient.ReactAsyncReduxSpa(System.String,System.String[],System.String[],System.String,System.String,System.String)">
+            <summary>
+            Render a React SPA application server-side with an initial Redux state and support for async calls using the Hypernova Component Server.
+            This function can server-side render a complete SPA React application.
+            </summary>
+            <param name="componentName">The name of the React component.</param>
+            <param name="relativeUrl">The relative url, useful in case of rendering a SPA React application with routing.</param>
+            <param name="cssUrls">CSS urls to be included in the head.</param>
+            <param name="jsUrls">JavaScript urls to be included at the end of the body.</param>
+            <param name="jsonSerializedReduxState">The initial Redux state to start with.</param>
+            <param name="baseUrl">The base url of the website for prefixing relative ajax calls. If not
+            explicitly specified it can be configured with the <c>ComponentServerBaseUrlOverride</c> appsetting.</param>
+            <returns>The resulting server-side rendered HTML - this must be a complete HTML page.</returns>
+        </member>
+        <member name="M:Web.App.Hypernova.HypernovaExtensions.AddHypernovaSettings(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup config extension method.
+            </summary>
+            <param name="services">this/services. Must not be null.</param>
+            <param name="config">The Configuration the Startup class was constructed with. Must not be null.</param>
+        </member>
+        <member name="M:Web.App.Hypernova.SpaSsr.RenderSpaClientSide(System.String,System.String)">
+            <summary>
+            Render the SPA application client-side.
+            </summary>
+            <remarks>Resulting html wil contain the string: '- ssr:off -'.</remarks>
+            <param name="relativeUrl">The relative url of the route to show in the SPA, i.e. '/about' (or '/myapp/about' in case of baseAppUrl).</param>
+            <param name="baseAppUrl">The relative base app url if other than '/', i.e. '/myapp'.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.App.Hypernova.SpaSsr.RenderSpaServerSide(System.String,System.String,System.TimeSpan,System.String)">
+            <summary>
+            Render the SPA application client-side.
+            </summary>
+            <param name="cacheKey">The key used for caching.</param>
+            <param name="relativeUrl">The relative url of the route to show in the SPA, i.e. '/about' (or '/myapp/about' in case of baseAppUrl).</param>
+            <param name="cacheDuration">Cache duration.</param>
+            <param name="baseAppUrl">The relative base app url if other than '/' (default), i.e. '/myapp'.</param>
+            <returns>The html of the server-side rendered app, or the client-side html in case of errors</returns>
+        </member>
+        <member name="M:Web.App.Hypernova.SpaSsr.BuildPage(System.String,System.String,System.String,System.String,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="appHtml">The prestine app index.html page</param>
+            <param name="relativeUrl">The relative url of the app page we are rendering</param>
+            <param name="baseAppUrl">The base url of the app</param>
+            <param name="hypernovaResult">If null server-side rendering is off</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.App.Hypernova.SpaSsr.ParseCra2HtmlForCssAndJs(System.String,System.String)">
+            <summary>
+            Determine the used CSS and JavaScript files for a non-ejected Create React App 2 installation.
+            </summary>
+            <remarks>
+            When CRA2 build the production build/index.html it adds the contents of runtime~main.js inline,
+            reference the file as a js file.
+            </remarks>
+            <param name="indexHtml">Contents of the index.html file to parse.</param>
+            <param name="assetManifestJson">Contents of the asset-manifest.json file, or null</param>
+            <returns>A tuple with the found css and js urls.</returns>
+        </member>
+        <member name="M:Web.App.Hypernova.SpaSsr.getStatusCodeFromHtml(System.String)">
+            <summary>
+            Return if a page should show a certain status after serverside rendering
+            </summary>
+            <remarks>
+            The status should be set in Redux on the clientside so we can pick it up from here
+            </remarks>
+            <param name="html">Html string including the Redux state in html.</param>
+            <returns>An HttpStatusCode or null if no status is found</returns>
+        </member>
+        <member name="M:Web.App.JsonServer.JsonServerController.JsonServer(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Execute an JsonServer query.
+            </summary>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The response from jsonserver.</returns>
+        </member>
+        <member name="M:Web.App.JsonServer.JsonServerExtensions.AddJsonServerSettings(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup config extension method.
+            </summary>
+            <param name="services">this/services. Must not be null.</param>
+            <param name="config">The Configuration the Startup class was constructed with. Must not be null.</param>
+        </member>
+        <member name="T:Web.App.RequestTranscriptHelpers">
+            <summary>
+            Convert HttpRequest to HttpRequestMessage.
+            </summary>
+            <remarks>
+            Copied from https://stackoverflow.com/questions/45759417/convert-microsoft-aspnetcore-http-httprequest-to-httprequestmessage
+            </remarks>
+        </member>
+    </members>
+</doc>

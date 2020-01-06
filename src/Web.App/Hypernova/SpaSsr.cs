@@ -35,7 +35,7 @@ namespace Web.App.Hypernova
         private static string[] _cssUrlsCache;
         private static string[] _jsUrlsCache;
 
-        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl)
+        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl, IConfiguration configuration, HttpContext httpContext)
         {
             _logger = logger;
             _env = env;

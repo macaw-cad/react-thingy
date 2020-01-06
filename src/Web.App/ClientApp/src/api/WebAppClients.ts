@@ -16,7 +16,10 @@ export class NSwagGeneratedApiBase {
 
     protected transformOptions(options: RequestInit): Promise<RequestInit> {
         if (options && options.headers && this.configuration.getBearerToken) {
-            options.headers['Authorization'] = `Bearer ${this.configuration.getBearerToken()}`;
+            if (!options.headers) {
+                options.headers = new Headers();
+            }
+            (options.headers as any).Authorization = `Bearer ${this.configuration.getBearerToken()}`;
         }
         return Promise.resolve(options);
     }
@@ -434,7 +437,7 @@ export interface ServerRouteData {
     animalData: Animal | undefined;
 }
 
-/** Enumeration base class as described in com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types */
+/** Enumeration base class as described in https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types. */
 export interface EnumByEnumeration {
     name: string | undefined;
     id: number;

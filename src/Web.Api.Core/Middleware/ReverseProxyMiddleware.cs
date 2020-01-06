@@ -22,10 +22,9 @@ namespace Web.Api.Core.Middleware
         {
             _nextMiddleware = nextMiddleware;
 
-            var reverseProxyConfigurationValue = reverseProxySettings.Value;
-            if (reverseProxyConfigurationValue != null)
+            if (reverseProxySettings != null && reverseProxySettings.Value != null && reverseProxySettings.Value.Configurations != null && reverseProxySettings.Value.Configurations.Count > 0)
             {
-                foreach (var reverseProxyConfiguration in reverseProxyConfigurationValue.Configurations)
+                foreach (var reverseProxyConfiguration in reverseProxySettings.Value.Configurations)
                 {
                     var parts = reverseProxyConfiguration.Split("=>");
                     if (parts.Length == 2)
