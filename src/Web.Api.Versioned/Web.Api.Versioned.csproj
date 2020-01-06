@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\P\react-thingy\Web.Api.Versioned\Web.Api.Versioned.xml</DocumentationFile>
+    <DocumentationFile>C:\P\react-thingy\src\Web.Api.Versioned\Web.Api.Versioned.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

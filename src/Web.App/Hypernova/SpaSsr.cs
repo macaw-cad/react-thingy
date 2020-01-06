@@ -201,15 +201,22 @@ namespace Web.App.Hypernova
 
             if (_env.IsDevelopment())
             {
-                var client = _httpClientFactory.CreateClient();
-                var indexHtmlResponse = await client.GetAsync("http://localhost:3000?prestine");
-                if (indexHtmlResponse.IsSuccessStatusCode)
+                try
                 {
-                    indexHtml = await indexHtmlResponse.Content.ReadAsStringAsync();
+                    var client = _httpClientFactory.CreateClient();
+                    var indexHtmlResponse = await client.GetAsync("http://localhost:3000?prestine");
+                    if (indexHtmlResponse.IsSuccessStatusCode)
+                    {
+                        indexHtml = await indexHtmlResponse.Content.ReadAsStringAsync();
+                    }
+                    else
+                    {
+                        throw new HypernovaException($"Failed to read index.html from url 'http://localhost:3000?prestine' - {indexHtmlResponse.StatusCode}: {indexHtmlResponse.ReasonPhrase}");
+                    }
                 }
-                else
+                catch (HttpRequestException ex)
                 {
-                    throw new HypernovaException($"Failed to read index.html from url 'http://localhost:3000?prestine'");
+                    throw new HypernovaException($"Failed to read index.html from url 'http://localhost:3000?prestine' - {ex.Message}", ex);
                 }
             }
             else

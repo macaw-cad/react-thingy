@@ -18,8 +18,6 @@ using Web.Api.Core.Middleware;
 using Web.Api.Core.Settings;
 using Web.App.Api;
 using Web.App.Hypernova;
-using Web.App.HypernovaComponentServer;
-using Web.App.JsonServer;
 
 namespace Web.App
 {
@@ -77,8 +75,6 @@ namespace Web.App
             // app specific
             services.AddReverseProxySettings(this._configuration);
             services.AddHypernovaSettings(this._configuration);
-            services.AddHypernovaComponentServerSettings(this._configuration);
-            services.AddJsonServerSettings(this._configuration);
 
             // When not in development, replace by a real distributed cache implementation
             services.AddDistributedMemoryCache();

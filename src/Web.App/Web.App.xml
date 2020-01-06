@@ -41,21 +41,6 @@
             <param name="route">The route path to resolve.</param>
             <returns>The server determined routing information of type <see cref="T:Web.App.Api.Models.ServerRouteData"/>.</returns>
         </member>
-        <member name="M:Web.App.HypernovaComponentServer.HypernovaComponentServerController.Hypernova(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Execute a HypernovaComponentServer action.
-            </summary>
-            <param name="hypernovaComponentServerRequest"></param>
-            <param name="cancellationToken">Cancellation token.</param>
-            <returns>The response from HypernovaComponentServer.</returns>
-        </member>
-        <member name="M:Web.App.HypernovaComponentServer.HypernovaComponentServerExtensions.AddHypernovaComponentServerSettings(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Startup config extension method.
-            </summary>
-            <param name="services">this/services. Must not be null.</param>
-            <param name="config">The Configuration the Startup class was constructed with. Must not be null.</param>
-        </member>
         <member name="T:Web.App.Hypernova.HypernovaClient">
             <summary>
             Hypernova client.
@@ -151,20 +136,6 @@
             </remarks>
             <param name="html">Html string including the Redux state in html.</param>
             <returns>An HttpStatusCode or null if no status is found</returns>
-        </member>
-        <member name="M:Web.App.JsonServer.JsonServerController.JsonServer(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Execute an JsonServer query.
-            </summary>
-            <param name="cancellationToken">Cancellation token.</param>
-            <returns>The response from jsonserver.</returns>
-        </member>
-        <member name="M:Web.App.JsonServer.JsonServerExtensions.AddJsonServerSettings(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Startup config extension method.
-            </summary>
-            <param name="services">this/services. Must not be null.</param>
-            <param name="config">The Configuration the Startup class was constructed with. Must not be null.</param>
         </member>
         <member name="T:Web.App.RequestTranscriptHelpers">
             <summary>

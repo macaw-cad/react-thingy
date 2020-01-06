@@ -2,19 +2,36 @@
   "errors": [],
   "warnings": [],
   "version": "4.30.0",
-  "hash": "a5eaeaedeec54241a480",
+  "hash": "026bf3532ac63afb8b59",
   "publicPath": "",
   "outputPath": "C:\\P\\react-thingy\\src\\Web.App\\HypernovaComponentServer\\bundles",
   "assetsByChunkName": {
-    "counter-Counter": "counter-Counter.js",
-    "server-bundle": "server-bundle.js"
+    "counter-Counter": [
+      "counter-Counter.js",
+      "counter-Counter.js.map"
+    ],
+    "server-bundle": [
+      "server-bundle.js",
+      "server-bundle.js.map"
+    ]
   },
   "assets": [
     {
       "name": "counter-Counter.js",
-      "size": 1203,
+      "size": 3944,
       "chunks": [
-        0
+        "counter-Counter"
+      ],
+      "chunkNames": [
+        "counter-Counter"
+      ],
+      "emitted": false
+    },
+    {
+      "name": "counter-Counter.js.map",
+      "size": 3602,
+      "chunks": [
+        "counter-Counter"
       ],
       "chunkNames": [
         "counter-Counter"
@@ -23,9 +40,20 @@
     },
     {
       "name": "server-bundle.js",
-      "size": 987957,
+      "size": 3207959,
       "chunks": [
-        1
+        "server-bundle"
+      ],
+      "chunkNames": [
+        "server-bundle"
+      ],
+      "emitted": false
+    },
+    {
+      "name": "server-bundle.js.map",
+      "size": 3337419,
+      "chunks": [
+        "server-bundle"
       ],
       "chunkNames": [
         "server-bundle"
@@ -37,10 +65,11 @@
   "entrypoints": {
     "server-bundle": {
       "chunks": [
-        1
+        "server-bundle"
       ],
       "assets": [
-        "server-bundle.js"
+        "server-bundle.js",
+        "server-bundle.js.map"
       ],
       "children": {},
       "childAssets": {}
@@ -49,20 +78,22 @@
   "namedChunkGroups": {
     "server-bundle": {
       "chunks": [
-        1
+        "server-bundle"
       ],
       "assets": [
-        "server-bundle.js"
+        "server-bundle.js",
+        "server-bundle.js.map"
       ],
       "children": {},
       "childAssets": {}
     },
     "counter-Counter": {
       "chunks": [
-        0
+        "counter-Counter"
       ],
       "assets": [
-        "counter-Counter.js"
+        "counter-Counter.js",
+        "counter-Counter.js.map"
       ],
       "children": {},
       "childAssets": {}
