@@ -37,9 +37,7 @@ storiesOf('Toast', module)
         return (
             <div>
                 <TriggerToast title={text('Text', 'Hello I am toast')} options={{
-                    // @ts-ignore Calm down, we know what we're doing
                     position: select('Position', toastPositions, 'bottom-right'),
-                    // @ts-ignore Calm down, we know what we're doing
                     type: select('Type', toastType, 'default'),
                     autoClose: number('Close delay', 5000)
                 }}>Trigger toast!</TriggerToast>
