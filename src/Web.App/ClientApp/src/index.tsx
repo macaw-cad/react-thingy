@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Environment } from './Environment';
 import * as serviceWorker from './serviceWorker';

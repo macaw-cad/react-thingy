@@ -15,7 +15,7 @@ export const useServerRouteData = (): AsyncData<ServerRouteData> => {
     const applicationContext = useContext(ApplicationContext).applicationContext;
     
     // for managing correct rerendering both server-side and client-side
-    const firstClientSideRenderWithData = useRef(true);
+    const firstRenderWithData = useRef(true);
     const isHydrated = useSelector((state: RootState) => state.page.isHydrated);
     
     const dispatch = useDispatch();
@@ -44,10 +44,13 @@ export const useServerRouteData = (): AsyncData<ServerRouteData> => {
     }
 
     useEffect(() => {
-        if ((!firstClientSideRenderWithData.current || !serverRouteData.data) || !isHydrated) {
+        const notFirstRenderOrNoData = !firstRenderWithData.current || !serverRouteData.data;
+        const isClientSideRendered = !isHydrated;
+
+        if (notFirstRenderOrNoData || isClientSideRendered) {
             loadServerRouteReduxData();
         } else {
-            firstClientSideRenderWithData.current = false;
+            firstRenderWithData.current = false;
         }
     }, [location.pathname, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 

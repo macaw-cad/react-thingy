@@ -1,7 +1,12 @@
-export const later = (delay: number, doit: () => void) => {
+export type LaterPromise = {
+    readonly promise: Promise<void>;
+    cancel: () => void;
+};
+
+export const later = (delay: number, doit: () => void): LaterPromise => {
     let timer: NodeJS.Timer | number | undefined = undefined;
     let reject: () => void = () => {/**/};
-    const promise = new Promise((resolve, _reject) => {
+    const promise = new Promise<void>((resolve, _reject) => {
         reject = _reject;
         timer = setTimeout(() => { doit(); resolve(); }, delay);
     });

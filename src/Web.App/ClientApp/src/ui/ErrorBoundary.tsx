@@ -8,6 +8,8 @@ interface ErrorBoundaryState {
     error?: Error;
     errorInfo?: ErrorInfo;
 }
+
+// Cannot convert to hooks yet because at the moment there's no hook equivalent for componentDidCatch
 export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
     constructor(props: {}) {
       super(props);

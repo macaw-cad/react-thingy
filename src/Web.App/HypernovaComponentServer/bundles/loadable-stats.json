@@ -1,10 +1,10 @@
 {
   "errors": [],
   "warnings": [],
-  "version": "4.30.0",
-  "hash": "026bf3532ac63afb8b59",
+  "version": "4.41.5",
+  "hash": "ffe41cae9c9348e63e4c",
   "publicPath": "",
-  "outputPath": "C:\\P\\react-thingy\\src\\Web.App\\HypernovaComponentServer\\bundles",
+  "outputPath": "D:\\Websites\\react-thingy\\src\\Web.App\\HypernovaComponentServer\\bundles",
   "assetsByChunkName": {
     "counter-Counter": [
       "counter-Counter.js",
@@ -18,46 +18,70 @@
   "assets": [
     {
       "name": "counter-Counter.js",
-      "size": 3944,
+      "size": 839,
       "chunks": [
-        "counter-Counter"
+        0
       ],
       "chunkNames": [
         "counter-Counter"
       ],
+      "info": {},
+      "emitted": false
+    },
+    {
+      "name": "counter-Counter.js.LICENSE",
+      "size": 494,
+      "chunks": [],
+      "chunkNames": [],
+      "info": {},
       "emitted": false
     },
     {
       "name": "counter-Counter.js.map",
-      "size": 3602,
+      "size": 3212,
       "chunks": [
-        "counter-Counter"
+        0
       ],
       "chunkNames": [
         "counter-Counter"
       ],
+      "info": {
+        "development": true
+      },
       "emitted": false
     },
     {
       "name": "server-bundle.js",
-      "size": 3207959,
+      "size": 839140,
       "chunks": [
-        "server-bundle"
+        1
       ],
       "chunkNames": [
         "server-bundle"
       ],
+      "info": {},
+      "emitted": false
+    },
+    {
+      "name": "server-bundle.js.LICENSE",
+      "size": 105406,
+      "chunks": [],
+      "chunkNames": [],
+      "info": {},
       "emitted": false
     },
     {
       "name": "server-bundle.js.map",
-      "size": 3337419,
+      "size": 2718757,
       "chunks": [
-        "server-bundle"
+        1
       ],
       "chunkNames": [
         "server-bundle"
       ],
+      "info": {
+        "development": true
+      },
       "emitted": false
     }
   ],
@@ -65,7 +89,7 @@
   "entrypoints": {
     "server-bundle": {
       "chunks": [
-        "server-bundle"
+        1
       ],
       "assets": [
         "server-bundle.js",
@@ -78,7 +102,7 @@
   "namedChunkGroups": {
     "server-bundle": {
       "chunks": [
-        "server-bundle"
+        1
       ],
       "assets": [
         "server-bundle.js",
@@ -89,7 +113,7 @@
     },
     "counter-Counter": {
       "chunks": [
-        "counter-Counter"
+        0
       ],
       "assets": [
         "counter-Counter.js",
@@ -97,6 +121,13 @@
       ],
       "children": {},
       "childAssets": {}
+    }
+  },
+  "logging": {
+    "webpack.buildChunkGraph.visitModules": {
+      "entries": [],
+      "filteredEntries": 5,
+      "debug": false
     }
   },
   "children": []

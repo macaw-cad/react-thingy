@@ -6,34 +6,34 @@
       "request": "launch",
       "name": "Chrome on http://localhost:3000",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/Web.App/ClientApp"
+      "webRoot": "${workspaceFolder}/src/Web.App/ClientApp"
     },
     {
       "type": "chrome",
       "request": "launch",
       "name": "Chrome on https://localhost:5001",
       "url": "https://localhost:5001",
-      "webRoot": "${workspaceFolder}/Web.App/ClientApp"
+      "webRoot": "${workspaceFolder}/src/Web.App/ClientApp"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "HypernovaComponentServer",
-      "cwd": "${workspaceFolder}/Web.App/HypernovaComponentServer",
-      "program": "${workspaceFolder}/Web.App/HypernovaComponentServer/componentserver.js",
+      "cwd": "${workspaceFolder}/src/Web.App/HypernovaComponentServer",
+      "program": "${workspaceFolder}/src/Web.App/HypernovaComponentServer/componentserver.js",
       "runtimeArgs": [
         // "-r", "source-map-support/register"
       ],
       "env": {
         "ComponentServerBundles": "{\"pwa\":\"./bundles/server-bundle.js\"}"
       },
-      "runtimeExecutable": "${workspaceRoot}/Web.App/ClientApp/node_modules/.bin/nodemon",
+      "runtimeExecutable": "${workspaceRoot}/src/Web.App/ClientApp/node_modules/.bin/nodemon",
       "restart": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "sourceMapPathOverrides": {
-        "webpack:///./~/*": "${workspaceRoot}/Web.App/ClientApp/node_modules/*",
-        "webpack:///./*": "${workspaceRoot}/Web.App/ClientApp/*",
+        "webpack:///./~/*": "${workspaceRoot}/src/Web.App/ClientApp/node_modules/*",
+        "webpack:///./*": "${workspaceRoot}/src/Web.App/ClientApp/*",
         "webpack:///*": "*"
       }
     },
@@ -42,7 +42,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "buildWebApp",
-      "program": "${workspaceFolder}/Web.App/bin/Debug/netcoreapp2.2/Web.App.dll",
+      "program": "${workspaceFolder}/src/Web.App/bin/Debug/netcoreapp2.2/Web.App.dll",
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,

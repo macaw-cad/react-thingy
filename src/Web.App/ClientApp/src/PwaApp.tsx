@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import ApplicationRoutes from './router/ApplicationRoutes';
+import { ApplicationRoutes } from './router/ApplicationRoutes';
 import { Environment } from './Environment';
 import { ApplicationContext } from './ApplicationContext';
 import { container, TYPE } from './services/container';

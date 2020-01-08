@@ -1,12 +1,12 @@
-import * as React from 'react';
-import Header from '../sample/Header';
-import Footer from '../sample/Footer';
+import React from 'react';
+import { Header } from '../sample/Header';
+import { Footer } from '../sample/Footer';
 import { StarWars } from '../starwars/StarWars';
 
 type StarWarsPageProps = {
 };
 
-const StarWarsPage: React.FC<StarWarsPageProps> = (props: StarWarsPageProps) => {
+export const StarWarsPage: React.FC<StarWarsPageProps> = (props: StarWarsPageProps) => {
     return (
         <>
             <Header />
@@ -19,5 +19,3 @@ const StarWarsPage: React.FC<StarWarsPageProps> = (props: StarWarsPageProps) => 
         </>
     );
 };
-
-export default StarWarsPage;

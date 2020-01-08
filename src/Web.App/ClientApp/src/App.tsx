@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { ApplicationContext, applicationContextClient } from './ApplicationContext';
 import { configureStore } from './store/store';

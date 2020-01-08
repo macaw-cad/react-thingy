@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { StyleSheet, css } from '../../Styles';
 import { StyleDeclarationValue } from 'aphrodite';
 

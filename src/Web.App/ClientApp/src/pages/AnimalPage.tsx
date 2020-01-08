@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import Header from '../sample/Header';
-import Footer from '../sample/Footer';
+import { Header } from '../sample/Header';
+import { Footer } from '../sample/Footer';
 import { useAnimalLatinName } from '../AnimalLatinName/useAnimalLatinName';
 import { AsyncData } from '../store/AsyncData';
 import { Animal, AnimalLatinName } from '../api/WebAppClients';
@@ -9,12 +9,12 @@ type AnimalPageProps = {
     animal: Animal;
 };
 
-const AnimalPage: React.FC<AnimalPageProps> = (props: AnimalPageProps) => {
+export const AnimalPage: React.FC<AnimalPageProps> = (props: AnimalPageProps) => {
     const { animalLatinName, loadAnimalLatinName } = useAnimalLatinName();
-    
+
     useEffect(() => {
         loadAnimalLatinName(props.animal.name || '');
-    },        [props.animal.name]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [props.animal.name]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const latinName = animalLatinNameToString(animalLatinName);
     return (
@@ -49,5 +49,3 @@ const animalLatinNameToString = (animalLatinName: AsyncData<AnimalLatinName> | n
 
     return animalLatinName.data.latinName;
 };
-
-export default AnimalPage;

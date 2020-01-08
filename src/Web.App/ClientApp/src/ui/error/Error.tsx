@@ -1,4 +1,4 @@
-import * as React from 'react'; 
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export type ErrorProps = {
@@ -7,16 +7,14 @@ export type ErrorProps = {
 
 type ErrorAllProps = ErrorProps;
 
-export class Error extends React.Component<ErrorAllProps> {
-    public render(): JSX.Element {
-        return (
-            <div className="a-error">
-                {this.getErrorMessage()}
-            </div>
-        );
-    }
+export const Error: React.FC<ErrorAllProps> = (props) => {
+    const getErrorMessage = () => {
+        return <FormattedMessage id={props.message || 'Component.error'} defaultMessage="Error receiving the data" />;
+    };
 
-    private getErrorMessage(): JSX.Element {
-        return <FormattedMessage id={this.props.message || 'Component.error'} defaultMessage="Error receiving the data" />;
-    }
-}
+    return (
+        <div className="a-error">
+            {getErrorMessage()}
+        </div>
+    );
+};

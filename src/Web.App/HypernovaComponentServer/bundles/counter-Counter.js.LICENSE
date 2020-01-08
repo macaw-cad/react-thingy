@@ -1,0 +1,21 @@
+/*!*********************************!*\
+  !*** ./src/counter/Counter.tsx ***!
+  \*********************************/
+
+/*! exports provided: Counter, default */
+
+/*! all exports used */
+
+/*! ModuleConcatenation bailout: Module is referenced from these modules with unsupported syntax: ./src/pages/CounterPage.tsx (referenced with import(), require.resolve) */
+
+/*! react */
+
+/*! react-redux */
+
+/*! ../sample/later */
+
+/*! ../ApplicationContext */
+
+/*! ../Environment */
+
+/*! ./CounterActions */

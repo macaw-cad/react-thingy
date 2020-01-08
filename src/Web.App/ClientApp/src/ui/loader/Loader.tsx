@@ -1,18 +1,16 @@
-import * as React from 'react';
+import React from 'react';
 
-interface LoaderProps {
+type LoaderProps = {
     active: boolean;
-}
+};
 
 type LoaderAllProps = LoaderProps;
 
-export class Loader extends React.Component<LoaderAllProps> {
-    public render(): JSX.Element | undefined {
-        return this.props.active ? (
-            <div className="a-loader">
-                <h2>LOADING</h2>
-                <div className="a-loader__spinner" />
-            </div>
-        ) : undefined;
-    }
-}
+export const Loader: React.FC<LoaderAllProps> = (props) => {
+    return props.active ? (
+        <div className="a-loader">
+            <h2>LOADING</h2>
+            <div className="a-loader__spinner" />
+        </div>
+    ) : null;
+};

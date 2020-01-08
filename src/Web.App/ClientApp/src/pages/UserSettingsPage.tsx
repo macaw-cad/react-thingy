@@ -1,115 +1,95 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import map from 'lodash/map';
-import Header from '../sample/Header';
-import Footer from '../sample/Footer';
-import { getMockDataAllFlags, MockDataFlags, mockDataStorageKey, getMockDataFlags, mockDataEnvKey } from '../userSettings/MockDataFlags';
+import { Header } from '../sample/Header';
+import { Footer } from '../sample/Footer';
+import { getMockDataAllFlags, mockDataStorageKey, getMockDataFlags, mockDataEnvKey } from '../userSettings/MockDataFlags';
 
-type UserSettingsPageState = {
-    mockDataFlags: MockDataFlags;
-};
+export const UserSettingsPage = () => {
+    const [mockDataFlags, setMockDataFlags] = useState(getMockDataAllFlags());
 
-class UserSettingsPage extends React.Component<{}, UserSettingsPageState> {
-    public state: UserSettingsPageState = {
-        mockDataFlags: getMockDataAllFlags()
+    const hasMockEnvValue = () => {
+        return !!process.env[mockDataEnvKey];
     };
 
-    public componentDidMount(): void {
-        const mockDataFlags = getMockDataFlags();
+    const allMockDataFlagsChecked = () => {
+        const allMockFlagsValues: boolean[] = map(mockDataFlags);
 
-        if (mockDataFlags) {
-            this.setState({
-                mockDataFlags: mockDataFlags
-            });
-        }
-    }
+        return allMockFlagsValues.indexOf(false) === -1;
+    };
 
-    public render(): JSX.Element {
-        const { mockDataFlags } = this.state;
-        const inactiveStyle = { opacity: .7, pointerEvents: 'none', userSelect: 'none' } as React.CSSProperties;
-
-        return (
-            <>
-                <Header />
-                    <div>
-                        <strong>Mock overwrite from .env file</strong> ({mockDataEnvKey})<br />
-                        {process.env[mockDataEnvKey] || 'undefined'}
-                        <br /><br /><br />
-
-                        {this.hasMockEnvValue
-                            && 
-                            <>
-                                {`Mock settings not changable because the mock data .env variable is set. This overrules all settings. In order to work with mock settings below, remove ${mockDataEnvKey} from the .env file or remove its value.`}
-                                <br /><br />
-                            </>
-                        }
-
-                        <div style={this.hasMockEnvValue ? inactiveStyle : {}}>
-                            <strong>Mock settings:</strong>
-                            <ul>
-                                <li>
-                                    <label htmlFor="selectAll">
-                                        <input type="checkbox" id="selectAll" checked={this.allMockDataFlagsChecked} onChange={this.toggleAllMockDataFlags} />
-                                        (Un)select all
-                                    </label>
-                                </li>
-                                {Object.keys(getMockDataAllFlags()).map((mockFlag, index) => {
-                                    return (
-                                        <li key={index}>
-                                            <label htmlFor={mockFlag}>
-                                                <input type="checkbox" name="mockflags" id={mockFlag} checked={mockDataFlags[mockFlag]} onChange={this.toggleMockDataFlag} />
-                                                {mockFlag}
-                                            </label>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    </div>
-                <Footer />
-            </>
-        );
-    }
-
-    private get hasMockEnvValue(): boolean {
-        return !!process.env[mockDataEnvKey];
-    }
-    
-    private toggleMockDataFlag = (event: React.SyntheticEvent<HTMLInputElement>): void => {
+    const toggleMockDataFlag = (event: React.SyntheticEvent<HTMLInputElement>) => {
         const target = event.target as HTMLInputElement;
         const key = target.id;
 
-        this.setState(
-            {
-                mockDataFlags: { ...this.state.mockDataFlags, [key]: !this.state.mockDataFlags[key] }
-            },
-            this.saveStateToStorage
-        );
-    }
+        setMockDataFlags({ ...mockDataFlags, [key]: !mockDataFlags[key] });
+    };
 
-    private toggleAllMockDataFlags = (): void => {
-        let toggledMockDataFlags = JSON.parse(JSON.stringify(this.state.mockDataFlags));
+    const toggleAllMockDataFlags = () => {
+        let toggledMockDataFlags = JSON.parse(JSON.stringify(mockDataFlags));
 
         Object.keys(toggledMockDataFlags).forEach((key: string) => {
-            toggledMockDataFlags[key] = !this.allMockDataFlagsChecked;
+            toggledMockDataFlags[key] = !allMockDataFlagsChecked();
         });
 
-        this.setState(
-            {
-                mockDataFlags: { ...toggledMockDataFlags }
-            },
-            this.saveStateToStorage
-        );
-    }
+        setMockDataFlags({ ...toggledMockDataFlags });
+    };
 
-    private get allMockDataFlagsChecked(): boolean {
-        const allMockFlagsValues: boolean[] = map(this.state.mockDataFlags);
+    const saveStateToStorage = () => {
+        sessionStorage.setItem(mockDataStorageKey, JSON.stringify(mockDataFlags));
+    };
 
-        return allMockFlagsValues.indexOf(false) === -1;
-    }
+    useEffect(() => {
+        const storedMockDataFlags = getMockDataFlags();
 
-    private saveStateToStorage(): void {
-        sessionStorage.setItem(mockDataStorageKey, JSON.stringify(this.state.mockDataFlags));
-    }
-}
+        if (storedMockDataFlags) {
+            setMockDataFlags(storedMockDataFlags);
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-export default UserSettingsPage;
+    useEffect(() => {
+        saveStateToStorage();
+    }, [mockDataFlags]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const inactiveStyle = { opacity: .7, pointerEvents: 'none', userSelect: 'none' } as React.CSSProperties;
+    return (
+        <>
+            <Header />
+            <div>
+                <strong>Mock overwrite from .env file</strong> ({mockDataEnvKey})<br />
+                {process.env[mockDataEnvKey] || 'undefined'}
+                <br /><br /><br />
+
+                {hasMockEnvValue()
+                    &&
+                    <>
+                        {`Mock settings not changable because the mock data .env variable is set. This overrules all settings. In order to work with mock settings below, remove ${mockDataEnvKey} from the .env file or remove its value.`}
+                        <br /><br />
+                    </>
+                }
+
+                <div style={hasMockEnvValue() ? inactiveStyle : {}}>
+                    <strong>Mock settings:</strong>
+                    <ul>
+                        <li>
+                            <label htmlFor="selectAll">
+                                <input type="checkbox" id="selectAll" checked={allMockDataFlagsChecked()} onChange={toggleAllMockDataFlags} />
+                                (Un)select all
+                                    </label>
+                        </li>
+                        {Object.keys(getMockDataAllFlags()).map((mockFlag, index) => {
+                            return (
+                                <li key={index}>
+                                    <label htmlFor={mockFlag}>
+                                        <input type="checkbox" name="mockflags" id={mockFlag} checked={mockDataFlags[mockFlag]} onChange={toggleMockDataFlag} />
+                                        {mockFlag}
+                                    </label>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            </div>
+            <Footer />
+        </>
+    );
+};

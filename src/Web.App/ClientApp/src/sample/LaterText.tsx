@@ -1,39 +1,43 @@
-import * as React from 'react';
-import { later } from './later';
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
+import { later, LaterPromise } from './later';
+import { Environment } from '../Environment';
 
-interface LaterTextProps {
+type LaterTextProps = {
     message: string;
-}
+};
 
-interface LaterTextState {
-    text: string;
-}
-export class LaterText extends React.Component<LaterTextProps, LaterTextState> {
-    private laterContext: any = undefined;
+export const LaterText: React.FC<LaterTextProps> = (props) => {
+    const [text, setText] = useState(props.message);
+    let laterContext: MutableRefObject<LaterPromise | undefined> = useRef(undefined);
 
-    constructor(props: LaterTextProps) {
-      super(props);
-      this.state = { text: props.message };
-    }
-  
-    public componentWillMount(): void {
-      this.laterContext = later(1000, () => {
-        this.setState({text: 'This is the later text after 1 second'});
-        this.laterContext = undefined;
-      });
-    }
+    const setLaterText = () => {
+        laterContext.current = later(1000, () => {
+            setText('This is the later text after 1 second');
+            laterContext.current = undefined;
+        });
+    };
 
-    public componentWillUnmount(): void {
-      if (this.laterContext) {
-        this.laterContext.cancel();
-      }
+    const clearLaterText = () => {
+        if (laterContext.current) {
+            laterContext.current.cancel();
+        }
+    };
+
+    if (Environment.isServer) {
+        setLaterText();
     }
 
-    public render(): React.ReactNode {
-      return (
+    useEffect(() => {
+        setLaterText();
+
+        return function cleanup() {
+           clearLaterText();
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    return (
         <div>
-          LaterText: {this.state.text}
+            LaterText: {text}
         </div>
-      );
-    }
-  }
+    );
+};

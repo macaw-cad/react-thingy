@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { withApplicationContext, ApplicationContextConsumerProps } from '../ApplicationContext';
 import 'isomorphic-fetch';
 import { Car, Animal } from '../api/WebAppClients';
-import AnimalPage from './AnimalPage';
-import CarPage from './CarPage';
+import { AnimalPage } from './AnimalPage';
+import { CarPage } from './CarPage';
 import { Error404 } from './404';
 import { useServerRouteData } from '../ServerRouteData/useServerRouteData';
 

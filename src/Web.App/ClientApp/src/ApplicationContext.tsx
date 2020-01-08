@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Environment } from './Environment';
 
 export type ComponentDidRenderServerSideFunc = (applicationContextProps: ApplicationContextConsumerType) => void;

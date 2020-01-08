@@ -1,11 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 
-export class Error500 extends React.Component<any> {
-    public render(): JSX.Element {
-        return (
-            <div id="page-error">
-                500 Error
-            </div>
-        );
-    }
-}
+export const Error500 = () => {
+    return (
+        <div id="page-error">
+            500 Error
+        </div>
+    );
+};

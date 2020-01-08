@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ApplicationContext, ApplicationContextConsumerProps } from './ApplicationContext';
 import { Helmet } from 'react-helmet';
 

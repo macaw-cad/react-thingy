@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { Route, Switch, RouteComponentProps, withRouter } from 'react-router';
-import HomePage from '../pages/HomePage';
-import CounterPage from '../pages/CounterPage';
-import StarWarsPage from '../pages/StarWarsPage';
-import AmpStoriesPage from '../pages/AmpStoriesPage';
-import UserSettingsPage from '../pages/UserSettingsPage';
+import { HomePage } from '../pages/HomePage';
+import { CounterPage } from '../pages/CounterPage';
+import { StarWarsPage } from '../pages/StarWarsPage';
+import { AmpStoriesPage } from '../pages/AmpStoriesPage';
+import { UserSettingsPage } from '../pages/UserSettingsPage';
 import ServerRoutePageRenderer from '../pages/ServerRoutePageRenderer';
 
 type RoutingParams = {};
