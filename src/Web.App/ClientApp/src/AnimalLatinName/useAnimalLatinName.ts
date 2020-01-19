@@ -7,6 +7,7 @@ import { ApplicationContext } from '../ApplicationContext';
 import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { TypeKeysBaseName } from './AnimalLatinNameActions';
 import { resolve, TYPE } from '../services/container';
+import { useMutex } from 'react-context-mutex';
 
 type UseAnimalLatinNameProps = {
     animalLatinName: AsyncData<AnimalLatinName>;
@@ -16,6 +17,7 @@ type UseAnimalLatinNameProps = {
 export const useAnimalLatinName = (): UseAnimalLatinNameProps => {
     const applicationContext = useContext(ApplicationContext).applicationContext;
     const dispatch = useDispatch();
+    const MutexRunner = useMutex();
 
     const animalLatinNameClient = resolve<IAnimalLatinNameClient>(TYPE.AnimalLatinNameClient);
 
@@ -29,7 +31,14 @@ export const useAnimalLatinName = (): UseAnimalLatinNameProps => {
     };
 
     const loadAnimalLatinName = (name: string) => {
-        reduxDataLoader<AnimalLatinName>(animalLatinNameFetch, applicationContext, dispatch, TypeKeysBaseName, name);
+        reduxDataLoader<AnimalLatinName>(
+            animalLatinNameFetch, 
+            applicationContext, 
+            dispatch, 
+            MutexRunner,
+            TypeKeysBaseName, 
+            name
+        );
     };
 
     return { animalLatinName, loadAnimalLatinName };

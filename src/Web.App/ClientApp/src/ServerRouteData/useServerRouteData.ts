@@ -10,17 +10,18 @@ import { Environment } from '../Environment';
 import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { TypeKeysBaseName } from './ServerRouteDataActions';
 import { resolve, TYPE } from '../services/container';
+import { useMutex } from 'react-context-mutex';
 
 export const useServerRouteData = (): AsyncData<ServerRouteData> => {
     const applicationContext = useContext(ApplicationContext).applicationContext;
-    
+
     // for managing correct rerendering both server-side and client-side
     const firstRenderWithData = useRef(true);
     const isHydrated = useSelector((state: RootState) => state.page.isHydrated);
-    
+
     const dispatch = useDispatch();
     const location = useLocation();
-    
+    const MutexRunner = useMutex();
 
     const serverRouteClient = resolve<IServerRouteClient>(TYPE.ServerRouteDataClient);
 
@@ -36,7 +37,13 @@ export const useServerRouteData = (): AsyncData<ServerRouteData> => {
     };
 
     const loadServerRouteReduxData = () => {
-        reduxDataLoader<ServerRouteData>(serverRouteDataFetch, applicationContext, dispatch, TypeKeysBaseName);
+        reduxDataLoader<ServerRouteData>(
+            serverRouteDataFetch,
+            applicationContext,
+            dispatch,
+            MutexRunner,
+            TypeKeysBaseName
+        );
     };
 
     if (Environment.isServer) {

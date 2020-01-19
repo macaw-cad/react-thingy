@@ -1,34 +1,44 @@
 import { ApplicationContextProviderType } from '../ApplicationContext';
 import { Environment } from '../Environment';
 import { Dispatch } from 'react';
+import { MutexRunner as MutexRunnerType } from 'react-context-mutex';
+import md5 from 'md5';
 
 export const setLoaderTAction = <T>(postfix: string) => ({ type: 'SET_LOADER_' + postfix });
 export const setErrorTAction = <T>(postfix: string, error: string) => ({ type: 'SET_ERROR_' + postfix, error });
 
 export const setDataTAction = <T>(postfix: string, data: T | null) => ({ type: 'SET_DATA_' + postfix, data });
-export const reduxDataLoader = <T>(dataLoader: (...args: any[]) => Promise<T>,
-                                   applicationContext: ApplicationContextProviderType,
-                                   dispatch: Dispatch<any>,
-                                   postfix: string, ...useArgs: any): void => {
+export const reduxDataLoader = <T>(
+    dataLoader: (...args: any[]) => Promise<T>,
+    applicationContext: ApplicationContextProviderType,
+    dispatch: Dispatch<any>,
+    MutexRunner: MutexRunnerType,
+    postfix: string,
+    ...useArgs: any): void => {
+
+    const fetchFunctionHash = md5(dataLoader.toString() + useArgs.toString());
+    const mutex = new MutexRunner(fetchFunctionHash);
 
     const reduxAwareDataLoader = (...args: any[]): Promise<void> => {
-        dispatch(setLoaderTAction<T>(postfix));
+        return new Promise<void>((resolve, reject) => {
+            mutex.run(async () => {
+                mutex.lock();
+                dispatch(setLoaderTAction<T>(postfix));
 
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const data: T = await dataLoader(...args);
-                if (process.env.NODE_ENV !== 'production') {
-                    console.log(`reduxDataLoader for '${postfix}' - data:`, data);
+                try {
+                    const data: T = await dataLoader(...args);
+
+                    dispatch(setDataTAction<T>(postfix, data));
+                    mutex.unlock();
+                    resolve();
+                } catch (e) {
+                    dispatch(setErrorTAction<T>(postfix, e));
+                    mutex.unlock();
+                    reject();
                 }
-                dispatch(setDataTAction<T>(postfix, data));
+            }, () => {
                 resolve();
-            } catch (e) {
-                if (process.env.NODE_ENV !== 'production') {
-                    console.log(`reduxDataLoader for '${postfix}' - exception:`, e);
-                }
-                dispatch(setErrorTAction<T>(postfix, e));
-                reject();
-            }
+            });
         });
     };
 

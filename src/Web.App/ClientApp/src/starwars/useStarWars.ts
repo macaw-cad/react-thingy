@@ -8,6 +8,7 @@ import { reduxDataLoader } from '../BaseRedux/ReduxDataLoader';
 import { IStarWarsClient, StarWarsPerson } from '../api/WebAppClients';
 import { TYPE, resolve } from '../services/container';
 import { Environment } from '../Environment';
+import { useMutex } from 'react-context-mutex';
 
 type UseStarWarsProps = {
     starWarsPeople: AsyncData<StarWarsPerson[]>;
@@ -17,6 +18,7 @@ type UseStarWarsProps = {
 export const useStarWars = (): UseStarWarsProps => {
     const applicationContext = useContext(ApplicationContext).applicationContext;
     const dispatch = useDispatch();
+    const MutexRunner = useMutex();
     const isHydrated = useSelector((state: RootState) => state.page.isHydrated);
     const firstRenderWithData = useRef(true);
     const starWarsClient = resolve<IStarWarsClient>(TYPE.StarWarsClient);
@@ -28,7 +30,14 @@ export const useStarWars = (): UseStarWarsProps => {
     };
 
     const loadStarWarsPeople = async (query: string = '') => {
-        reduxDataLoader<StarWarsPerson[]>(starWarsPeopleFetch, applicationContext, dispatch, TypeKeysBaseName, query);
+        reduxDataLoader<StarWarsPerson[]>(
+            starWarsPeopleFetch, 
+            applicationContext, 
+            dispatch, 
+            MutexRunner,
+            TypeKeysBaseName, 
+            query
+        );
     };
 
     if (Environment.isServer) {

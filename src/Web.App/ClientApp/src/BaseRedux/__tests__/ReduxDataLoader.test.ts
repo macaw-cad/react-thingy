@@ -12,13 +12,14 @@ describe('ReduxDataLoader', () => {
     it('should call dataLoader function', () => {
         // arrange
         const dataLoader = jest.fn();
+        const mutex = jest.fn();
         const applicationContext = {
             firstRun: false
         } as ApplicationContextProviderType;
         const dispatch = jest.fn();
 
         // act
-        reduxDataLoader(dataLoader, applicationContext, dispatch, 'test');
+        reduxDataLoader(dataLoader, applicationContext, dispatch, mutex, 'test');
 
         // assert
         expect(dataLoader).toHaveBeenCalledTimes(1);
@@ -27,6 +28,7 @@ describe('ReduxDataLoader', () => {
     it('should add dataLoader function to applicationContext on server', () => {
         // arrange
         const dataLoader = jest.fn();
+        const mutex = jest.fn();
         // @ts-ignore mock applicationContext
         const applicationContext = {
             firstRun: true,
@@ -40,7 +42,7 @@ describe('ReduxDataLoader', () => {
         });
 
         // act
-        reduxDataLoader(dataLoader, applicationContext, dispatch, 'test');
+        reduxDataLoader(dataLoader, applicationContext, dispatch, mutex, 'test');
 
         // assert
         expect(Environment.isServer).toBe(true);

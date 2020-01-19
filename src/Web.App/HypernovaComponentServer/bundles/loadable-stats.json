@@ -2,7 +2,7 @@
   "errors": [],
   "warnings": [],
   "version": "4.41.5",
-  "hash": "ffe41cae9c9348e63e4c",
+  "hash": "f258d269d764fc16b39c",
   "publicPath": "",
   "outputPath": "D:\\Websites\\react-thingy\\src\\Web.App\\HypernovaComponentServer\\bundles",
   "assetsByChunkName": {
@@ -18,9 +18,9 @@
   "assets": [
     {
       "name": "counter-Counter.js",
-      "size": 839,
+      "size": 3944,
       "chunks": [
-        0
+        "counter-Counter"
       ],
       "chunkNames": [
         "counter-Counter"
@@ -29,18 +29,10 @@
       "emitted": false
     },
     {
-      "name": "counter-Counter.js.LICENSE",
-      "size": 494,
-      "chunks": [],
-      "chunkNames": [],
-      "info": {},
-      "emitted": false
-    },
-    {
       "name": "counter-Counter.js.map",
-      "size": 3212,
+      "size": 3602,
       "chunks": [
-        0
+        "counter-Counter"
       ],
       "chunkNames": [
         "counter-Counter"
@@ -52,9 +44,9 @@
     },
     {
       "name": "server-bundle.js",
-      "size": 839140,
+      "size": 3566410,
       "chunks": [
-        1
+        "server-bundle"
       ],
       "chunkNames": [
         "server-bundle"
@@ -63,18 +55,10 @@
       "emitted": false
     },
     {
-      "name": "server-bundle.js.LICENSE",
-      "size": 105406,
-      "chunks": [],
-      "chunkNames": [],
-      "info": {},
-      "emitted": false
-    },
-    {
       "name": "server-bundle.js.map",
-      "size": 2718757,
+      "size": 3609353,
       "chunks": [
-        1
+        "server-bundle"
       ],
       "chunkNames": [
         "server-bundle"
@@ -89,7 +73,7 @@
   "entrypoints": {
     "server-bundle": {
       "chunks": [
-        1
+        "server-bundle"
       ],
       "assets": [
         "server-bundle.js",
@@ -102,7 +86,7 @@
   "namedChunkGroups": {
     "server-bundle": {
       "chunks": [
-        1
+        "server-bundle"
       ],
       "assets": [
         "server-bundle.js",
@@ -113,7 +97,7 @@
     },
     "counter-Counter": {
       "chunks": [
-        0
+        "counter-Counter"
       ],
       "assets": [
         "counter-Counter.js",
