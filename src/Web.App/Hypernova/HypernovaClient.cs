@@ -21,18 +21,21 @@ namespace Web.App.Hypernova
     public class HypernovaClient
     {
         private readonly ILogger _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IOptions<HypernovaSettings> _options;
         private readonly HypernovaSettings _settings;
         private readonly string _siteUrl;
 
-        public HypernovaClient(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, string siteUrl)
+        public HypernovaClient(ILogger logger, IWebHostEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, string siteUrl)
         {
+            if (options is null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _options = options ?? throw new ArgumentNullException(nameof(logger));
             _settings = options.Value;
             _siteUrl = siteUrl;
         }

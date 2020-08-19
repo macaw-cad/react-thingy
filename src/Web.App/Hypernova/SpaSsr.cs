@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Web.App.Hypernova
 {
@@ -24,7 +22,7 @@ namespace Web.App.Hypernova
         private readonly HypernovaClient _hypernovaClient;
 
         private readonly ILogger _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly HypernovaSettings _settings;
         private readonly IDistributedCache _cache;
@@ -35,13 +33,23 @@ namespace Web.App.Hypernova
         private static string[] _cssUrlsCache;
         private static string[] _jsUrlsCache;
 
-        public SpaSsr(ILogger logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl, IConfiguration configuration, HttpContext httpContext)
+        public SpaSsr(ILogger logger, IWebHostEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache, String siteUrl)
         {
-            _logger = logger;
-            _env = env;
-            _httpClientFactory = httpClientFactory;
+            if (options is null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (string.IsNullOrEmpty(siteUrl))
+            {
+                throw new ArgumentException($"'{nameof(siteUrl)}' cannot be null or empty", nameof(siteUrl));
+            }
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             _settings = options.Value;
-            _cache = cache;
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _siteUrl = siteUrl;
 
 			_hypernovaClient = new HypernovaClient(logger, env, httpClientFactory, options, siteUrl);

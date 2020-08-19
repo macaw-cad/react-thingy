@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Hosting;
 using System.Net;
 
 namespace Web.App
@@ -9,10 +9,10 @@ namespace Web.App
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
             // The following defaults are applied to the returned WebHostBuilder: 
             // - use Kestrel as the web server and configure it using the application's configuration providers
             // - set the ContentRootPath to the result of GetCurrentDirectory()
@@ -22,24 +22,24 @@ namespace Web.App
             // - configures the ILoggerFactory to log to the console and debug output
             // - enables IIS integration (how about Linux? - no IIS)
             // - enables the ability for frameworks to bind their options to their default configuration sections
-            WebHost.CreateDefaultBuilder(args)
-
-#if false
-                .UseKestrel(options =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                   
-                    options.Listen(IPAddress.Loopback, 5000, listenOptions =>
+#if false
+                    webBuilder.UseKestrel(options =>
                     {
-                        listenOptions.Protocols = HttpProtocols.Http2;
+                        options.Listen(IPAddress.Loopback, 5000, listenOptions =>
+                        {
+                            listenOptions.Protocols = HttpProtocols.Http2;
+                        });
+                        options.Listen(IPAddress.Loopback, 5001, listenOptions =>
+                        {
+                            listenOptions.Protocols = HttpProtocols.Http2;
+                            listenOptions.UseHttps();
+                        });
                     });
-                    options.Listen(IPAddress.Loopback, 5001, listenOptions =>
-                    {
-                        listenOptions.Protocols = HttpProtocols.Http2;
-                        listenOptions.UseHttps();
-                    });
-                }
-                )
 #endif
-                .UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

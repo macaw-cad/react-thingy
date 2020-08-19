@@ -17,7 +17,7 @@ namespace Web.App
     {
         private readonly TimeSpan _cacheDuration = TimeSpan.FromDays(1.0);
         private readonly ILogger<StoryController> _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IOptions<HypernovaSettings> _options;
         private readonly IDistributedCache _cache;
@@ -25,7 +25,7 @@ namespace Web.App
         private readonly string _contentRoot;
 
 
-        public StoryController(ILogger<StoryController> logger, IHostingEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
+        public StoryController(ILogger<StoryController> logger, IWebHostEnvironment env, IHttpClientFactory httpClientFactory, IOptions<HypernovaSettings> options, IDistributedCache cache)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _env = env ?? throw new ArgumentNullException(nameof(logger));

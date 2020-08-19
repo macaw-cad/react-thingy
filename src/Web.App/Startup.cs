@@ -1,37 +1,35 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using NSwag;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
-using Web.Api.Core.Extensions;
-using Web.Api.Core.Middleware;
-using Web.Api.Core.Settings;
-using Web.App.Api;
+using System.Reflection;
+using System.Text.Json;
 using Web.App.Hypernova;
+using Web.App.Middleware;
+using Web.Core.DependencyInjection;
+using Web.Core.HealthChecks;
+using Web.Core.Infrastructure;
+using Web.Core.Mvc;
+using Web.Core.WebApi.DependencyInjection;
+using Web.Core.WebApi.Middleware;
 
 namespace Web.App
 {
     public class Startup
     {
-        private readonly ILogger _logger;
-        private readonly IConfiguration _configuration;
-        private readonly IHostingEnvironment _env;
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
-        public Startup(ILogger<Startup> logger, IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            _logger = logger;
-            _configuration = configuration;
-            _env = env;
+            Configuration = configuration;
+            Environment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -42,7 +40,7 @@ namespace Web.App
             // Forwarded Headers: set environment variable ASPNETCORE_FORWARDEDHEADERS_ENABLED to true.
             // https://devblogs.microsoft.com/aspnet/forwarded-headers-middleware-updates-in-net-core-3-0-preview-6/
             // See also: https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.2
-            if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_FORWARDEDHEADERS_ENABLED"), "true", StringComparison.OrdinalIgnoreCase))
+            if (Configuration.GetValue<bool>("ASPNETCORE_FORWARDEDHEADERS_ENABLED"))
             {
                 services.Configure<ForwardedHeadersOptions>(options =>
                 {
@@ -54,27 +52,14 @@ namespace Web.App
                 });
             }
 
-            var mvc = services.AddMvc();
-            mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            mvc.AddJsonOptions(options =>
-            {
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            });
+            AddControllersWithViewsAndJsonSerializerOptions(services, Configuration);
+            services.AddTransient<ProblemDetailsFactory, ErrorDetailsProblemDetailsFactory>(); // must be called after 'services.AddControllers();' as that is where the default factory is registered.            
 
-
-            mvc.AddRazorPagesOptions(options =>
-            {
-                options.RootDirectory = "/Pages";
-            });
-
-            services.AddSingleton<ILoggerFactory, LoggerFactory>();
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-
-            services.AddTransient<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
+            services.AddHttpContextAccessor();
 
             // app specific
-            services.AddReverseProxySettings(this._configuration);
-            services.AddHypernovaSettings(this._configuration);
+            services.AddReverseProxySettings(Configuration);
+            services.AddHypernovaSettings(Configuration);
 
             // When not in development, replace by a real distributed cache implementation
             services.AddDistributedMemoryCache();
@@ -83,11 +68,11 @@ namespace Web.App
             services.AddLogging();
 
             services.AddHealthChecks()
-                .ApplicationInfoHealthCheck("api", _env)
-                .AddSqlConnectionStringHealthCheck("connectionstrings", _configuration.GetSection("ConnectionStrings"))
-                .AddUrisHealthCheck("healthCheckUris", _configuration.GetSection("HealthCheckUris"));
+                .ApplicationInfoHealthCheck("Web.App")
+                .AddApplicationEndpointsHealthCheck("ping", Configuration.GetSection(HealthCheckOptions.HealthCheckSectionName).Get<HealthCheckOptions>())
+                ;
 
-            services.ConfigureSwaggerDoc("Web.App B4F Web API", "For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.<br/>Healthchecks on:<ul><li><a href='/healthcheck'>/healthcheck</a></li><li><a href='/monitoring'>/monitoring</a></li></ul>");
+            services.ConfigureSwaggerDocWithoutVersioning("Web.App B4F Web API", "For more information on the B4F API see <a target='_blank' href='https://github.com/macaw-interactive/react-thingy'>the documentation</a>.<br/>Healthchecks on:<ul><li><a href='/hc'>Minimal (/hc)</a></li><li><a href='/mon'>Full (/mon)</a></li></ul>");
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -97,39 +82,27 @@ namespace Web.App
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            app.UseMiddleware<ResponseTimeMiddleware>(); // must be the first in the pipeline
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMiddleware<ReverseProxyMiddleware>();
 
             app.UseHealthCheckEndPoints();
 
-            if (!env.IsProduction())
+            if (!Environment.IsProduction())
             {
-                app.UseSwaggerWithOptionalApiVersioning();
+                app.UseSwaggerWithDocumentation(new[]
+                {
+                    Assembly.GetEntryAssembly(),
+                });
             }
 
-            app.UseForwardedHeaders();
-
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-
-            app.UseExceptionHandler(errorApp =>
+            if (Configuration.GetValue<bool>("ASPNETCORE_FORWARDEDHEADERS_ENABLED"))
             {
-                errorApp.Run(async context =>
-                {
-                    context.Response.StatusCode = 500;
-                    context.Response.ContentType = "application/json";
-                    var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
+                app.UseForwardedHeaders();
+            }
 
-                    if (errorFeature != null)
-                    {
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiErrorInternalServerError(errorFeature.Error.ToString())));
-                    }
-                });
-            });
-
+            app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -142,24 +115,22 @@ namespace Web.App
                 });
             });
 
+            app.UseRouting();
 
-
-            app.UseMvc(mvcRoutes =>
+            app.UseEndpoints(endpoints =>
             {
-                mvcRoutes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-
-                mvcRoutes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "SpaSsr", action = "Index" });
+                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.AddPing();
+                endpoints.MapFallbackToController("Index", "SpaSsr");
             });
 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if (Environment.IsDevelopment())
                 {
                     // Start the ClientPortal through the CreateReactApp server for speedy development
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
@@ -181,6 +152,57 @@ namespace Web.App
             return pathString.Contains(context.Request.PathBase.Add("/webpack-dev-server"), StringComparison.InvariantCulture) ||
                 context.Request.Path.StartsWithSegments("/__webpack_dev_server__", StringComparison.InvariantCulture) ||
                 context.Request.Path.StartsWithSegments("/sockjs-node", StringComparison.InvariantCulture);
+        }
+
+        private static void AddControllersWithViewsAndJsonSerializerOptions(IServiceCollection services, IConfiguration configuration)
+        {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (configuration is null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            var jsonSerializerOptions = CreateJsonSerializerOptions(configuration);
+
+            // Add JsonSerializerOptions to the controllers and to the DI-container, otherwise the same settings won't available in (middleware) services
+            services.AddTransient(_ => Options.Create(jsonSerializerOptions));
+            services.AddControllersWithViews(mvcOptions => mvcOptions.RespectBrowserAcceptHeader = true)
+                .AddJsonOptions(jsonOptions => CopySerializerOptions(jsonOptions, jsonSerializerOptions)
+                );
+        }
+
+        private static JsonSerializerOptions CreateJsonSerializerOptions(IConfiguration configuration)
+        {
+            var jsonSerializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                IgnoreNullValues = true,
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true,
+            };
+
+            jsonSerializerOptions.Converters.Add(new ErrorProblemDetailsJsonConverterFactory());
+            jsonSerializerOptions.Converters.Add(
+                new ExceptionProblemDetailsJsonConverter(
+                    configuration.GetSection(ExceptionProblemDetailsOptions.ExceptionProblemDetailsSectionName).Get<ExceptionProblemDetailsOptions>()
+                ));
+
+            return jsonSerializerOptions;
+        }
+
+        private static void CopySerializerOptions(JsonOptions jsonOptions, JsonSerializerOptions jsonSerializerOptions)
+        {
+            jsonOptions.JsonSerializerOptions.IgnoreNullValues = jsonSerializerOptions.IgnoreNullValues;
+            jsonOptions.JsonSerializerOptions.WriteIndented = jsonSerializerOptions.WriteIndented;
+            jsonOptions.JsonSerializerOptions.PropertyNameCaseInsensitive = jsonSerializerOptions.PropertyNameCaseInsensitive;
+            foreach (var converter in jsonSerializerOptions.Converters)
+            {
+                jsonOptions.JsonSerializerOptions.Converters.Add(converter);
+            }
         }
     }
 }

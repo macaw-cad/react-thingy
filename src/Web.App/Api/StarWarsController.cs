@@ -1,40 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.App.Api.Models;
-using Web.App.Api.Transformers;
+using Web.Core.WebApi.Controllers;
 
 namespace Web.App.Api
 {
     [Route("api/starwars")]
     [ApiController]
-    public class StarWarsController : ControllerBase
+    public class StarWarsController : ApiControllerBase
     {
-        private readonly IHttpClientFactory httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public StarWarsController(IHttpClientFactory httpClientFactory)
         {
-            this.httpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
-        [Produces("application/json")]
         [HttpGet("people")]
-        public async Task<ActionResult<IEnumerable<StarWarsPerson>>> GetPeople([FromQuery] string query)
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(StarWarsPerson[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPeople(string query)
         {
-            using (var client = httpClientFactory.CreateClient())
+            var filterPath = String.IsNullOrWhiteSpace(query) ? "" : $"?search={query}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"http://swapi.dev/api/people{filterPath}");
+            request.Headers.Add("ContentType", "application/json");
+
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
             {
-                var filterPath = String.IsNullOrWhiteSpace(query) ? "" : $"?search={query}";
-                var requestUri = new Uri($"http://swapi.co/api/people{filterPath}");
-                var response = await client.GetAsync(requestUri);
+                using var responseStream = await response.Content.ReadAsStreamAsync();
 
-                var content = await response.Content.ReadAsStringAsync();
-
-                var result = StarWarsTransformer.TransformPeopleToPersons(content);
-
-                return Ok(result);
+                var starWarsPersons = await JsonSerializer.DeserializeAsync<IEnumerable<StarWarsPerson>>(responseStream);
+                return Ok(starWarsPersons);
             }
+
+            return Problem("Something went wrong getting Star Wars data");
         }
     }
 }

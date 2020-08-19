@@ -21,11 +21,6 @@
             <param name="animalName">The English animal name.</param>
             <returns>The Latin translation object <see cref="T:Web.App.Api.Models.AnimalLatinName"/>.</returns>
         </member>
-        <member name="T:Web.App.Api.ApiError">
-            <summary>
-            Based on https://medium.com/@matteocontrini/consistent-error-responses-in-asp-net-core-web-apis-bb70b435d1f8
-            </summary>
-        </member>
         <member name="T:Web.App.Api.Models.EnumByEnumeration">
             <summary>
             Enumeration base class as described in https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types.
@@ -136,6 +131,21 @@
             </remarks>
             <param name="html">Html string including the Redux state in html.</param>
             <returns>An HttpStatusCode or null if no status is found</returns>
+        </member>
+        <member name="T:Web.App.Middleware.ReverseProxyMiddleware">
+            <summary>
+            Reverse proxy middleware adapted from https://auth0.com/blog/building-a-reverse-proxy-in-dot-net-core/ (github: https://github.com/andychiare/netcore2-reverse-proxy)
+            </summary>
+        </member>
+        <member name="P:Web.App.Middleware.ReverseProxySettings.Configurations">
+            <summary>
+            Configurations is an array in the format:
+            <code>
+                "Configurations": [
+                    "/api/forms/form/=>https://localhost:7001/api/forms/form/"
+                ]
+            </code>
+            </summary>
         </member>
         <member name="T:Web.App.RequestTranscriptHelpers">
             <summary>

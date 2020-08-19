@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using Web.App.Api.Models;
+using Web.Core.WebApi.Controllers;
 
 namespace Web.App.Api
 {
     [Route("api/serverroute")]
-    public class ServerRouteController : Controller
+    public class ServerRouteController : ApiControllerBase
     {
         /// <summary>
         /// Get routing information based on the Uri.
@@ -20,69 +20,46 @@ namespace Web.App.Api
         [ProducesResponseType(typeof(ServerRouteData), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<ServerRouteData> GetServerRoute([FromQuery] string route)
+        public IActionResult GetServerRoute(string route)
         {
             if (string.IsNullOrWhiteSpace(route))
             {
-
+                route = string.Empty;
             }
 
-            route = route.ToUpperInvariant();
-            try
+            return route.ToUpperInvariant() switch
             {
-                if (route == "MULTIPLA")
+                "MULTIPLA" => Ok(new ServerRouteData
                 {
-                    return Ok(
-                        new ServerRouteData
-                        {
-                            Type = PageType.CarPage,
-                            CarData = new Car
-                            {
-                                Make = "Fiat",
-                                Year = 1998,
-                                Speed = 170
-                            }
-                        }
-                    );
-                }
-                else if (route == "FORD/FIESTA")
+                    Type = PageType.CarPage,
+                    CarData = new Car
+                    {
+                        Make = "Fiat",
+                        Year = 1998,
+                        Speed = 170
+                    }
+                }),
+                "FORD/FIESTA" => Ok(new ServerRouteData
                 {
-                    return Ok(
-                        new ServerRouteData
-                        {
-                            Type = PageType.CarPage,
-                            CarData = new Car
-                            {
-                                Make = "Ford",
-                                Year = 1976,
-                                Speed = 190
-                            }
-                        }
-                    );
-                }
-                else if (route == "BEAR")
+                    Type = PageType.CarPage,
+                    CarData = new Car
+                    {
+                        Make = "Ford",
+                        Year = 1976,
+                        Speed = 190
+                    }
+                }),
+                "BEAR" => Ok(new ServerRouteData
                 {
-                    return Ok(
-                        new ServerRouteData
-                        {
-                            Type = PageType.AnimalPage,
-                            AnimalData = new Animal
-                            {
-                                Name = "Bear",
-                                MaxAge = 30
-                            }
-                        }
-                     );
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (ServerRouteException ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+                    Type = PageType.AnimalPage,
+                    AnimalData = new Animal
+                    {
+                        Name = "Bear",
+                        MaxAge = 30
+                    }
+                }),
+                _ => NotFound(),
+            };
         }
     }
 }

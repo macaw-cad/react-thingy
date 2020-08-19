@@ -1,7 +1,8 @@
-﻿using System.Net.Http;
+﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.App.Api.Models;
+using Web.Core.WebApi.Controllers;
 
 namespace Web.App.Api
 {
@@ -10,15 +11,8 @@ namespace Web.App.Api
     /// </summary>
     [Route("api/animallatinname")]
     [ApiController]
-    public class AnimalLatinNameController : ControllerBase
+    public class AnimalLatinNameController : ApiControllerBase
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public AnimalLatinNameController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
-
         /// <summary>
         /// Translate animal name to Latin.
         /// </summary>
@@ -27,16 +21,18 @@ namespace Web.App.Api
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(typeof(AnimalLatinName), StatusCodes.Status200OK)]
-        public ActionResult<AnimalLatinName> Get([FromQuery] string animalName)
+        public IActionResult Get(string animalName)
         {
-            if (animalName != null && animalName.ToUpperInvariant() == "BEAR")
+            if (string.IsNullOrWhiteSpace(animalName))
             {
-                return Ok(new AnimalLatinName { OriginalName = animalName, LatinName = "ursa" });
+                animalName = String.Empty;
             }
-            else
+
+            return (animalName.ToUpperInvariant()) switch
             {
-                return Ok(new AnimalLatinName { OriginalName = animalName, LatinName = "unknown" });
-            }
+                "BEAR" => Ok(new AnimalLatinName { OriginalName = animalName, LatinName = "ursa" }),
+                _ => Ok(new AnimalLatinName { OriginalName = animalName, LatinName = "unknown" }),
+            };
         }
     }
 }
