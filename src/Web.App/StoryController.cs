@@ -139,7 +139,7 @@ namespace Web.App
             return json;
         }
 
-        private List<string> GetAllArtistIds() 
+        private List<string> GetAllArtistIds()
         {
             var artistIds = new List<string>();
             var artistRoot = Path.Combine(_contentRoot, "ClientApp", "build", "artists");

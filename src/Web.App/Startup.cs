@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Reflection;
 using System.Text.Json;
+using Web.App.Api.Repository;
+using Web.App.Api.Services;
 using Web.App.Hypernova;
 using Web.App.Middleware;
 using Web.Core.DependencyInjection;
@@ -79,6 +81,13 @@ namespace Web.App
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            // Add GraphQL
+
+
+            // Add Other
+            services.AddSingleton<IStarWarsRepository, StarWarsRepository>();
+            services.AddSingleton<ICachingService, CachingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
