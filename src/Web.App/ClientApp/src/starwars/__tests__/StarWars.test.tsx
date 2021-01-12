@@ -14,9 +14,18 @@ const mockStarWarsClient = (): IStarWarsClient => {
         getPeople: () => {
             return Promise.resolve<StarWarsPerson[]>([
                 {
-                    name: 'Obi-Wan Jacobi',
-                    weight: 77,
-                    hairColor: 'auburn, white'
+                    id: 10,
+                    name: 'Obi-Wan Kenobi',
+                    height: '182',
+                    mass: '77',
+                    hair_color: 'auburn, white',
+                    skin_color: 'fair',
+                    eye_color: 'blue-gray',
+                    birth_year: '57BBY',
+                    gender: 'male',
+                    homeworld: 'http://swapi.dev/api/planets/20/',
+                    created: '2014-12-10T16:16:29.192Z',
+                    edited: '2014-12-20T21:17:50.325Z'
                 }
             ]);
         }

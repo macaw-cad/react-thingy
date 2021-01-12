@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.App.Api.Models;
@@ -22,9 +25,11 @@ namespace Web.App.Api
         [Produces("application/json")]
         [ProducesResponseType(typeof(StarWarsPerson[]), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPeople(int page)
+        public async Task<IActionResult> GetPeople(string query)
         {
-            var result = await _starWarsRepository.GetStarWarsPeopleAsync(page);
+            var filterPath = String.IsNullOrWhiteSpace(query) ? "?page=1" : $"?search={query}";
+            var result = await _starWarsRepository.ExecuteQuery(filterPath);
+
             if (result != null)
             {
                 return Ok(result);

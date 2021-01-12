@@ -25,6 +25,8 @@ namespace Web.App.Api.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         Task<StarWarsPerson> GetStarWarsPerson(int id);
+
+        Task<IEnumerable<StarWarsPerson>> ExecuteQuery(string query);
     }
 
     public class StarWarsRepository : IStarWarsRepository
@@ -60,6 +62,17 @@ namespace Web.App.Api.Repository
             };
 
             return await ExecuteCall(cacheKey, requestMessage, TransformPeopleToPerson);
+        }
+
+        public async Task<IEnumerable<StarWarsPerson>> ExecuteQuery(string query)
+        {
+            var cacheKey = $"{HashKey}-query-{query}";
+            var requestMessage = new HttpRequestMessage
+            {
+                RequestUri = new Uri($"https://swapi.dev/api/people{query}", UriKind.Absolute)
+            };
+
+            return await ExecuteCall(cacheKey, requestMessage, TransformPeopleToPersons);
         }
 
         public async Task<T> ExecuteCall<T>(string cacheKey, HttpRequestMessage requestMessage,

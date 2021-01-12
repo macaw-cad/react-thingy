@@ -458,9 +458,18 @@ export interface Animal {
 }
 
 export interface StarWarsPerson {
+    id: number | undefined
     name: string | undefined;
-    weight: number;
-    hairColor: string | undefined;
+    height: string | undefined;
+    mass: string | undefined;
+    hair_color: string | undefined;
+    skin_color: string | undefined;
+    eye_color: string | undefined;
+    birth_year: string | undefined;
+    gender: string | undefined;
+    homeworld: string | undefined;
+    created: string | undefined;
+    edited: string | undefined;
 }
 
 export interface FileResponse {

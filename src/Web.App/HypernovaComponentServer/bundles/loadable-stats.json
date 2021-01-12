@@ -4,7 +4,7 @@
   "version": "4.44.1",
   "hash": "49bf6b3ba3e5b9af8383",
   "publicPath": "",
-  "outputPath": "D:\\P\\MI\\react-thingy\\src\\Web.App\\HypernovaComponentServer\\bundles",
+  "outputPath": "D:\\projects\\react-thingy\\src\\Web.App\\HypernovaComponentServer\\bundles",
   "assetsByChunkName": {
     "counter-Counter": [
       "counter-Counter.js",
@@ -56,7 +56,7 @@
     },
     {
       "name": "server-bundle.js.map",
-      "size": 3374681,
+      "size": 3375018,
       "chunks": [
         "server-bundle"
       ],
