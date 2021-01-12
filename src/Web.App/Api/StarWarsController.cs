@@ -25,7 +25,6 @@ namespace Web.App.Api
         public async Task<IActionResult> GetPeople(int page)
         {
             var result = await _starWarsRepository.GetStarWarsPeopleAsync(page);
-
             if (result != null)
             {
                 return Ok(result);
@@ -41,7 +40,6 @@ namespace Web.App.Api
         public async Task<IActionResult> GetPersonById(int id)
         {
             var result = await _starWarsRepository.GetStarWarsPerson(id);
-
             if (result != null)
             {
                 return Ok(result);

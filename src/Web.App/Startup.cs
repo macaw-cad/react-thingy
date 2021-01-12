@@ -10,8 +10,12 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Reflection;
 using System.Text.Json;
+using GraphQL.Server;
 using Web.App.Api.Repository;
 using Web.App.Api.Services;
+using Web.App.GraphQL;
+using Web.App.GraphQL.Queries;
+using Web.App.GraphQL.Types;
 using Web.App.Hypernova;
 using Web.App.Middleware;
 using Web.Core.DependencyInjection;
@@ -83,14 +87,25 @@ namespace Web.App
             });
 
             // Add GraphQL
-
+            services.AddSingleton<StarWarsPersonSchema>();
+            services.AddSingleton<PersonType>();
+            services.AddSingleton<PersonQuery>();
+            services.AddGraphQL(options =>
+                {
+                    options.EnableMetrics = true;
+                })
+                .AddErrorInfoProvider(opt => opt.ExposeExceptionStackTrace = true)
+                .AddSystemTextJson();
 
             // Add Other
             services.AddSingleton<IStarWarsRepository, StarWarsRepository>();
             services.AddSingleton<ICachingService, CachingService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
         public void Configure(IApplicationBuilder app)
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
@@ -111,16 +126,20 @@ namespace Web.App
                 app.UseForwardedHeaders();
             }
 
+            // GraphQL
+            app.UseGraphQL<StarWarsPersonSchema>();
+            app.UseGraphQLPlayground();
+
             app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.MapWhen(context => webPackDevServerMatcher(context), webpackDevServer =>
+            app.MapWhen(WebPackDevServerMatcher, webpackDevServer =>
             {
                 webpackDevServer.UseSpa(spa =>
                 {
-                    spa.UseProxyToSpaDevelopmentServer(baseUri: "http://localhost:3000");
+                    spa.UseProxyToSpaDevelopmentServer(baseUri: SpaSsr.SpaServerBaseUrl);
                 });
             });
 
@@ -142,8 +161,7 @@ namespace Web.App
                 if (Environment.IsDevelopment())
                 {
                     // Start the ClientPortal through the CreateReactApp server for speedy development
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-                    // spa.UseReactDevelopmentServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer(SpaSsr.SpaServerBaseUrl);
                 }
             });
         }
@@ -155,7 +173,7 @@ namespace Web.App
         // https://localhost:5001/webpack_dev_server.js
         // https://localhost:5001/__webpack_dev_server__/live.bundle.js
         // wss://localhost:5001/sockjs-node/978/qhjp11ck/websocket
-        private static bool webPackDevServerMatcher(Microsoft.AspNetCore.Http.HttpContext context)
+        private static bool WebPackDevServerMatcher(Microsoft.AspNetCore.Http.HttpContext context)
         {
             string pathString = context.Request.Path.ToString();
             return pathString.Contains(context.Request.PathBase.Add("/webpack-dev-server"), StringComparison.InvariantCulture) ||

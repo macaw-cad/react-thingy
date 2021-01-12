@@ -169,5 +169,11 @@
             Copied from https://stackoverflow.com/questions/45759417/convert-microsoft-aspnetcore-http-httprequest-to-httprequestmessage
             </remarks>
         </member>
+        <member name="M:Web.App.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+        </member>
     </members>
 </doc>

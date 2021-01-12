@@ -3,9 +3,9 @@ using Web.App.GraphQL.Queries;
 
 namespace Web.App.GraphQL
 {
-    public class PersonSchema : Schema
+    public class StarWarsPersonSchema : Schema
     {
-        public PersonSchema(PersonQuery query)
+        public StarWarsPersonSchema(PersonQuery query)
         {
             Query = query;
         }

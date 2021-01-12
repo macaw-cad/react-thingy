@@ -17,6 +17,8 @@ namespace Web.App.Hypernova
 {
     public class SpaSsr
     {
+        public const string SpaServerBaseUrl = "http://localhost:3000";
+
         private const string DefaultBaseAppUrl = "/";
 
         private readonly HypernovaClient _hypernovaClient;
@@ -178,11 +180,9 @@ namespace Web.App.Hypernova
                 endHeadReplacement.Append($"<script>window.history.replaceState({{}}, '', '{appUrl}');</script>");
             }
 
-			//endHeadReplacement.Append($"\n\n<!-- BaseUrl: {baseAppUrl}, RelativeUrl: {relativeUrl}, SiteUrl: {_siteUrl}, ComponentServerUrl: {_settings.ComponentServerUrl} -->\n\n");
-
 			if (String.IsNullOrWhiteSpace(hypernovaResult))
             {
-                endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - no ssr -->");
+                endHeadReplacement.Append($"<!-- {DateTime.Now:yyyyMMddHHmmss} - no ssr -->");
 #if DEBUG
 				endHeadReplacement.Append($"<!-- {(ex != null ? " " + ex.ToString() : "")} -->");
 #endif
@@ -190,7 +190,7 @@ namespace Web.App.Hypernova
             else
             {
                 appHtml = hypernovaResult;
-                endHeadReplacement.Append($"<!-- {DateTime.Now.ToString("yyyyMMddHHmmss")} - ssr - -->");
+                endHeadReplacement.Append($"<!-- {DateTime.Now:yyyyMMddHHmmss} - ssr - -->");
             }
 
             endHeadReplacement.Append("</head>");
@@ -212,19 +212,19 @@ namespace Web.App.Hypernova
                 try
                 {
                     var client = _httpClientFactory.CreateClient();
-                    var indexHtmlResponse = await client.GetAsync("http://localhost:3000?prestine");
+                    var indexHtmlResponse = await client.GetAsync($"{SpaServerBaseUrl}?prestine");
                     if (indexHtmlResponse.IsSuccessStatusCode)
                     {
                         indexHtml = await indexHtmlResponse.Content.ReadAsStringAsync();
                     }
                     else
                     {
-                        throw new HypernovaException($"Failed to read index.html from url 'http://localhost:3000?prestine' - {indexHtmlResponse.StatusCode}: {indexHtmlResponse.ReasonPhrase}");
+                        throw new HypernovaException($"Failed to read index.html from url '{SpaServerBaseUrl}?prestine' - {indexHtmlResponse.StatusCode}: {indexHtmlResponse.ReasonPhrase}");
                     }
                 }
                 catch (HttpRequestException ex)
                 {
-                    throw new HypernovaException($"Failed to read index.html from url 'http://localhost:3000?prestine' - {ex.Message}", ex);
+                    throw new HypernovaException($"Failed to read index.html from url '{SpaServerBaseUrl}?prestine' - {ex.Message}", ex);
                 }
             }
             else
